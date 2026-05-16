@@ -1,0 +1,171 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<body>
+<header th:fragment="navbar">
+
+    <div class="top-bar">
+        <div class="container top-bar-content">
+            <a href="#">Evita Estafas</a>
+            <a href="#">Tarifarios</a>
+            <a href="#">Libro de reclamaciones</a>
+            <a href="#">Trabaja con Nosotros</a>
+        </div>
+    </div>
+
+    <nav class="main-nav">
+        <div class="container nav-content">
+            <div class="logo">
+                <a th:href="@{/}">
+                    <img th:src="@{/img/logos/logo-financiera.png}" alt="Financiera Confianza - Fundación BBVA" >
+                </a>
+            </div>
+
+            <ul class="nav-links">
+
+                <li class="nav-item dropdown">
+                    <a href="#">Negocios <i class="fas fa-chevron-down icon-small"></i></a>
+                    <ul class="dropdown-menu">
+                        <li class="dropdown-submenu">
+                            <a href="#">Créditos <i class="fas fa-caret-right arrow-right"></i></a>
+                            <ul class="dropdown-menu-sub">
+                                <li><a href="#">Crédito Emprendiendo Confianza PYME</a></li>
+                                <li><a href="#">Crédito Agropecuario</a></li>
+                                <li><a href="#">Construyendo Confianza</a></li>
+                                <li><a href="#">Emprendiendo Mujer</a></li>
+                            </ul>
+                        </li>
+                        <li class="dropdown-submenu">
+                            <a href="#">Inclusión <i class="fas fa-caret-right arrow-right"></i></a>
+                            <ul class="dropdown-menu-sub">
+                                <li><a href="#">Crédito Paralelo Palabra de Mujer</a></li>
+                                <li><a href="#">Palabra de Mujer</a></li>
+                                <li><a href="#">Iniciando Oficios</a></li>
+                                <li><a href="#">Crédito Grupal Solidario</a></li>
+                            </ul>
+                        </li>
+                        <li class="dropdown-submenu">
+                            <a href="#">Seguros <i class="fas fa-caret-right arrow-right"></i></a>
+                            <ul class="dropdown-menu-sub">
+                                <li><a href="#">Desgravamen</a></li>
+                                <li><a href="#">Desgravamen con Devolución</a></li>
+                                <li><a href="#">Desgravamen para PDM</a></li>
+                                <li><a href="#">Desgravamen Plus</a></li>
+                                <li><a href="#">Multiriesgo</a></li>
+                                <li><a href="#">Agrícola de rendimiento</a></li>
+                                <li><a href="#">Protección 360</a></li>
+                            </ul>
+                        </li>
+                        <li><a href="#">Financiamiento Verde</a></li>
+                    </ul>
+                </li>
+
+                <li class="nav-item dropdown">
+                    <a href="#">Personas <i class="fas fa-chevron-down icon-small"></i></a>
+                    <ul class="dropdown-menu">
+                        <li class="dropdown-submenu">
+                            <a href="#">Créditos Personales <i class="fas fa-caret-right arrow-right"></i></a>
+                            <ul class="dropdown-menu-sub">
+                                <li><a href="#">Crédito Personal</a></li>
+                                <li><a href="#">Crédito Garantía Líquida</a></li>
+                                <li><a href="#">Crédito Educativo</a></li>
+                            </ul>
+                        </li>
+                        <li class="dropdown-submenu">
+                            <a href="#">Inmueble Productivo <i class="fas fa-caret-right arrow-right"></i></a>
+                            <ul class="dropdown-menu-sub">
+                                <li><a href="#">Construyendo Confianza</a></li>
+                            </ul>
+                        </li>
+                        <li class="dropdown-submenu">
+                            <a href="#">Ahorros <i class="fas fa-caret-right arrow-right"></i></a>
+                            <ul class="dropdown-menu-sub">
+                                <li><a href="#">Ahorro Confianza</a></li>
+                                <li><a href="#">Depósitos a plazos</a></li>
+                                <li><a href="#">Plan Ahorro</a></li>
+                                <li><a href="#">Cuentas CTS</a></li>
+                                <li><a href="#">Órdenes de Pago</a></li>
+                                <li><a href="#">Pago de Remuneraciones</a></li>
+                                <li><a href="#">Confianza Solidaria</a></li>
+                                <li><a href="#">Cuenta Básica</a></li>
+                            </ul>
+                        </li>
+                        <li class="dropdown-submenu">
+                            <a href="#">Seguros <i class="fas fa-caret-right arrow-right"></i></a>
+                            <ul class="dropdown-menu-sub">
+                                <li><a href="#">Desgravamen</a></li>
+                                <li><a href="#">Desgravamen Plus</a></li>
+                                <li><a href="#">Oncológico Indemnizatorio</a></li>
+                                <li><a href="#">Protección Total</a></li>
+                                <li><a href="#">Vida Segura</a></li>
+                                <li><a href="#">Multiriesgo</a></li>
+                                <li><a href="#">Cuota Segura</a></li>
+                                <li><a href="#">Agrícola de rendimiento</a></li>
+                                <li><a href="#">Protección 360</a></li>
+                            </ul>
+                        </li>
+                        <li class="dropdown-submenu">
+                            <a href="#">Otros Servicios <i class="fas fa-caret-right arrow-right"></i></a>
+                            <ul class="dropdown-menu-sub">
+                                <li><a href="#">Remesas Western Union</a></li>
+                                <li><a href="#">Tarjeta de Débito VISA</a></li>
+                                <li><a href="#">Transferencias Interbancarias</a></li>
+                                <li><a href="#">Servicio de Recaudación</a></li>
+                                <li><a href="#">Pago de Servicios</a></li>
+                            </ul>
+                        </li>
+                        <li><a href="#">Migrantes en el Perú</a></li>
+                    </ul>
+                </li>
+
+                <li class="nav-item dropdown">
+                    <a href="#">Financiera Confianza <i class="fas fa-chevron-down icon-small"></i></a>
+                    <ul class="dropdown-menu">
+                        <li><a href="#">Nuestra Financiera</a></li>
+                        <li><a href="#">Transparencia</a></li>
+                        <li><a href="#">Desempeño Social</a></li>
+                        <li><a href="#">Fundación Microfinanzas BBVA</a></li>
+
+                        <li class="dropdown-submenu">
+                            <a href="#">Canales y servicios digitales <i class="fas fa-caret-right arrow-right"></i></a>
+                            <ul class="dropdown-menu-sub">
+                                <li><a href="#">Aplicación Móvil</a></li>
+                                <li><a href="#">Banca por Internet</a></li>
+                                <li><a href="#">Línea de Atención</a></li>
+                                <li><a href="#">Registro Digital</a></li>
+                                <li><a href="#">Plin</a></li>
+                            </ul>
+                        </li>
+
+                        <li class="dropdown-submenu">
+                            <a href="#">Oficinas y Otros Canales <i class="fas fa-caret-right arrow-right"></i></a>
+                            <ul class="dropdown-menu-sub">
+                                <li><a href="#">Agencias</a></li>
+                                <li><a href="#">EOB Tambos Plus</a></li>
+                                <li><a href="#">Oficinas Compartidas</a></li>
+                                <li><a href="#">Agentes Confianza</a></li>
+                                <li><a href="#">Canales Adicionales</a></li>
+                                <li><a href="#">Firma Electrónica</a></li>
+                                <li><a href="#">Paga Fácil</a></li>
+                            </ul>
+                        </li>
+
+                        <li><a href="#">Noticias</a></li>
+                        <li><a href="#">Becas Financiera Confianza</a></li>
+                        <li><a href="#">La Academia de Confianza</a></li>
+                        <li><a href="#">Trabaja con Nosotros</a></li>
+                        <li><a href="#">Accionistas</a></li>
+                        <li><a href="#">Contáctanos</a></li>
+                    </ul>
+                </li>
+            </ul>
+
+            <div class="nav-buttons">
+                <a th:href="@{/login}" class="btn btn-outline">BANCA POR INTERNET</a>
+                <a href="#" class="btn btn-outline">PRODUCTOS PARA TI</a>
+                <a th:href="@{/academia}" class="btn btn-outline">ACADEMIA DE CONFIANZA</a>
+            </div>
+        </div>
+    </nav>
+</header>
+</body>
+</html>

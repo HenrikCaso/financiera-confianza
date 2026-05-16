@@ -1,0 +1,110 @@
+/* Contenedor centralizado para no afectar otras partes de la página */
+.main-footer {
+    background-color: #ffffff;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    color: #333333;
+}
+
+.footer-container {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 0 20px;
+}
+
+/* --- ZONA BLANCA DE ENLACES --- */
+.footer-top {
+    padding: 50px 0 20px 0;
+}
+
+.footer-grid {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 30px;
+    margin-bottom: 40px;
+}
+
+.footer-col h3 {
+    color: #3895d3; /* Celeste */
+    font-size: 18px;
+    margin-top: 0;
+    margin-bottom: 20px;
+    font-weight: 600;
+}
+
+.footer-col ul {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+}
+
+.footer-col ul li {
+    margin-bottom: 12px;
+}
+
+.footer-col ul li a {
+    color: #005a9e; /* Azul oscuro */
+    text-decoration: none;
+    font-size: 13px;
+    transition: color 0.2s;
+}
+
+.footer-col ul li a:hover {
+    text-decoration: underline;
+    color: #0074c8;
+}
+
+/* --- ZONA DE LOGOS --- */
+.footer-logos {
+    display: flex;
+    justify-content: space-between; /* Separa izquierda y derecha al máximo */
+    align-items: center;
+    padding-bottom: 10px;
+}
+
+.logos-left {
+    display: flex;
+    gap: 40px; /* Separación entre el libro y la alerta */
+}
+
+.logo-item {
+    display: flex;
+    align-items: center;
+    gap: 15px;
+}
+
+.logo-text {
+    font-size: 13px;
+    line-height: 1.2;
+    color: #003b73;
+}
+
+/* --- ZONA GRIS INFERIOR --- */
+.footer-bottom {
+    background-color: #e2e2e2; /* Gris claro */
+    padding: 15px 0;
+    border-top: 1px solid #cccccc;
+}
+
+.footer-links-horizontal {
+    display: flex;
+    justify-content: center;
+    gap: 25px;
+    flex-wrap: wrap;
+    margin-bottom: 10px;
+}
+
+.footer-links-horizontal a {
+    color: #333333;
+    text-decoration: none;
+    font-size: 13px;
+}
+
+.footer-links-horizontal a:hover {
+    color: #0074c8;
+}
+
+.footer-copyright {
+    text-align: center;
+    font-size: 11px;
+    color: #666666;
+}

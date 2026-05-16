@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Registro Clave Web | Financiera Confianza</title>
+    <link rel="stylesheet" th:href="@{/css/login.css}">
+    <link rel="stylesheet" th:href="@{/css/registro.css}">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+</head>
+<body class="login-body">
+
+<div class="login-card registro-card">
+
+    <div class="login-header">
+        <img th:src="@{/img/logos/logo-financiera2.png}" alt="Financiera Confianza" class="login-logo">
+
+        <h2 class="saludo">Crea tu Clave Web</h2>
+        <p style="font-size: 13px; margin-bottom: 20px; color: #d0dbe5;">Ingresa tus datos para habilitar tu Banca por Internet</p>
+
+        <form th:action="@{/registro}" method="POST" class="login-form">
+
+            <div class="input-group">
+                <div class="select-wrapper">
+                    <i class="fas fa-caret-down select-icon"></i>
+                    <select name="tipoDoc" class="custom-select" required>
+                        <option value="" disabled selected>Tipo de Documento</option>
+                        <option value="DNI">DNI</option>
+                        <option value="CE">Carné de Extranjería</option>
+                    </select>
+                </div>
+            </div>
+
+            <div class="input-group">
+                <input type="text" name="numDoc" placeholder="Número de Documento" required>
+            </div>
+
+            <div class="input-group">
+                <input type="email" name="correo" placeholder="Correo Electrónico" required>
+            </div>
+
+            <div class="input-group">
+                <input type="text" name="celular" placeholder="Número de Celular" maxlength="9" required>
+            </div>
+
+            <div class="input-group">
+                <input type="password" name="clave" placeholder="Crea una Clave de 6 dígitos" maxlength="6" required>
+            </div>
+
+            <button type="submit" class="btn-registro">Crear Cuenta</button>
+
+            <div style="margin-top: 15px; font-size: 13px;">
+                <a th:href="@{/login}" style="color: white; text-decoration: underline;">Volver al inicio de sesión</a>
+            </div>
+        </form>
+    </div>
+
+    <div class="login-footer">
+        <a href="#"><i class="fas fa-map-marker-alt"></i> Encuéntranos</a>
+        <span class="divider">|</span>
+        <a href="#"><i class="fas fa-phone-alt"></i> Contáctanos</a>
+    </div>
+
+</div>
+
+</body>
+</html>

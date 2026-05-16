@@ -1,0 +1,198 @@
+/* Reset básico */
+body, html {
+    margin: 0;
+    padding: 0;
+    height: 100%;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+}
+
+.login-body {
+    background-image: url('../img/imagen-fondo-login.jpg');
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
+    display: flex;
+    align-items: center;
+    padding-left: 12%; /* Empuja la tarjeta a la izquierda */
+}
+
+/* Inputs y Formulario */
+.input-group {
+    margin-bottom: 20px;
+    position: relative;
+}
+
+.input-group input {
+    width: 100%;
+    padding: 16px 20px; /* Inputs más altos */
+    border: none;
+    border-radius: 30px;
+    box-sizing: border-box;
+    font-size: 15px;
+    outline: none;
+    background-color: white;
+    color: #333;
+}
+
+/* =========================================
+   DISEÑO EXACTO DEL MENÚ TIPO DE DOCUMENTO
+   ========================================= */
+.select-wrapper {
+    position: relative;
+    width: 100%;
+}
+
+.select-icon {
+    position: absolute;
+    left: 20px; /* Flecha a la izquierda */
+    top: 50%;
+    transform: translateY(-50%);
+    color: white;
+    font-size: 18px;
+    pointer-events: none; /* Evita que la flecha bloquee el clic */
+}
+
+.custom-select {
+    width: 100%;
+    padding: 16px 20px;
+    border: none;
+    border-radius: 30px;
+    box-sizing: border-box;
+    font-size: 15px;
+    outline: none;
+    background-color: #3895d3; /* Azul más claro */
+    color: white;
+    cursor: pointer;
+    appearance: none; /* Quita el estilo por defecto del navegador */
+    -webkit-appearance: none;
+    text-align: center;
+    text-align-last: center; /* Centra el texto "DNI" */
+    font-weight: 500;
+}
+
+.custom-select option {
+    background-color: white;
+    color: #333;
+    text-align: center;
+}
+
+/* El input de la clave tiene botones adentro */
+.clave-group {
+    display: flex;
+    background: white;
+    border-radius: 30px;
+    overflow: hidden;
+    padding-right: 5px; /* Espacio para el botón de enviar */
+    align-items: center;
+}
+
+.clave-group input {
+    border-radius: 0;
+    width: 70%;
+    padding: 16px 20px;
+}
+
+.btn-eye {
+    background: white;
+    border: none;
+    color: #b3b3b3;
+    cursor: pointer;
+    font-size: 18px;
+    width: 15%;
+}
+
+.btn-submit i {
+    transform: rotate(45deg); /* Gira la flecha para que apunte en diagonal */
+}
+
+.btn-submit:hover {
+    background: #0d5a94;
+}
+
+/* Sección Blanca Inferior */
+.login-footer {
+    background-color: white;
+    padding: 20px 0;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 20px;
+    font-size: 14px;
+}
+
+.login-footer a {
+    color: #1072b8;
+    text-decoration: none;
+    font-weight: 500;
+}
+
+.login-footer a:hover {
+    text-decoration: underline;
+}
+
+.divider {
+    color: #e0e0e0;
+}
+
+/* 1. Hacemos la tarjeta un poco más ancha para dar espacio a los lados */
+.login-card {
+    width: 460px; /* Subimos un poco el ancho */
+    box-shadow: 0 15px 30px rgba(0,0,0,0.4);
+    border-radius: 9px;
+    overflow: hidden;
+}
+
+/* 2. Aumentamos el relleno (padding) para separar todo de los bordes */
+.login-header {
+    background-color: #1072b8;
+    /* Orden: Arriba 50px | Derecha 60px | Abajo 40px | Izquierda 60px */
+    padding: 50px 60px 40px 60px;
+    text-align: center;
+    color: white;
+}
+
+/* 3. Quitamos los márgenes negativos y le damos su espacio natural */
+.login-logo {
+    display: block;
+    width: 180px;
+    height: auto ;
+    margin: 0 auto;
+
+    /* El truco mágico: márgenes negativos */
+    margin-top: 0px;    /* Empuja el logo hacia arriba acercándolo al borde */
+    margin-bottom: 35px; /* Jala el saludo "¡Hola!" hacia arriba acercándolo al logo */
+
+    filter: brightness(0) invert(1);
+}
+
+.saludo {
+    font-size: 24px;
+    font-weight: normal;
+    margin-top: 10px;
+    margin-bottom: 25px;
+}
+
+.input-group input, .custom-select {
+    width: 100%;
+    padding: 13px 20px; /* Reducido de 16px a 13px para hacerlos menos altos */
+    border: none;
+    border-radius: 30px;
+    box-sizing: border-box;
+    font-size: 14px; /* Letra un poquitito más pequeña */
+    outline: none;
+}
+
+.btn-submit {
+    background: #1072b8;
+    border: none;
+    color: white;
+    border-radius: 50%;
+    width: 35px; /* Reducido de 40px a 35px */
+    height: 35px; /* Reducido de 40px a 35px */
+    cursor: pointer;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-size: 16px;
+    transition: background 0.3s;
+}

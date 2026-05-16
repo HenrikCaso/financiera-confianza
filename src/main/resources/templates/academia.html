@@ -1,0 +1,193 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>La Academia de Confianza | Financiera Confianza</title>
+    <link rel="stylesheet" th:href="@{/css/academia.css}">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+</head>
+<body>
+
+<header class="academia-header">
+    <div class="container header-flex">
+        <img th:src="@{/img/logos/la_academia.jpg}" alt="La Academia de Confianza" class="logo-aca">
+        <a href="#" class="login-link">Regístrate o inicia sesión</a>
+    </div>
+</header>
+
+<nav class="academia-nav">
+    <div class="container nav-flex">
+        <div class="nav-left">
+            <a href="#" class="nav-active">Inicio</a>
+        </div>
+        <div class="search-box">
+            <i class="fas fa-search"></i>
+        </div>
+    </div>
+</nav>
+
+<main>
+    <section class="aca-hero">
+        <button class="slider-btn left"><i class="fas fa-chevron-left"></i></button>
+        <button class="slider-btn right"><i class="fas fa-chevron-right"></i></button>
+
+        <div class="container hero-container">
+            <div class="hero-left">
+                <div class="hero-box-white">
+                    <h1>¡Potencia tu conocimiento con nosotros!</h1>
+                </div>
+                <div class="hero-box-blue">
+                    <p>Descubre más cursos, aquí</p>
+                </div>
+                <div class="hero-btn-container">
+                    <a href="#" class="btn-hero-cyan">Regístrate aquí</a>
+                </div>
+            </div>
+
+            <div class="hero-right">
+                <div class="hero-logo-box">
+                    <img th:src="@{/img/logos/la_academia.jpg}" alt="La Academia">
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section class="aca-registro-bar">
+        <div class="container bar-flex">
+            <h2>Regístrate y aprende con nosotros</h2>
+            <a href="#" class="btn-inicia">¡INICIA TUS CURSOS!</a>
+        </div>
+    </section>
+
+    <section class="aca-intro">
+        <div class="container">
+            <p>En Financiera Confianza, hemos creado <strong>La Academia de Confianza</strong>, una plataforma educativa 100% gratuita donde podrás potenciar tus conocimientos y habilidades para aplicarlo a tu negocio. Contarás con cursos, videos y más recursos educativos donde podrás acceder a cualquier hora del día. Recuerda que: <strong>¡No necesitas ser cliente!</strong></p>
+            <p>Para iniciar, <a href="#" class="link-azul">regístrate aquí.</a></p>
+        </div>
+    </section>
+
+    <section class="aca-categorias">
+        <div class="container">
+            <h3 class="section-title">Categorías de aprendizaje</h3>
+            <div class="cat-grid">
+                <div class="cat-card">
+                    <div class="cat-img"></div>
+                    <h4>Educación Financiera</h4>
+                    <ul>
+                        <li><i class="fas fa-user-circle"></i> Financiera Confianza</li>
+                        <li><i class="far fa-file-alt"></i> 2 Actividades</li>
+                        <li><i class="fas fa-laptop"></i> 100% online</li>
+                    </ul>
+                    <a href="#" class="btn-cat">Iniciar <i class="fas fa-arrow-right"></i></a>
+                </div>
+                <div class="cat-card">
+                    <div class="cat-img"></div>
+                    <h4>Habilidades Blandas</h4>
+                    <ul>
+                        <li><i class="fas fa-user-circle"></i> Financiera Confianza</li>
+                        <li><i class="far fa-file-alt"></i> 1 Actividad</li>
+                        <li><i class="fas fa-laptop"></i> 100% online</li>
+                    </ul>
+                    <a href="#" class="btn-cat">Iniciar <i class="fas fa-arrow-right"></i></a>
+                </div>
+                <div class="cat-card">
+                    <div class="cat-img"></div>
+                    <h4>Habilidades Digitales</h4>
+                    <ul>
+                        <li><i class="fas fa-user-circle"></i> Financiera Confianza</li>
+                        <li><i class="far fa-file-alt"></i> 1 Actividad</li>
+                        <li><i class="fas fa-laptop"></i> 100% online</li>
+                    </ul>
+                    <a href="#" class="btn-cat">Iniciar <i class="fas fa-arrow-right"></i></a>
+                </div>
+                <div class="cat-card">
+                    <div class="cat-img"></div>
+                    <h4>Desarrollo de Negocios</h4>
+                    <ul>
+                        <li><i class="fas fa-user-circle"></i> Financiera Confianza</li>
+                        <li><i class="far fa-file-alt"></i> 2 Actividades</li>
+                        <li><i class="fas fa-laptop"></i> 100% online</li>
+                    </ul>
+                    <a href="#" class="btn-cat">Iniciar <i class="fas fa-arrow-right"></i></a>
+                </div>
+                <div class="cat-card">
+                    <div class="cat-img"></div>
+                    <h4>Medio Ambiente</h4>
+                    <ul>
+                        <li><i class="fas fa-user-circle"></i> Financiera Confianza</li>
+                        <li><i class="far fa-file-alt"></i> 6 Actividades</li>
+                        <li><i class="fas fa-laptop"></i> 100% online</li>
+                    </ul>
+                    <a href="#" class="btn-cat">Iniciar <i class="fas fa-arrow-right"></i></a>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section class="aca-programas">
+        <div class="container">
+            <h3 class="section-title">Programas formativos</h3>
+            <div class="prog-grid">
+                <div class="prog-card">
+                    <div class="prog-img"></div>
+                    <h4>Tips de<br>emprendimiento</h4>
+                    <p>Revisa nuestros<br>artículos para aplicarlo<br>en tu negocio</p>
+                    <a href="#" class="btn-prog">Inicia aquí</a>
+                </div>
+                <div class="prog-card">
+                    <div class="prog-img"></div>
+                    <h4>Consejos del Inge<br>de Confianza</h4>
+                    <p>Cursos dirigido a<br>emprendedores/as<br>con negocios<br>agropecuarios</p>
+                    <a href="#" class="btn-prog">Inicia aquí</a>
+                </div>
+            </div>
+        </div>
+    </section>
+</main>
+
+<footer>
+    <div class="aca-social-footer">
+        <div class="container">
+            <h4>Síguenos en nuestras redes sociales</h4>
+            <div class="social-squares">
+                <a href="#"><i class="fab fa-facebook-f"></i></a>
+                <a href="#"><i class="fab fa-twitter"></i></a>
+                <a href="#"><i class="fab fa-instagram"></i></a>
+                <a href="#"><i class="fab fa-linkedin-in"></i></a>
+                <a href="#"><i class="fab fa-youtube"></i></a>
+            </div>
+        </div>
+    </div>
+
+    <div class="aca-bottom-footer">
+        <div class="container bottom-flex">
+            <div class="footer-logo-small">
+                <img th:src="@{/img/logos/logo-financiera.png}" alt="Logo" style="height:80px; opacity:0.6;">
+            </div>
+            <div class="footer-links-grid">
+                <div class="f-col">
+                    <a href="#">Nuestra Financiera</a>
+                    <a href="#">FMBBVA</a>
+                    <a href="#">Noticias</a>
+                </div>
+                <div class="f-col">
+                    <a href="#">Trabaja con nosotros</a>
+                    <a href="#">Contáctanos</a>
+                    <a href="#">Red de agencias</a>
+                </div>
+                <div class="f-col">
+                    <a href="#">Protección de Datos Personales</a>
+                    <a href="#">Glosario Financiero</a>
+                    <a href="#">Transparencia</a>
+                </div>
+            </div>
+        </div>
+        <div class="aca-copyright">
+            Copyright © 2026 - Financiera Confianza. Todos los derechos reservados.
+        </div>
+    </div>
+</footer>
+
+</body>
+</html>

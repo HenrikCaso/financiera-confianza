@@ -1,0 +1,125 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head th:replace="~{fragments/head :: head('Inicio | Financiera Confianza')}"></head>
+
+<body>
+<div th:replace="~{fragments/header :: navbar}"></div>
+
+<main>
+    <section class="hero-banner">
+        <div class="container hero-content">
+            <div class="hero-left">
+                <h1>Cuenta lista,<br><span>tu ahorro en marcha</span></h1>
+            </div>
+            <div class="hero-right">
+                <h2>Ahorro<br><span class="highlight">Confianza Digital</span></h2>
+                <a href="#" class="btn-info">Mayor información AQUÍ</a>
+            </div>
+        </div>
+    </section>
+
+    <section class="quick-access">
+        <div class="container access-grid">
+            <a href="#" class="access-item">
+                <div class="icon-circle icon-pink"><i class="fas fa-money-bill-wave"></i></div>
+                <p>Créditos</p>
+            </a>
+            <a href="#" class="access-item">
+                <div class="icon-circle icon-orange"><i class="fas fa-piggy-bank"></i></div>
+                <p>Ahorros</p>
+            </a>
+            <a href="#" class="access-item">
+                <div class="icon-circle icon-green"><i class="fas fa-lock"></i></div>
+                <p>Seguros</p>
+            </a>
+            <a href="#" class="access-item">
+                <div class="icon-circle icon-blue"><i class="fas fa-store"></i></div>
+                <p>Encuéntranos</p>
+            </a>
+        </div>
+    </section>
+
+    <section class="noticias-section">
+        <div class="container">
+            <h2 class="section-title">NOTICIAS DE CONFIANZA</h2>
+
+            <div class="noticia-destacada">
+                <div class="nd-texto">
+                    <h3>Financiera Confianza gana el Premio Platino de Fintech Américas 2026 por su innovación en microfinanzas verdes</h3>
+                    <a href="#" class="nd-btn"><i class="fas fa-arrow-right"></i></a>
+                </div>
+                <div class="nd-imagen">
+                    <img th:src="@{/img/premio_platino.jpg}" alt="Premio Platino">
+                    <div class="slider-arrow right"><i class="fas fa-chevron-up"></i></div>
+                </div>
+            </div>
+
+            <div class="noticias-grid">
+                <div class="noticia-card">
+                    <img th:src="@{/img/noticia1.jpg}" alt="Noticia 1">
+                    <p>Mujeres peruanas sostienen la reactivación de la microeconomía, representando el 62% de nuestros clientes</p>
+                </div>
+                <div class="noticia-card">
+                    <img th:src="@{/img/noticia2.jpg}" alt="Noticia 2">
+                    <p>Financiera Confianza, en alianza con BNP Paribas Cardif Seguros, promueve la prevención oncológica en población vulnerable</p>
+                </div>
+                <div class="noticia-card">
+                    <img th:src="@{/img/noticia3.jpg}" alt="Noticia 3">
+                    <p>Financiera Confianza gana el Premio Platino de Fintech Américas 2026 por su innovación en microfinanzas verdes</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section class="academia-section text-center">
+        <div class="container">
+            <img th:src="@{/img/logos/la_academia.jpg}" alt="La Academia de Confianza" class="logo-academia">
+        </div>
+    </section>
+
+    <div class="impacto-bar">
+        <div class="container impacto-content">
+            <span>Nuestro impacto social</span>
+            <a href="#"><i class="fas fa-arrow-right"></i></a>
+        </div>
+    </div>
+
+    <section class="info-blocks">
+        <div class="block bg-azul-oscuro">
+            <i class="fas fa-store-alt block-icon"></i>
+            <h3>Red de Oficinas</h3>
+            <p>Encuentra la agencia más cercana a ti.</p>
+        </div>
+        <div class="block bg-azul-medio">
+            <i class="far fa-question-circle block-icon"></i>
+            <h3>Preguntas Frecuentes</h3>
+            <p>Encuentra las respuestas que buscas.</p>
+        </div>
+        <div class="block bg-claro">
+            <i class="fas fa-shield-alt block-icon"></i>
+            <h3>Transparencia</h3>
+            <p>Información importante para el usuario.</p>
+        </div>
+        <div class="block bg-azul-oscuro2">
+            <i class="fas fa-phone-alt block-icon"></i>
+            <h3>Contáctanos</h3>
+            <p>Comunícate con nosotros.</p>
+        </div>
+    </section>
+
+    <div class="trabaja-social-bar">
+        <div class="trabaja-half">
+            <a href="#"><i class="fas fa-briefcase"></i> Trabaja con Nosotros</a>
+        </div>
+        <div class="social-half">
+            <a href="#"><i class="fab fa-facebook-f"></i></a>
+            <a href="#"><i class="fab fa-twitter"></i></a>
+            <a href="#"><i class="fab fa-linkedin-in"></i></a>
+            <a href="#"><i class="fab fa-youtube"></i></a>
+            <a href="#"><i class="fab fa-instagram"></i></a>
+        </div>
+    </div>
+</main> <div th:replace="~{fragments/footer :: footer}"></div>
+
+</body>
+</html>

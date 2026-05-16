@@ -1,0 +1,35 @@
+/* Ajustamos el relleno superior porque este formulario tiene más campos */
+.registro-card .login-header {
+    padding-top: 20px;
+    padding-bottom: 25px;
+}
+
+/* Achicamos un poquito el logo para que entre todo bien */
+.registro-card .login-logo {
+    width: 160px;
+    height: 140px;
+    margin-bottom: 10px;
+}
+
+/* El botón de registro: Ancho completo y color celeste para resaltar */
+.btn-registro {
+    background-color: #00a4e4;
+    color: white;
+    border: none;
+    width: 100%;
+    padding: 12px;
+    border-radius: 30px;
+    font-size: 15px;
+    font-weight: bold;
+    cursor: pointer;
+    margin-top: 10px;
+    transition: background 0.3s, transform 0.1s;
+}
+
+.btn-registro:hover {
+    background-color: #008cc2;
+}
+
+.btn-registro:active {
+    transform: scale(0.98);
+}

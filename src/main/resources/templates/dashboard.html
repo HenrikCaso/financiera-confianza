@@ -1,0 +1,127 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Mi Banca | Financiera Confianza</title>
+    <link rel="stylesheet" th:href="@{/css/dashboard.css}">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+</head>
+<body>
+
+<aside class="sidebar">
+    <div class="sidebar-logo">
+        <img th:src="@{/img/logos/logo-limpio.png}" alt="Financiera Confianza">
+    </div>
+    <nav class="sidebar-nav">
+        <a href="#" class="nav-item active"><i class="fas fa-home"></i> Posición Global</a>
+        <a href="#" class="nav-item"><i class="fas fa-exchange-alt"></i> Transferencias</a>
+        <a href="#" class="nav-item"><i class="fas fa-file-invoice-dollar"></i> Pago de Servicios</a>
+        <a href="#" class="nav-item"><i class="fas fa-credit-card"></i> Tarjetas</a>
+        <a href="#" class="nav-item"><i class="fas fa-piggy-bank"></i> Mis Préstamos</a>
+        <a href="#" class="nav-item"><i class="fas fa-cog"></i> Configuraciones</a>
+    </nav>
+    <div class="sidebar-logout">
+        <a th:href="@{/login}" class="nav-item text-danger"><i class="fas fa-sign-out-alt"></i> Cerrar Sesión</a>
+    </div>
+</aside>
+
+<main class="main-content">
+    <header class="topbar">
+        <div class="welcome-text">
+            <h2>¡Hola, Administrador!</h2>
+            <p>Último acceso: Hoy a las 10:45 a.m.</p>
+        </div>
+        <div class="user-profile">
+            <i class="fas fa-bell notification-icon"></i>
+            <div class="avatar">
+                <i class="fas fa-user"></i>
+            </div>
+        </div>
+    </header>
+
+    <div class="dashboard-grid">
+
+        <div class="card balance-card">
+            <div class="card-header">
+                <h3>Cuenta Ahorro Confianza</h3>
+                <i class="fas fa-ellipsis-v"></i>
+            </div>
+            <p class="account-number">N° 0011-0234-0200156789</p>
+            <div class="balance-amount">
+                <span class="currency">S/</span> 15,420.<span class="decimals">50</span>
+            </div>
+            <div class="balance-actions">
+                <button class="btn-action"><i class="fas fa-paper-plane"></i> Transferir</button>
+                <button class="btn-action"><i class="fas fa-download"></i> Estado de Cuenta</button>
+            </div>
+        </div>
+
+        <div class="card quick-actions-card">
+            <h3>Operaciones Frecuentes</h3>
+            <div class="actions-grid">
+                <div class="action-btn">
+                    <div class="icon-circle bg-blue"><i class="fas fa-mobile-alt"></i></div>
+                    <span>Recargas</span>
+                </div>
+                <div class="action-btn">
+                    <div class="icon-circle bg-cyan"><i class="fas fa-lightbulb"></i></div>
+                    <span>Luz/Agua</span>
+                </div>
+                <div class="action-btn">
+                    <div class="icon-circle bg-green"><i class="fas fa-qrcode"></i></div>
+                    <span>Plin</span>
+                </div>
+                <div class="action-btn">
+                    <div class="icon-circle bg-gray"><i class="fas fa-plus"></i></div>
+                    <span>Nuevo</span>
+                </div>
+            </div>
+        </div>
+
+        <div class="card transactions-card">
+            <div class="card-header">
+                <h3>Últimos Movimientos</h3>
+                <a href="#" class="view-all">Ver todos</a>
+            </div>
+            <table class="transaction-table">
+                <tbody>
+                <tr>
+                    <td>
+                        <div class="txn-icon bg-red-light"><i class="fas fa-shopping-cart"></i></div>
+                    </td>
+                    <td>
+                        <strong>Supermercados Plaza Vea</strong>
+                        <span class="txn-date">Ayer, 18:30 p.m.</span>
+                    </td>
+                    <td class="txn-amount text-danger">- S/ 145.20</td>
+                </tr>
+                <tr>
+                    <td>
+                        <div class="txn-icon bg-green-light"><i class="fas fa-arrow-down"></i></div>
+                    </td>
+                    <td>
+                        <strong>Transferencia Recibida - Juan Pérez</strong>
+                        <span class="txn-date">12 May 2026, 14:15 p.m.</span>
+                    </td>
+                    <td class="txn-amount text-success">+ S/ 500.00</td>
+                </tr>
+                <tr>
+                    <td>
+                        <div class="txn-icon bg-blue-light"><i class="fas fa-bolt"></i></div>
+                    </td>
+                    <td>
+                        <strong>Pago de Servicios - Enel</strong>
+                        <span class="txn-date">10 May 2026, 09:00 a.m.</span>
+                    </td>
+                    <td class="txn-amount text-danger">- S/ 85.50</td>
+                </tr>
+                </tbody>
+            </table>
+        </div>
+
+    </div>
+</main>
+
+</body>
+</html>
