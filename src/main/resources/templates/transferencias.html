@@ -1,0 +1,142 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Transferencias | Financiera Confianza</title>
+    <link rel="stylesheet" th:href="@{/css/dashboard.css}">
+    <link rel="stylesheet" th:href="@{/css/transferencias.css}">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+</head>
+<body>
+
+<aside class="sidebar">
+    <div class="sidebar-logo">
+        <a th:href="@{/dashboard}"><img th:src="@{/img/logos/logo-financiera2.png}" alt="Logo"></a>
+    </div>
+
+    <nav class="sidebar-nav">
+        <a th:href="@{/dashboard}" class="nav-item"><i class="fas fa-home"></i> Posición Global</a>
+        <a th:href="@{/transferencias}" class="nav-item active"><i class="fas fa-exchange-alt"></i> Transferencias</a>
+        <a th:href="@{/servicios}" class="nav-item"><i class="fas fa-file-invoice-dollar"></i> Pago de Servicios</a>
+        <a th:href="@{/tarjetas}" class="nav-item"><i class="fas fa-credit-card"></i> Tarjetas</a>
+        <a th:href="@{/prestamos}" class="nav-item"><i class="fas fa-piggy-bank"></i> Mis Préstamos</a>
+        <a th:href="@{/perfil}" class="nav-item"><i class="fas fa-user-cog"></i> Mi Perfil</a>
+    </nav>
+
+    <div class="sidebar-logout">
+        <a th:href="@{/logout}" class="nav-item text-danger"><i class="fas fa-sign-out-alt"></i> Cerrar Sesión</a>
+    </div>
+</aside>
+
+<main class="main-content">
+    <header class="topbar">
+        <div class="welcome-text">
+            <h2>Transferencias</h2>
+            <p>Envía dinero de forma rápida y segura</p>
+        </div>
+    </header>
+
+    <div class="transfer-container" style="padding: 40px; display: flex; justify-content: center;">
+        <div class="card" style="width: 100%; max-width: 800px; padding: 40px;">
+
+            <div th:if="${error}" class="alert alert-error" style="margin-bottom: 20px;">
+                <i class="fas fa-exclamation-circle"></i> <span th:text="${error}"></span>
+            </div>
+
+            <div th:if="${exito}" class="alert alert-success" style="margin-bottom: 20px;">
+                <i class="fas fa-check-circle"></i> <span th:text="${exito}"></span>
+            </div>
+            <div id="paso1">
+                <h3 style="text-align: center; color: #004b87; font-size: 24px; margin-bottom: 40px;">¿Qué tipo de transferencia deseas realizar?</h3>
+
+                <div class="transfer-type-cards">
+                    <div class="type-card" data-type="Entre mis cuentas">
+                        <i class="fas fa-money-check-alt text-blue"></i>
+                        <span>Entre mis cuentas</span>
+                    </div>
+                    <div class="type-card" data-type="A terceros">
+                        <i class="fas fa-user-friends text-orange"></i>
+                        <span>A terceros</span>
+                    </div>
+                    <div class="type-card" data-type="A otros bancos">
+                        <i class="fas fa-university text-indigo"></i>
+                        <span>A otros bancos</span>
+                    </div>
+                    <div class="type-card" data-type="Al exterior">
+                        <i class="fas fa-globe-americas text-green"></i>
+                        <span>Al exterior</span>
+                    </div>
+                </div>
+
+                <div class="transfer-descriptions">
+                    <div class="desc-item">
+                        <h4><i class="fas fa-money-check-alt"></i> Entre mis cuentas</h4>
+                        <p>Mueve dinero entre tus cuentas de ahorro o corriente de Financiera Confianza al instante.</p>
+                    </div>
+                    <div class="desc-item">
+                        <h4><i class="fas fa-user-friends"></i> A terceros</h4>
+                        <p>Envía dinero a otras personas que también tengan cuenta en Financiera Confianza.</p>
+                    </div>
+                    <div class="desc-item">
+                        <h4><i class="fas fa-university"></i> A otros bancos</h4>
+                        <p>Transferencias interbancarias usando el código CCI (Sujeto a horarios del BCR).</p>
+                    </div>
+                    <div class="desc-item">
+                        <h4><i class="fas fa-globe-americas"></i> Al exterior</h4>
+                        <p>Envía remesas internacionales mediante código SWIFT. Aplican comisiones.</p>
+                    </div>
+                </div>
+            </div>
+
+            <div id="paso2" style="display: none;">
+
+                <button type="button" id="btnVolver" class="btn-back">
+                    <i class="fas fa-arrow-left"></i> Volver a opciones
+                </button>
+
+                <h3 id="tituloFormulario" style="color: #004b87; margin-bottom: 25px; border-bottom: 2px solid #f0f0f0; padding-bottom: 10px;">Nueva Transferencia</h3>
+
+                <form th:action="@{/transferencias}" method="POST" class="transfer-form">
+
+                    <input type="hidden" name="tipoTransferencia" id="tipoTransferenciaInput">
+
+                    <div class="form-group">
+                        <label>Cuenta Origen</label>
+                        <select class="form-control" name="cuentaOrigen" required>
+                            <option value="ahorros" th:text="'Ahorros: ' + ${usuario.numeroCuenta} + ' (S/ ' + ${#numbers.formatDecimal(usuario.saldo, 1, 'DEFAULT', 2, 'DEFAULT')} + ')'"></option>
+                        </select>
+                    </div>
+
+                    <div class="form-group">
+                        <label id="labelCuentaDestino">Cuenta Destino</label>
+                        <input type="text" class="form-control" name="cuentaDestino" id="cuentaDestino" placeholder="Ingresa el número de cuenta" autocomplete="off" required>
+
+                        <div id="destinatarioInfo" style="display: none; margin-top: 10px; padding: 12px; background-color: #f0f9ff; border: 1px solid #bae6fd; border-radius: 6px; color: #0369a1; font-size: 14px;">
+                            <i class="fas fa-user-check"></i> <strong>Destinatario:</strong> <span id="nombreDestinatario">Buscando...</span>
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <label>Monto a transferir (S/)</label>
+                        <input type="number" class="form-control amount-input" name="monto" placeholder="0.00" step="0.01" min="1" required>
+                    </div>
+
+                    <div class="form-group">
+                        <label>Concepto (Opcional)</label>
+                        <input type="text" class="form-control" name="concepto" placeholder="Ej: Pago de alquiler">
+                    </div>
+
+                    <button type="submit" class="btn-transferir" id="btnConfirmar">
+                        <i class="fas fa-paper-plane"></i> Continuar
+                    </button>
+                </form>
+            </div>
+
+        </div>
+    </div>
+</main>
+
+<script th:src="@{/js/transferencias.js}"></script>
+</body>
+</html>

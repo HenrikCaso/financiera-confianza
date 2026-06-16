@@ -1,0 +1,209 @@
+/* transferencias.css - Estilos exclusivos de la vista de transferencias */
+
+.transfer-container {
+    padding: 40px;
+    display: flex;
+    justify-content: center; /* Centramos el formulario */
+}
+
+.transfer-card {
+    width: 100%;
+    max-width: 600px; /* Evita que el formulario se estire demasiado */
+}
+
+.transfer-card h3 {
+    margin-top: 0;
+    margin-bottom: 25px;
+    color: #004b87;
+    border-bottom: 2px solid #f0f0f0;
+    padding-bottom: 10px;
+}
+
+.transfer-form .form-group {
+    margin-bottom: 20px;
+    display: flex;
+    flex-direction: column;
+}
+
+.transfer-form label {
+    font-size: 14px;
+    color: #555;
+    font-weight: 600;
+    margin-bottom: 8px;
+}
+
+.form-control {
+    padding: 12px 15px;
+    border: 1px solid #ccc;
+    border-radius: 6px;
+    font-size: 15px;
+    outline: none;
+    transition: border-color 0.3s;
+    font-family: inherit;
+}
+
+.form-control:focus {
+    border-color: #00a4e4;
+    box-shadow: 0 0 5px rgba(0, 164, 228, 0.2);
+}
+
+.amount-input {
+    font-size: 20px;
+    font-weight: bold;
+    color: #004b87;
+}
+
+.btn-transferir {
+    width: 100%;
+    background-color: #00a4e4;
+    color: white;
+    border: none;
+    padding: 15px;
+    border-radius: 30px;
+    font-size: 16px;
+    font-weight: bold;
+    cursor: pointer;
+    margin-top: 15px;
+    transition: background 0.3s;
+}
+
+.btn-transferir:hover {
+    background-color: #008cc2;
+}
+
+/* Estilos profesionales para mensajes del sistema */
+.alert {
+    padding: 15px;
+    border-radius: 8px;
+    margin-bottom: 20px;
+    font-size: 14px;
+    font-weight: 600;
+    display: flex;
+    align-items: center;
+    gap: 12px;
+}
+
+.alert-error {
+    background-color: #fde8e8;
+    border: 1px solid #f8b4b4;
+    color: #9b1c1c;
+}
+
+.alert-success {
+    background-color: #def7ec;
+    border: 1px solid #31c48d;
+    color: #03543f;
+}
+
+/* Diseño de Tarjetas estilo BCP */
+.transfer-type-cards {
+    display: flex;
+    gap: 15px;
+    margin-bottom: 30px;
+    justify-content: space-between;
+}
+
+.type-card {
+    background: #ffffff;
+    border: 2px solid #e2e8f0;
+    border-radius: 16px;
+    padding: 20px 10px;
+    text-align: center;
+    cursor: pointer;
+    width: 23%;
+    transition: all 0.2s ease;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 12px;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.02);
+}
+
+.type-card i { font-size: 32px; }
+.text-blue { color: #004b87; }
+.text-orange { color: #f59e0b; }
+.text-indigo { color: #4f46e5; }
+.text-green { color: #10b981; }
+
+.type-card span {
+    font-size: 13px;
+    color: #475569;
+    font-weight: 500;
+}
+
+/* Efecto al pasar el mouse */
+.type-card:hover {
+    border-color: #bae6fd;
+    background-color: #f8fafc;
+    transform: translateY(-2px);
+}
+
+/* Estado Activo (Seleccionado) */
+.type-card.active {
+    border-color: #004b87;
+    background-color: #f0f9ff;
+    box-shadow: 0 4px 10px rgba(0, 75, 135, 0.15);
+}
+
+.type-card.active span {
+    color: #004b87;
+    font-weight: bold;
+}
+
+/* Centrar las tarjetas en el Paso 1 */
+.transfer-type-cards {
+    justify-content: center;
+    gap: 25px;
+    margin-bottom: 40px;
+}
+
+.type-card {
+    width: 22%;
+    height: 140px;
+    justify-content: center;
+}
+
+/* Caja de explicaciones */
+.transfer-descriptions {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 20px;
+    background-color: #f8fafc;
+    padding: 25px;
+    border-radius: 12px;
+}
+
+.desc-item {
+    background: white;
+    padding: 15px;
+    border-radius: 8px;
+    border-left: 4px solid #e2e8f0;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.03);
+}
+
+.desc-item:nth-child(1) { border-left-color: #004b87; }
+.desc-item:nth-child(2) { border-left-color: #f59e0b; }
+.desc-item:nth-child(3) { border-left-color: #4f46e5; }
+.desc-item:nth-child(4) { border-left-color: #10b981; }
+
+.desc-item h4 { margin: 0 0 8px 0; color: #334155; font-size: 15px; }
+.desc-item p { margin: 0; font-size: 13px; color: #64748b; line-height: 1.4; }
+
+/* Botón Volver */
+.btn-back {
+    background: none;
+    border: none;
+    color: #64748b;
+    font-size: 14px;
+    cursor: pointer;
+    padding: 0;
+    margin-bottom: 20px;
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    transition: color 0.2s;
+}
+
+.btn-back:hover {
+    color: #004b87;
+}

@@ -1,0 +1,53 @@
+/* Estilos para la pantalla de bloqueo de seguridad 403 */
+
+body {
+    background-color: #f8fafc;
+    font-family: 'Segoe UI', Arial, sans-serif;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+    margin: 0;
+}
+
+.error-card {
+    background: white;
+    padding: 50px;
+    border-radius: 12px;
+    box-shadow: 0 10px 25px rgba(0,0,0,0.1);
+    text-align: center;
+    max-width: 500px;
+    border-top: 6px solid #dc2626;
+}
+
+.icon {
+    font-size: 60px;
+    color: #dc2626;
+    margin-bottom: 20px;
+}
+
+h1 {
+    color: #1e293b;
+    margin-top: 0;
+    font-size: 28px;
+}
+
+p {
+    color: #64748b;
+    line-height: 1.6;
+    margin-bottom: 30px;
+}
+
+.btn-back {
+    background-color: #004b87;
+    color: white;
+    padding: 12px 24px;
+    text-decoration: none;
+    border-radius: 6px;
+    font-weight: bold;
+    transition: background 0.3s;
+}
+
+.btn-back:hover {
+    background-color: #1e3a8a;
+}

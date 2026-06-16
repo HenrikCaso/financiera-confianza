@@ -1,0 +1,76 @@
+/* servicios.css - Estilos exclusivos para la pantalla de pagos */
+
+.service-container {
+    padding: 40px;
+    display: flex;
+    justify-content: center;
+}
+
+.service-card {
+    width: 100%;
+    max-width: 600px;
+}
+
+.service-card h3 {
+    margin-top: 0;
+    margin-bottom: 25px;
+    color: #004b87;
+    border-bottom: 2px solid #f0f0f0;
+    padding-bottom: 10px;
+}
+
+.service-form .form-group {
+    margin-bottom: 20px;
+    display: flex;
+    flex-direction: column;
+}
+
+.service-form label {
+    font-size: 14px;
+    color: #555;
+    font-weight: 600;
+    margin-bottom: 8px;
+}
+
+.form-control {
+    padding: 12px 15px;
+    border: 1px solid #ccc;
+    border-radius: 6px;
+    font-size: 15px;
+    outline: none;
+    transition: border-color 0.3s;
+    font-family: inherit;
+}
+
+.form-control:focus {
+    border-color: #31c48d;
+    box-shadow: 0 0 5px rgba(49, 196, 141, 0.2);
+}
+
+.amount-input {
+    font-size: 20px;
+    font-weight: bold;
+    color: #03543f;
+}
+
+.btn-pagar {
+    width: 100%;
+    background-color: #31c48d; /* Verde para pagos */
+    color: white;
+    border: none;
+    padding: 15px;
+    border-radius: 30px;
+    font-size: 16px;
+    font-weight: bold;
+    cursor: pointer;
+    margin-top: 15px;
+    transition: background 0.3s;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 10px;
+}
+
+.btn-pagar:hover {
+    background-color: #28a776;
+}

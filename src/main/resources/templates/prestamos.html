@@ -1,0 +1,115 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Préstamos | Financiera Confianza</title>
+    <link rel="stylesheet" th:href="@{/css/dashboard.css}">
+    <link rel="stylesheet" th:href="@{/css/prestamos.css}">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+</head>
+<body>
+<aside class="sidebar">
+    <div class="sidebar-logo">
+        <a th:href="@{/dashboard}"><img th:src="@{/img/logos/logo-financiera2.png}" alt="Logo"></a>
+    </div>
+
+    <nav class="sidebar-nav">
+        <a th:href="@{/dashboard}" class="nav-item"><i class="fas fa-home"></i> Posición Global</a>
+        <a th:href="@{/transferencias}" class="nav-item"><i class="fas fa-exchange-alt"></i> Transferencias</a>
+        <a th:href="@{/servicios}" class="nav-item"><i class="fas fa-file-invoice-dollar"></i> Pago de Servicios</a>
+        <a th:href="@{/tarjetas}" class="nav-item"><i class="fas fa-credit-card"></i> Tarjetas</a>
+        <a th:href="@{/prestamos}" class="nav-item active"><i class="fas fa-piggy-bank"></i> Mis Préstamos</a>
+        <a th:href="@{/perfil}" class="nav-item"><i class="fas fa-user-cog"></i> Mi Perfil</a>
+    </nav>
+
+    <div class="sidebar-logout">
+        <a th:href="@{/logout}" class="nav-item text-danger"><i class="fas fa-sign-out-alt"></i> Cerrar Sesión</a>
+    </div>
+</aside>
+
+<main class="main-content">
+    <header class="topbar">
+        <div class="welcome-text">
+            <h2>Préstamos al Instante</h2>
+            <p>Dinero inmediato con la tasa más baja</p>
+        </div>
+    </header>
+
+    <div class="loan-container">
+        <div class="card loan-simulator">
+            <h3 style="color: #004b87; border-bottom: 2px solid #e2e8f0; padding-bottom: 10px; margin-bottom: 20px;">
+                <i class="fas fa-calculator" style="margin-right: 8px;"></i> Simulador y Evaluación de Crédito
+            </h3>
+
+            <form th:action="@{/prestamos/solicitar}" method="POST" class="loan-form">
+
+                <div class="form-section">
+                    <h4 class="section-title"><i class="fas fa-sliders-h"></i> 1. Parámetros del Crédito</h4>
+
+                    <div class="form-group">
+                        <label>¿Cuánto dinero necesitas? (S/)</label>
+                        <input type="range" id="montoRange" name="monto" min="500" max="10000" step="100" value="1000" class="range-slider">
+                        <div class="range-value">Monto seleccionado: <span id="montoDisplay" style="color: #16a34a; font-weight: bold; font-size: 1.2em;">1000</span></div>
+                    </div>
+
+                    <div class="form-row">
+                        <div class="form-group half-width">
+                            <label>Número de cuotas</label>
+                            <select class="form-control" name="cuotas" id="cuotasSelect">
+                                <option value="6">6 meses (TEA Preferencial)</option>
+                                <option value="12" selected>12 meses (TEA Estándar)</option>
+                                <option value="24">24 meses (TEA Extendida)</option>
+                            </select>
+                        </div>
+
+                        <div class="form-group half-width">
+                            <label>Día de pago mensual</label>
+                            <select class="form-control" name="diaPago" id="diaPagoSelect">
+                                <option value="15">Los días 15</option>
+                                <option value="30">Los días 30</option>
+                            </select>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="form-section" style="background-color: #f8fafc; padding: 20px; border-radius: 8px; margin-top: 20px; border: 1px solid #e2e8f0;">
+                    <h4 class="section-title" style="color: #475569;"><i class="fas fa-file-invoice-dollar"></i> 2. Tu Perfil Financiero</h4>
+                    <p style="font-size: 12px; color: #64748b; margin-top: -10px; margin-bottom: 15px;">Estos datos nos ayudan a evaluar tu capacidad de pago al instante.</p>
+
+                    <div class="form-row">
+                        <div class="form-group half-width">
+                            <label><i class="fas fa-arrow-down" style="color: #16a34a;"></i> Ingresos Mensuales Fijos</label>
+                            <div class="input-with-icon">
+                                <span>S/</span>
+                                <input type="number" name="ingresosMensuales" step="0.01" required class="form-control" placeholder="Ej. 2500.00">
+                            </div>
+                        </div>
+
+                        <div class="form-group half-width">
+                            <label><i class="fas fa-arrow-up" style="color: #e11d48;"></i> Gastos Mensuales Aprox.</label>
+                            <div class="input-with-icon">
+                                <span>S/</span>
+                                <input type="number" name="gastosMensuales" step="0.01" required class="form-control" placeholder="Ej. 1200.00">
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="loan-summary" style="margin-top: 25px; border-left: 4px solid #004b87; background-color: #f0f7ff;">
+                    <div class="summary-item"><span>Tasa Efectiva Anual (TEA):</span> <strong id="teaDisplay">15.50%</strong></div>
+                    <div class="summary-item"><span>Primera cuota el:</span> <strong id="fechaPagoDisplay">--/--/----</strong></div>
+                    <div class="summary-item" style="font-size: 1.1em; border-top: 1px dashed #cbd5e1; padding-top: 10px; margin-top: 10px;">
+                        <span>Cuota Mensual Estimada:</span> <strong id="cuotaMensual" style="color: #004b87;">S/ 0.00</strong>
+                    </div>
+                </div>
+
+                <button type="submit" class="btn-loan" style="width: 100%; margin-top: 20px; font-size: 16px; padding: 15px;">
+                    <i class="fas fa-paper-plane"></i> Enviar Solicitud a Evaluación
+                </button>
+            </form>
+        </div>
+    </div>
+</main>
+<script th:src="@{/js/prestamos.js}"></script>
+</body>
+</html>

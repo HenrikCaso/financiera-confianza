@@ -1,0 +1,109 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Mis Tarjetas | Financiera Confianza</title>
+    <link rel="stylesheet" th:href="@{/css/dashboard.css}">
+    <link rel="stylesheet" th:href="@{/css/tarjetas.css}">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+</head>
+<body>
+
+<aside class="sidebar">
+    <div class="sidebar-logo">
+        <a th:href="@{/dashboard}"><img th:src="@{/img/logos/logo-financiera2.png}" alt="Logo"></a>
+    </div>
+    <nav class="sidebar-nav">
+        <a th:href="@{/dashboard}" class="nav-item"><i class="fas fa-home"></i> Posición Global</a>
+        <a th:href="@{/transferencias}" class="nav-item"><i class="fas fa-exchange-alt"></i> Transferencias</a>
+        <a th:href="@{/servicios}" class="nav-item"><i class="fas fa-file-invoice-dollar"></i> Pago de Servicios</a>
+        <a th:href="@{/tarjetas}" class="nav-item active"><i class="fas fa-credit-card"></i> Tarjetas</a>
+        <a th:href="@{/prestamos}" class="nav-item"><i class="fas fa-piggy-bank"></i> Mis Préstamos</a>
+        <a th:href="@{/perfil}" class="nav-item"><i class="fas fa-user-cog"></i> Mi Perfil</a>
+    </nav>
+    <div class="sidebar-logout">
+        <a th:href="@{/logout}" class="nav-item text-danger"><i class="fas fa-sign-out-alt"></i> Cerrar Sesión</a>
+    </div>
+</aside>
+
+<main class="main-content">
+    <header class="topbar">
+        <div class="welcome-text">
+            <h2>Mis Tarjetas</h2>
+            <p>Gestiona la seguridad de tus productos físicos</p>
+        </div>
+    </header>
+
+    <div class="cards-container">
+        <div th:if="${exito}" class="alert alert-success"><i class="fas fa-check-circle"></i> <span th:text="${exito}"></span></div>
+        <div th:if="${alerta}" class="alert alert-warning"><i class="fas fa-lock"></i> <span th:text="${alerta}"></span></div>
+
+        <div class="card-management-wrapper">
+            <div class="credit-card" th:classappend="${usuario.tarjetaBloqueada} ? 'card-locked' : ''">
+                <div class="card-chip"><i class="fas fa-sim-card"></i></div>
+                <div class="card-logo"><i class="fab fa-cc-visa"></i></div>
+                <div class="card-number">
+                    <span>****</span> <span>****</span> <span>****</span>
+                    <span th:text="${usuario.numDoc.length() >= 4 ? usuario.numDoc.substring(usuario.numDoc.length() - 4) : '1234'}">1234</span>
+                </div>
+                <div class="card-details">
+                    <div class="card-holder">
+                        <span class="label">TITULAR</span>
+                        <span class="name" th:text="${#strings.substringBefore(usuario.correo, '@')}">CLIENTE</span>
+                    </div>
+                    <div class="card-expires">
+                        <span class="label">VENCE</span>
+                        <span class="date">12/29</span>
+                    </div>
+                </div>
+                <div th:if="${usuario.tarjetaBloqueada}" class="locked-watermark">
+                    <i class="fas fa-lock"></i> BLOQUEADA
+                </div>
+            </div>
+
+            <div class="security-controls card">
+                <h3>Seguridad de la Tarjeta</h3>
+
+                <div th:if="${usuario.bloqueoDefinitivo}" style="text-align: center; padding: 20px; background-color: #fef2f2; border: 2px dashed #dc2626; border-radius: 8px;">
+                    <i class="fas fa-ban" style="font-size: 40px; color: #dc2626; margin-bottom: 15px;"></i>
+                    <h4 style="color: #991b1b; margin-top: 0;">BLOQUEO DEFINITIVO ACTIVO</h4>
+                    <p style="font-size: 14px; color: #7f1d1d; margin-bottom: 0;">Has reportado esta tarjeta como robada o extraviada. Por tu seguridad, los controles han sido inhabilitados. Acércate a una agencia para emitir un nuevo plástico.</p>
+                </div>
+
+                <div th:unless="${usuario.bloqueoDefinitivo}">
+
+                    <div class="control-row" style="border-bottom: 1px solid #e2e8f0; padding-bottom: 15px; margin-bottom: 15px;">
+                        <div class="control-text">
+                            <strong>Apagar Temporalmente</strong>
+                            <p style="font-size: 12px; color: #64748b;">Congela tus fondos temporalmente. Puedes revertirlo cuando quieras.</p>
+                        </div>
+                        <form th:action="@{/tarjetas/toggle}" method="POST" id="formToggle">
+                            <label class="switch">
+                                <input type="checkbox" id="toggleSeguridad" th:checked="${usuario.tarjetaBloqueada}">
+                                <span class="slider round"></span>
+                            </label>
+                        </form>
+                    </div>
+
+                    <div class="control-row">
+                        <div class="control-text">
+                            <strong style="color: #dc2626;"><i class="fas fa-exclamation-triangle"></i> Reportar Robo o Extravío</strong>
+                            <p style="font-size: 12px; color: #64748b;">Desactiva la tarjeta de forma permanente. No podrás revertir esta acción.</p>
+                        </div>
+                        <form th:action="@{/tarjetas/bloqueo-definitivo}" method="POST" onsubmit="return confirm('¿Estás SEGURO de reportar tu tarjeta como robada? Esta acción no se puede deshacer desde la aplicación.');">
+                            <button type="submit" style="background-color: #dc2626; color: white; border: none; padding: 8px 15px; border-radius: 6px; cursor: pointer; font-weight: bold; font-size: 13px;">
+                                Bloquear Definitivamente
+                            </button>
+                        </form>
+                    </div>
+
+                </div>
+            </div>
+        </div>
+    </div>
+</main>
+
+<script th:src="@{/js/tarjetas.js}"></script>
+</body>
+</html>

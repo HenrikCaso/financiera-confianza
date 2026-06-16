@@ -1,0 +1,205 @@
+/* ==============================================================
+   ESTILOS GLOBALES Y LAYOUT (100% INDEPENDIENTE)
+   ============================================================== */
+body.admin-body {
+    display: flex;
+    margin: 0;
+    padding: 0;
+    background-color: #f8fafc;
+    font-family: 'Segoe UI', Arial, sans-serif;
+    min-height: 100vh;
+}
+
+/* ==============================================================
+   BARRA LATERAL (SIDEBAR EN AZUL CORPORATIVO)
+   ============================================================== */
+.sidebar {
+    width: 260px;
+    min-width: 260px;
+    background-color: #004b87; /* Color azul original de la financiera */
+    color: white;
+    display: flex;
+    flex-direction: column;
+    box-sizing: border-box;
+}
+
+.sidebar-header {
+    padding: 24px 20px;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.sidebar-header h2 {
+    margin: 0;
+    font-size: 20px;
+    font-weight: bold;
+    color: white;
+}
+
+.sidebar-header p {
+    margin: 5px 0 0 0;
+    font-size: 12px;
+    opacity: 0.8;
+    color: white;
+}
+
+.sidebar-menu {
+    list-style: none; /* Quitamos los puntitos de la lista */
+    padding: 0;
+    margin: 20px 0 0 0;
+    flex-grow: 1;
+}
+
+.sidebar-menu li {
+    margin: 4px 0;
+}
+
+.sidebar-menu li a {
+    display: flex;
+    align-items: center;
+    padding: 14px 20px;
+    color: rgba(255, 255, 255, 0.8);
+    text-decoration: none; /* Quitamos el subrayado azul/púrpura de los links */
+    font-size: 14px;
+    font-weight: 500;
+    transition: all 0.2s ease;
+}
+
+.sidebar-menu li a:hover {
+    background-color: rgba(255, 255, 255, 0.05);
+    color: white;
+}
+
+.sidebar-menu li.active {
+    background-color: rgba(255, 255, 255, 0.1); /* Resaltado de la opción actual */
+}
+
+.sidebar-menu li.active a {
+    color: white;
+    font-weight: 600;
+}
+
+.icon-fixed {
+    width: 24px;
+    font-size: 16px;
+    margin-right: 12px;
+}
+
+.sidebar-footer {
+    padding: 20px;
+    border-top: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.logout-link {
+    color: #fca5a5;
+    text-decoration: none;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    font-size: 14px;
+    font-weight: 500;
+}
+
+.logout-link:hover {
+    color: #ef4444;
+}
+
+/* ==============================================================
+   CONTENIDO PRINCIPAL Y TABLA DE CRÉDITOS
+   ============================================================== */
+.admin-main {
+    flex-grow: 1;
+    padding: 40px;
+    box-sizing: border-box;
+    overflow-x: hidden;
+}
+
+.page-title {
+    color: #004b87;
+    margin-top: 0;
+    margin-bottom: 5px;
+    font-size: 24px;
+}
+
+.page-description {
+    color: #64748b;
+    margin-top: 0;
+    margin-bottom: 30px;
+    font-size: 14px;
+}
+
+.table-container {
+    background: white;
+    border-radius: 8px;
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.05);
+    border: 1px solid #e2e8f0;
+    overflow: hidden;
+}
+
+.table-core {
+    width: 100%;
+    border-collapse: collapse;
+    text-align: left;
+}
+
+.table-core th {
+    background-color: #f8fafc;
+    color: #475569;
+    font-size: 12px;
+    font-weight: 600;
+    text-transform: uppercase;
+    padding: 16px 20px;
+    border-bottom: 1px solid #e2e8f0;
+    letter-spacing: 0.05em;
+}
+
+.table-core td {
+    padding: 16px 20px;
+    border-bottom: 1px solid #e2e8f0;
+    color: #334155;
+    font-size: 14px;
+}
+
+.table-core tbody tr:last-child td {
+    border-bottom: none;
+}
+
+.table-core tbody tr:hover {
+    background-color: #f8fafc;
+}
+
+.id-col {
+    color: #64748b;
+    font-weight: 500;
+}
+
+.monto-col {
+    color: #004b87;
+    font-weight: bold;
+}
+
+.inline-form {
+    margin: 0;
+}
+
+.btn-aprobar {
+    background-color: #16a34a;
+    color: white;
+    padding: 8px 16px;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    font-weight: 600;
+    font-size: 13px;
+    transition: background-color 0.2s;
+}
+
+.btn-aprobar:hover {
+    background-color: #15803d;
+}
+
+.empty-state {
+    text-align: center;
+    padding: 40px !important;
+    color: #94a3b8;
+    font-size: 14px;
+}

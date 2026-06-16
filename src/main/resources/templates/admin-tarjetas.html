@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Soporte Tarjetas | Admin Financiera Confianza</title>
+    <link rel="stylesheet" th:href="@{/css/dashboard.css}">
+    <link rel="stylesheet" th:href="@{/css/admin-panel.css}">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+</head>
+<body>
+<aside class="sidebar">
+    <div class="sidebar-logo">
+        <img th:src="@{/img/logos/logo-financiera2.png}" alt="Logo Admin">
+    </div>
+    <nav class="sidebar-nav">
+        <a th:href="@{/admin/prestamos}" class="nav-item"><i class="fas fa-file-signature"></i> Evaluar Créditos</a>
+        <a th:href="@{/admin/tarjetas}" class="nav-item active"><i class="fas fa-credit-card"></i> Soporte Tarjetas</a>
+        <a th:href="@{/admin/mora}" class="nav-item"><i class="fas fa-chart-line"></i> Gestión de Mora</a>
+    </nav>
+    <div class="sidebar-logout">
+        <a th:href="@{/admin/logout}" class="nav-item text-danger"><i class="fas fa-sign-out-alt"></i> Salir del Sistema</a>
+    </div>
+</aside>
+
+<main class="main-content admin-container">
+    <div class="admin-header">
+        <h2>Centro de Soporte: Tarjetas Bloqueadas</h2>
+        <p>Atiende las solicitudes presenciales de clientes con plásticos inhabilitados.</p>
+    </div>
+
+    <div th:if="${exito}" class="alert alert-success" style="background-color: #f0fdf4; color: #166534; padding: 15px; border-radius: 8px; margin-bottom: 20px;">
+        <i class="fas fa-check-circle"></i> <span th:text="${exito}"></span>
+    </div>
+
+    <div class="admin-card">
+        <table class="admin-table">
+            <thead>
+            <tr>
+                <th>DNI Cliente</th>
+                <th>Correo Electrónico</th>
+                <th>Nro. Cuenta Relacionada</th>
+                <th>Nivel de Bloqueo</th>
+                <th>Acción</th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr th:if="${#lists.isEmpty(clientes)}">
+                <td colspan="5" style="text-align: center; color: #64748b; padding: 30px;">
+                    <i class="fas fa-shield-check" style="font-size: 24px; color: #16a34a; display: block; margin-bottom: 10px;"></i>
+                    No hay tarjetas reportadas como robadas o bloqueadas en este momento.
+                </td>
+            </tr>
+            <tr th:each="cliente : ${clientes}">
+                <td th:text="${cliente.numDoc}">12345678</td>
+                <td th:text="${cliente.correo}">cliente@correo.com</td>
+                <td th:text="${cliente.numeroCuenta}">193-0000</td>
+                <td>
+                    <span th:if="${cliente.bloqueoDefinitivo}" class="badge-danger"><i class="fas fa-ban"></i> ROBO/EXTRAVÍO</span>
+                    <span th:unless="${cliente.bloqueoDefinitivo}" class="badge-warning"><i class="fas fa-lock"></i> TEMPORAL</span>
+                </td>
+                <td>
+                    <form th:action="@{/admin/tarjetas/desbloquear/{id}(id=${cliente.id})}" method="POST" onsubmit="return confirm('¿Verificaste la identidad del cliente en agencia? Se procederá a reactivar la tarjeta.');">
+                        <button type="submit" class="btn-desbloquear"><i class="fas fa-unlock-alt"></i> Habilitar Plástico</button>
+                    </form>
+                </td>
+            </tr>
+            </tbody>
+        </table>
+    </div>
+</main>
+</body>
+</html>

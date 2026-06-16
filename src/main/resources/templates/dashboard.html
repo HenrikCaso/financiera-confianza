@@ -11,25 +11,28 @@
 
 <aside class="sidebar">
     <div class="sidebar-logo">
-        <img th:src="@{/img/logos/logo-limpio.png}" alt="Financiera Confianza">
+        <img th:src="@{/img/logos/logo-financiera2.png}" alt="Financiera Confianza">
     </div>
     <nav class="sidebar-nav">
         <a href="#" class="nav-item active"><i class="fas fa-home"></i> Posición Global</a>
-        <a href="#" class="nav-item"><i class="fas fa-exchange-alt"></i> Transferencias</a>
-        <a href="#" class="nav-item"><i class="fas fa-file-invoice-dollar"></i> Pago de Servicios</a>
-        <a href="#" class="nav-item"><i class="fas fa-credit-card"></i> Tarjetas</a>
-        <a href="#" class="nav-item"><i class="fas fa-piggy-bank"></i> Mis Préstamos</a>
-        <a href="#" class="nav-item"><i class="fas fa-cog"></i> Configuraciones</a>
+        <a th:href="@{/transferencias}" class="nav-item"><i class="fas fa-exchange-alt"></i> Transferencias</a>
+        <a th:href="@{/servicios}" class="nav-item"><i class="fas fa-file-invoice-dollar"></i> Pago de Servicios</a>
+        <a th:href="@{/tarjetas}" class="nav-item"><i class="fas fa-credit-card"></i> Tarjetas</a>
+        <a th:href="@{/prestamos}" class="nav-item"><i class="fas fa-piggy-bank"></i> Mis Préstamos</a>
+        <a th:href="@{/perfil}" class="nav-item"><i class="fas fa-user-cog"></i> Mi Perfil</a>
     </nav>
     <div class="sidebar-logout">
-        <a th:href="@{/login}" class="nav-item text-danger"><i class="fas fa-sign-out-alt"></i> Cerrar Sesión</a>
+        <a th:href="@{/logout}" class="nav-item text-danger"><i class="fas fa-sign-out-alt"></i> Cerrar Sesión</a>
     </div>
 </aside>
 
 <main class="main-content">
     <header class="topbar">
+        <div th:if="${exito}" class="alert alert-success">
+            <i class="fas fa-check-circle"></i> <span th:text="${exito}"></span>
+        </div>
         <div class="welcome-text">
-            <h2>¡Hola, Administrador!</h2>
+            <h2>¡Hola, <span th:text="${usuario.correo}">usuario@correo.com</span>!</h2>
             <p>Último acceso: Hoy a las 10:45 a.m.</p>
         </div>
         <div class="user-profile">
@@ -47,9 +50,27 @@
                 <h3>Cuenta Ahorro Confianza</h3>
                 <i class="fas fa-ellipsis-v"></i>
             </div>
-            <p class="account-number">N° 0011-0234-0200156789</p>
+            <div style="margin-top: 15px; margin-bottom: 20px; font-family: monospace; font-size: 15px; color: #e0f2fe;">
+
+                <div style="margin-bottom: 8px; display: flex; align-items: center; gap: 10px;">
+                    <strong style="color: white; font-family: sans-serif; font-size: 13px; text-transform: uppercase;">N° de Cuenta:</strong>
+                    <span id="txtCuenta" th:text="${usuario.numeroCuenta}">19300000000000</span>
+                    <button class="btn-copy" onclick="copiarAlPortapapeles('txtCuenta', this)" title="Copiar Cuenta">
+                        <i class="far fa-copy"></i>
+                    </button>
+                </div>
+
+                <div style="display: flex; align-items: center; gap: 10px;">
+                    <strong style="color: white; font-family: sans-serif; font-size: 13px; text-transform: uppercase;">CCI:</strong>
+                    <span id="txtCci" th:text="${usuario.cci}">00219300000000000012</span>
+                    <button class="btn-copy" onclick="copiarAlPortapapeles('txtCci', this)" title="Copiar CCI">
+                        <i class="far fa-copy"></i>
+                    </button>
+                </div>
+
+            </div>
             <div class="balance-amount">
-                <span class="currency">S/</span> 15,420.<span class="decimals">50</span>
+                <span class="currency">S/</span> <span th:text="${#numbers.formatDecimal(usuario.saldo, 1, 'DEFAULT', 2, 'DEFAULT')}">0.00</span>
             </div>
             <div class="balance-actions">
                 <button class="btn-action"><i class="fas fa-paper-plane"></i> Transferir</button>
@@ -80,48 +101,60 @@
         </div>
 
         <div class="card transactions-card">
-            <div class="card-header">
+            <div class="card-header" style="display: flex; justify-content: space-between; align-items: center;">
                 <h3>Últimos Movimientos</h3>
-                <a href="#" class="view-all">Ver todos</a>
+                <a th:href="@{/dashboard/descargar-pdf}" class="btn btn-danger" style="text-decoration: none; display: inline-flex; align-items: center; gap: 8px;">
+                    <i class="fas fa-file-pdf"></i> Descargar PDF
+                </a>
             </div>
+
+            <form th:action="@{/dashboard}" method="GET" class="filter-form">
+                <div class="filter-group">
+                    <label>Desde:</label>
+                    <input type="date" name="fechaInicio" class="form-control-sm">
+                </div>
+                <div class="filter-group">
+                    <label>Hasta:</label>
+                    <input type="date" name="fechaFin" class="form-control-sm">
+                </div>
+                <button type="submit" class="btn-filter"><i class="fas fa-search"></i> Filtrar</button>
+                <a th:href="@{/dashboard}" class="btn-clear" title="Limpiar filtro"><i class="fas fa-times"></i></a>
+            </form>
+
             <table class="transaction-table">
                 <tbody>
-                <tr>
-                    <td>
-                        <div class="txn-icon bg-red-light"><i class="fas fa-shopping-cart"></i></div>
+                <tr th:if="${#lists.isEmpty(movimientos)}">
+                    <td colspan="3" style="text-align: center; color: #888; padding: 30px;">
+                        <i class="fas fa-receipt" style="font-size: 24px; margin-bottom: 10px; color: #ccc;"></i><br>
+                        No tienes movimientos en este periodo.
                     </td>
-                    <td>
-                        <strong>Supermercados Plaza Vea</strong>
-                        <span class="txn-date">Ayer, 18:30 p.m.</span>
-                    </td>
-                    <td class="txn-amount text-danger">- S/ 145.20</td>
                 </tr>
-                <tr>
-                    <td>
-                        <div class="txn-icon bg-green-light"><i class="fas fa-arrow-down"></i></div>
-                    </td>
-                    <td>
-                        <strong>Transferencia Recibida - Juan Pérez</strong>
-                        <span class="txn-date">12 May 2026, 14:15 p.m.</span>
-                    </td>
-                    <td class="txn-amount text-success">+ S/ 500.00</td>
-                </tr>
-                <tr>
-                    <td>
-                        <div class="txn-icon bg-blue-light"><i class="fas fa-bolt"></i></div>
-                    </td>
-                    <td>
-                        <strong>Pago de Servicios - Enel</strong>
-                        <span class="txn-date">10 May 2026, 09:00 a.m.</span>
-                    </td>
-                    <td class="txn-amount text-danger">- S/ 85.50</td>
-                </tr>
+
+                <div th:each="mov : ${movimientos}" class="movement-row">
+
+                    <div class="movement-details">
+                        <div class="movement-icon" th:classappend="${mov.monto > 0 ? 'icon-ingreso' : 'icon-salida'}">
+                            <i class="fas" th:classappend="${mov.monto > 0 ? 'fa-arrow-down' : 'fa-arrow-up'}"></i>
+                        </div>
+
+                        <div class="movement-text">
+                            <p class="movement-concept" th:text="${mov.concepto}">Concepto</p>
+                            <p class="movement-date" th:text="${#temporals.format(mov.fecha, 'dd MMM. yyyy, HH:mm')}">Fecha</p>
+                        </div>
+                    </div>
+
+                    <div class="movement-amount" th:classappend="${mov.monto > 0 ? 'text-ingreso' : 'text-salida'}">
+                        <span th:text="${mov.monto > 0 ? '+ S/ ' : '- S/ '}"></span>
+                        <span th:text="${#numbers.formatDecimal(T(java.lang.Math).abs(mov.monto), 1, 'DEFAULT', 2, 'DEFAULT')}">0.00</span>
+                    </div>
+
+                </div>
                 </tbody>
             </table>
         </div>
 
     </div>
 </main>
-
+<script th:src="@{/js/dashboard.js}"></script>
 </body>
 </html>

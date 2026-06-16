@@ -1,0 +1,115 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Core Bancario - Evaluaciones</title>
+    <link rel="stylesheet" th:href="@{/css/admin-prestamos.css}">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+</head>
+<body class="admin-body">
+
+<nav class="sidebar">
+    <div class="sidebar-header">
+        <h2>Financiera Confianza</h2>
+        <p>Core Bancario Interno</p>
+    </div>
+
+    <ul class="sidebar-menu">
+        <li class="active">
+            <a th:href="@{/admin/prestamos}">
+                <i class="fas fa-file-invoice-dollar icon-fixed"></i> Evaluar Créditos
+            </a>
+        </li>
+        <li>
+            <a th:href="@{/admin/tarjetas}">
+                <i class="fas fa-credit-card icon-fixed"></i> Soporte Tarjetas
+            </a>
+        </li>
+        <li>
+            <a th:href="@{/admin/mora}">
+                <i class="fas fa-chart-line icon-fixed"></i> Gestión de Mora
+            </a>
+        </li>
+    </ul>
+
+    <div class="sidebar-footer">
+        <a th:href="@{/admin/logout}" class="logout-link">
+            <i class="fas fa-sign-out-alt"></i> Cerrar Sesión
+        </a>
+    </div>
+</nav>
+
+<main class="admin-main">
+    <h2 class="page-title">Bandeja de Solicitudes Pendientes</h2>
+    <p class="page-description">Evalúa y aprueba los desembolsos de los clientes.</p>
+
+    <div th:if="${exito}" style="background-color: #dcfce7; color: #166534; padding: 15px; border-radius: 8px; margin-bottom: 20px; font-weight: bold;">
+        <i class="fas fa-check-circle"></i> <span th:text="${exito}"></span>
+    </div>
+    <div th:if="${error}" style="background-color: #fee2e2; color: #b91c1c; padding: 15px; border-radius: 8px; margin-bottom: 20px; font-weight: bold;">
+        <i class="fas fa-exclamation-triangle"></i> <span th:text="${error}"></span>
+    </div>
+
+    <div class="table-container">
+        <table class="table-core">
+            <thead>
+            <tr>
+                <th>ID</th>
+                <th>Cliente</th>
+                <th>Finanzas (S/)</th>
+                <th>Monto / Cuota</th>
+                <th>RDS (Semáforo)</th>
+                <th>Acción</th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr th:each="sol : ${solicitudes}">
+                <td class="id-col" th:text="'#' + ${sol.id}">#1</td>
+                <td th:text="${sol.usuario.correo}">cliente@correo.com</td>
+
+                <td style="font-size: 13px;">
+                    <span style="color: #16a34a;"><i class="fas fa-arrow-up"></i> Ing: S/ <span th:text="${#numbers.formatDecimal(sol.ingresosMensuales != null ? sol.ingresosMensuales : 0, 1, 'DEFAULT', 2, 'DEFAULT')}"></span></span><br>
+                    <span style="color: #e11d48;"><i class="fas fa-arrow-down"></i> Gto: S/ <span th:text="${#numbers.formatDecimal(sol.gastosMensuales != null ? sol.gastosMensuales : 0, 1, 'DEFAULT', 2, 'DEFAULT')}"></span></span>
+                </td>
+
+                <td>
+                    <strong class="monto-col" th:text="'S/ ' + ${#numbers.formatDecimal(sol.monto, 1, 'DEFAULT', 2, 'DEFAULT')}">S/ 0.00</strong><br>
+                    <span style="font-size: 12px; color: #64748b;" th:text="${sol.cuotas} + ' cuotas de S/ ' + ${#numbers.formatDecimal(sol.cuotaEstimada, 1, 'DEFAULT', 2, 'DEFAULT')}"></span>
+                </td>
+
+                <td>
+                    <div th:if="${sol.semaforoRiesgo == 'VERDE'}" style="background-color: #dcfce7; color: #166534; padding: 5px 10px; border-radius: 20px; font-weight: bold; font-size: 12px; display: inline-block;">
+                        🟢 <span th:text="${#numbers.formatDecimal(sol.rds, 1, 'DEFAULT', 1, 'DEFAULT')}"></span>% (Óptimo)
+                    </div>
+                    <div th:if="${sol.semaforoRiesgo == 'AMARILLO'}" style="background-color: #fef08a; color: #854d0e; padding: 5px 10px; border-radius: 20px; font-weight: bold; font-size: 12px; display: inline-block;">
+                        🟡 <span th:text="${#numbers.formatDecimal(sol.rds, 1, 'DEFAULT', 1, 'DEFAULT')}"></span>% (Revisión)
+                    </div>
+                    <div th:if="${sol.semaforoRiesgo == 'ROJO'}" style="background-color: #fee2e2; color: #b91c1c; padding: 5px 10px; border-radius: 20px; font-weight: bold; font-size: 12px; display: inline-block;">
+                        🔴 <span th:text="${#numbers.formatDecimal(sol.rds, 1, 'DEFAULT', 1, 'DEFAULT')}"></span>% (Riesgo Alto)
+                    </div>
+                </td>
+
+                <td>
+                    <form th:action="@{/admin/prestamos/aprobar/{id}(id=${sol.id})}" method="POST" class="inline-form" th:if="${sol.semaforoRiesgo != 'ROJO'}">
+                        <button type="submit" class="btn-aprobar" th:style="${sol.semaforoRiesgo == 'AMARILLO' ? 'background-color: #ca8a04;' : ''}">
+                            <i th:class="${sol.semaforoRiesgo == 'VERDE' ? 'fas fa-check' : 'fas fa-exclamation-triangle'}"></i> Aprobar
+                        </button>
+                    </form>
+
+                    <form th:action="@{/admin/prestamos/rechazar/{id}(id=${sol.id})}" method="POST" class="inline-form" th:if="${sol.semaforoRiesgo == 'ROJO'}">
+                        <button type="submit" style="background-color: #dc2626; color: white; padding: 8px 12px; border: none; border-radius: 4px; cursor: pointer; font-weight: bold;">
+                            <i class="fas fa-times"></i> Rechazar
+                        </button>
+                    </form>
+                </td>
+            </tr>
+            <tr th:if="${#lists.isEmpty(solicitudes)}">
+                <td colspan="6" class="empty-state">No hay solicitudes pendientes en este momento.</td>
+            </tr>
+            </tbody>
+        </table>
+    </div>
+</main>
+
+</body>
+</html>

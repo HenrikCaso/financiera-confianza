@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Gestión de Mora | Admin Financiera Confianza</title>
+    <link rel="stylesheet" th:href="@{/css/dashboard.css}">
+    <link rel="stylesheet" th:href="@{/css/admin-panel.css}">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+</head>
+<body>
+<aside class="sidebar">
+    <div class="sidebar-logo">
+        <img th:src="@{/img/logos/logo-financiera2.png}" alt="Logo Admin">
+    </div>
+    <nav class="sidebar-nav">
+        <a th:href="@{/admin/prestamos}" class="nav-item"><i class="fas fa-file-signature"></i> Evaluar Créditos</a>
+        <a th:href="@{/admin/tarjetas}" class="nav-item"><i class="fas fa-credit-card"></i> Soporte Tarjetas</a>
+        <a th:href="@{/admin/mora}" class="nav-item active"><i class="fas fa-chart-line"></i> Gestión de Mora</a>
+    </nav>
+    <div class="sidebar-logout">
+        <a th:href="@{/admin/logout}" class="nav-item text-danger"><i class="fas fa-sign-out-alt"></i> Salir del Sistema</a>
+    </div>
+</aside>
+
+<main class="main-content admin-container">
+    <div class="admin-header">
+        <h2>Cartera Activa y Gestión de Mora</h2>
+        <p>Monitoreo de créditos vigentes y seguimiento de clientes en riesgo de impago.</p>
+    </div>
+
+    <div class="admin-card">
+        <table class="admin-table">
+            <thead>
+            <tr>
+                <th>ID Crédito</th>
+                <th>DNI Titular</th>
+                <th>Monto Original</th>
+                <th>Cuotas</th>
+                <th>Día de Pago</th>
+                <th>Estado de Cartera</th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr th:if="${#lists.isEmpty(creditos)}">
+                <td colspan="6" style="text-align: center; color: #64748b; padding: 30px;">
+                    No hay créditos activos en la cartera actualmente.
+                </td>
+            </tr>
+            <tr th:each="credito : ${creditos}">
+                <td><strong th:text="'#' + ${credito.id}">#1</strong></td>
+                <td th:text="${credito.usuario.numDoc}">12345678</td>
+                <td style="color: #004b87; font-weight: bold;" th:text="'S/ ' + ${#numbers.formatDecimal(credito.monto, 1, 2)}">S/ 0.00</td>
+                <td th:text="${credito.cuotas} + ' meses'">12 meses</td>
+                <td th:text="'Días ' + ${credito.diaPago}">Días 15</td>
+                <td>
+                    <span style="color: #16a34a; font-weight: bold;"><i class="fas fa-circle" style="font-size: 10px;"></i> Al Día (Vigente)</span>
+                </td>
+            </tr>
+            </tbody>
+        </table>
+    </div>
+</main>
+</body>
+</html>
