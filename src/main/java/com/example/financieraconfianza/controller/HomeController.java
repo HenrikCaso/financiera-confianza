@@ -87,7 +87,7 @@
         }
 
         @GetMapping("/")
-        public String home() { return "index"; }
+        public String home() { return "redirect:/login"; }
 
         @GetMapping("/academia")
         public String academia() { return "academia"; }
