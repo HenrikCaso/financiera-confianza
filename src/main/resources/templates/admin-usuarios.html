@@ -1,0 +1,366 @@
+<!DOCTYPE html>
+<html lang="es" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Gestión de Usuarios | Financiera Confianza</title>
+
+    <link rel="stylesheet" th:href="@{/css/admin-sidebar.css}">
+    <link rel="stylesheet" th:href="@{/css/admin-usuarios.css}">
+    <link rel="stylesheet" th:href="@{/css/admin-flash.css}">
+
+    <link rel="stylesheet"
+          href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
+</head>
+
+<body class="admin-body">
+
+<aside class="sidebar">
+
+    <div class="sidebar-logo">
+        <img th:src="@{/img/logos/logo-financiera2.png}"
+             alt="Financiera Confianza">
+    </div>
+
+    <nav class="sidebar-nav"
+         th:with="rol=${session.adminLogueado != null && session.adminLogueado.rol != null
+            ? session.adminLogueado.rol
+            : ''}">
+
+        <!-- DASHBOARD: solo ADMIN -->
+        <a th:href="@{/admin/dashboard}"
+           th:if="${rol == 'ADMIN'}"
+           th:classappend="${activePage == 'dashboard'} ? 'active' : ''">
+            <i class="fas fa-chart-pie"></i>
+            Dashboard
+        </a>
+
+        <!-- EVALUAR CRÉDITOS: ADMIN, ASESOR, RIESGOS, OPERACIONES -->
+        <a th:href="@{/admin/prestamos}"
+           th:if="${rol == 'ADMIN'
+            or rol == 'ASESOR'
+            or rol == 'RIESGOS'
+            or rol == 'OPERACIONES'}"
+           th:classappend="${activePage == 'prestamos'} ? 'active' : ''">
+            <i class="fas fa-file-invoice-dollar"></i>
+            Evaluar Créditos
+        </a>
+
+        <!-- USUARIOS: solo ADMIN -->
+        <a th:href="@{/admin/usuarios}"
+           th:if="${rol == 'ADMIN'}"
+           th:classappend="${activePage == 'usuarios'} ? 'active' : ''">
+            <i class="fas fa-users"></i>
+            Gestión de Usuarios
+        </a>
+
+        <!-- TARJETAS: ADMIN y OPERACIONES -->
+        <a th:href="@{/admin/tarjetas}"
+           th:if="${rol == 'ADMIN'
+            or rol == 'OPERACIONES'}"
+           th:classappend="${activePage == 'tarjetas'} ? 'active' : ''">
+            <i class="fas fa-credit-card"></i>
+            Soporte Tarjetas
+        </a>
+
+        <!-- MORA: ADMIN y RECUPERACIONES -->
+        <a th:href="@{/admin/mora}"
+           th:if="${rol == 'ADMIN'
+            or rol == 'RECUPERACIONES'}"
+           th:classappend="${activePage == 'mora'} ? 'active' : ''">
+            <i class="fas fa-chart-line"></i>
+            Gestión de Mora
+        </a>
+
+        <!-- AUDITORÍA: ADMIN y AUDITOR -->
+        <a th:href="@{/admin/auditoria}"
+           th:if="${rol == 'ADMIN'
+            or rol == 'AUDITOR'}"
+           th:classappend="${activePage == 'auditoria'} ? 'active' : ''">
+            <i class="fas fa-shield-alt"></i>
+            Auditoría
+        </a>
+
+    </nav>
+
+    <div class="sidebar-footer">
+        <a th:href="@{/admin/logout}">
+            <i class="fas fa-sign-out-alt"></i>
+            Cerrar Sesión
+        </a>
+    </div>
+
+</aside>
+
+<main class="admin-main">
+
+    <header class="page-header">
+        <div>
+            <h1>
+                <i class="fas fa-users"></i>
+                Gestión de Usuarios
+            </h1>
+
+            <p>
+                Consulta la información y el estado de los clientes registrados.
+            </p>
+        </div>
+
+        <div class="total-badge">
+            <i class="fas fa-user-group"></i>
+            <span th:text="${totalElementos}">0</span>
+            <span th:text="${totalElementos == 1 ? 'cliente' : 'clientes'}">
+                clientes
+            </span>
+        </div>
+    </header>
+
+    <div class="flash-container">
+        <div th:if="${exito}" class="flash-message flash-success">
+            <i class="fas fa-check-circle"></i>
+            <span th:text="${exito}"></span>
+        </div>
+
+        <div th:if="${error}" class="flash-message flash-error">
+            <i class="fas fa-exclamation-triangle"></i>
+            <span th:text="${error}"></span>
+        </div>
+    </div>
+
+    <form th:action="@{/admin/usuarios}"
+          method="get"
+          class="search-card">
+
+        <div class="search-group">
+
+            <i class="fas fa-magnifying-glass"></i>
+
+            <input type="text"
+                   name="buscar"
+                   th:value="${buscar}"
+                   placeholder="Buscar por DNI, nombre, apellido o correo"
+                   autocomplete="off">
+        </div>
+
+        <button type="submit" class="btn-search">
+            <i class="fas fa-search"></i>
+            Buscar
+        </button>
+
+        <a th:href="@{/admin/usuarios}"
+           class="btn-clear-search"
+           title="Limpiar búsqueda">
+            <i class="fas fa-times"></i>
+            Limpiar
+        </a>
+    </form>
+
+    <div th:if="${buscar != null and !#strings.isEmpty(buscar)}"
+         class="search-result">
+        <i class="fas fa-filter"></i>
+        Resultados para:
+        <strong th:text="'“' + ${buscar} + '”'"></strong>
+        <span th:text="'(' + ${totalElementos} + ' encontrados)'"></span>
+    </div>
+
+    <div class="table-container">
+
+        <table class="usuarios-table">
+
+            <thead>
+            <tr>
+                <th>ID</th>
+                <th>DNI</th>
+                <th>Cliente</th>
+                <th>Correo</th>
+                <th>N.º de cuenta</th>
+                <th>Saldo</th>
+                <th>Estado</th>
+                <th>Acción</th>
+            </tr>
+            </thead>
+
+            <tbody>
+
+            <tr th:each="usuario : ${usuarios}">
+
+                <td class="id-column"
+                    th:text="'#' + ${usuario.id}">
+                    #1
+                </td>
+
+                <td th:text="${usuario.numDoc}">
+                    70000001
+                </td>
+
+                <td>
+                    <div class="cliente-info">
+
+                        <div class="cliente-avatar">
+                            <i class="fas fa-user"></i>
+                        </div>
+
+                        <div>
+                            <strong th:if="${usuario.nombres != null || usuario.apellidos != null}"
+                                    th:text="${#strings.defaultString(usuario.nombres, '') + ' ' + #strings.defaultString(usuario.apellidos, '')}">
+                                Cliente
+                            </strong>
+
+                            <strong th:unless="${usuario.nombres != null || usuario.apellidos != null}">
+                                Sin nombre registrado
+                            </strong>
+
+                            <small th:text="${usuario.rol}">
+                                CLIENTE
+                            </small>
+                        </div>
+
+                    </div>
+                </td>
+
+                <td th:text="${usuario.correo != null ? usuario.correo : 'No registrado'}">
+                    correo@ejemplo.com
+                </td>
+
+                <td class="account-column"
+                    th:text="${usuario.numeroCuenta != null ? usuario.numeroCuenta : 'No registrada'}">
+                    00000000000000
+                </td>
+
+                <td class="saldo-column">
+                    S/
+                    <span th:text="${#numbers.formatDecimal(
+                        usuario.saldo != null ? usuario.saldo : 0,
+                        1,
+                        'DEFAULT',
+                        2,
+                        'DEFAULT'
+                    )}">
+                        0.00
+                    </span>
+                </td>
+
+                <td>
+                    <span th:if="${usuario.activo}"
+                          class="status status-active">
+                        <i class="fas fa-circle-check"></i>
+                        Activo
+                    </span>
+
+                    <span th:unless="${usuario.activo}"
+                          class="status status-blocked">
+                        <i class="fas fa-circle-xmark"></i>
+                        Bloqueado
+                    </span>
+                </td>
+
+                <td>
+                    <a th:href="@{/admin/usuarios/detalle/{id}(id=${usuario.id})}"
+                       class="btn-detail">
+                        <i class="fas fa-eye"></i>
+                        Ver detalle
+                    </a>
+                </td>
+
+            </tr>
+
+            <tr th:if="${#lists.isEmpty(usuarios)}">
+                <td colspan="8" class="empty-state">
+
+                    <i class="fas fa-users-slash"></i>
+
+                    <strong th:if="${buscar != null and !#strings.isEmpty(buscar)}">
+                        No se encontraron clientes
+                    </strong>
+
+                    <strong th:unless="${buscar != null and !#strings.isEmpty(buscar)}">
+                        No existen clientes registrados
+                    </strong>
+
+                    <span th:if="${buscar != null and !#strings.isEmpty(buscar)}"
+                          th:text="'No hay resultados para “' + ${buscar} + '”.'">
+                    </span>
+
+                    <span th:unless="${buscar != null and !#strings.isEmpty(buscar)}">
+                        Los nuevos clientes aparecerán en esta sección.
+                    </span>
+
+                </td>
+            </tr>
+
+            </tbody>
+
+        </table>
+        <nav class="pagination-container"
+             th:if="${totalPaginas > 1}"
+             aria-label="Paginación de clientes">
+
+            <div class="pagination-info">
+                Página
+                <strong th:text="${paginaActual + 1}">1</strong>
+                de
+                <strong th:text="${totalPaginas}">1</strong>
+            </div>
+
+            <div class="pagination">
+
+                <!-- ANTERIOR -->
+                <a th:if="${!primeraPagina}"
+                   th:href="@{/admin/usuarios(
+                pagina=${paginaActual - 1},
+                buscar=${buscar}
+           )}"
+                   class="page-button">
+
+                    <i class="fas fa-chevron-left"></i>
+                    Anterior
+                </a>
+
+                <span th:if="${primeraPagina}"
+                      class="page-button disabled">
+
+            <i class="fas fa-chevron-left"></i>
+            Anterior
+        </span>
+
+                <!-- NÚMEROS DE PÁGINA -->
+                <a th:each="numero : ${#numbers.sequence(0, totalPaginas - 1)}"
+                   th:href="@{/admin/usuarios(
+                pagina=${numero},
+                buscar=${buscar}
+           )}"
+                   th:text="${numero + 1}"
+                   th:classappend="${numero == paginaActual} ? ' active' : ''"
+                   class="page-number">
+                    1
+                </a>
+
+                <!-- SIGUIENTE -->
+                <a th:if="${!ultimaPagina}"
+                   th:href="@{/admin/usuarios(
+                pagina=${paginaActual + 1},
+                buscar=${buscar}
+           )}"
+                   class="page-button">
+
+                    Siguiente
+                    <i class="fas fa-chevron-right"></i>
+                </a>
+
+                <span th:if="${ultimaPagina}"
+                      class="page-button disabled">
+
+            Siguiente
+            <i class="fas fa-chevron-right"></i>
+        </span>
+
+            </div>
+
+        </nav>
+    </div>
+
+</main>
+<script th:src="@{/js/admin-flash.js}"></script>
+</body>
+</html>

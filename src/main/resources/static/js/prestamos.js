@@ -1,61 +1,449 @@
-document.addEventListener('DOMContentLoaded', function() {
+/*
+ * Confirmación del pago de cuotas.
+ * Debe permanecer fuera de DOMContentLoaded porque
+ * se llama directamente desde el formulario HTML.
+ */
+window.confirmarPago = function (formulario) {
 
-    // Prevención del bfcache
-    window.addEventListener('pageshow', function (event) {
-        if (event.persisted) window.location.reload();
-    });
+    const totalTexto =
+        formulario.dataset.total || "0";
 
-    const montoRange = document.getElementById('montoRange');
-    const montoDisplay = document.getElementById('montoDisplay');
-    const cuotasSelect = document.getElementById('cuotasSelect');
-    const diaPagoSelect = document.getElementById('diaPagoSelect');
+    const total =
+        Number(totalTexto.replace(",", "."));
 
-    const teaDisplay = document.getElementById('teaDisplay');
-    const fechaPagoDisplay = document.getElementById('fechaPagoDisplay');
-    const cuotaDisplay = document.getElementById('cuotaMensual');
+    const numeroCuota =
+        formulario.dataset.cuota || "";
 
-    function calcularCuota() {
-        const P = parseFloat(montoRange.value);
-        const n = parseInt(cuotasSelect.value);
+    const credito =
+        formulario.dataset.credito || "";
 
-        // 1. Lógica dinámica de la TEA según el riesgo (tiempo)
-        let tea = 0.155; // 15.5% por defecto (12 meses)
-        if (n === 6) tea = 0.125;  // 12.5% (Menos riesgo, TEA más baja)
-        if (n === 24) tea = 0.185; // 18.5% (Más riesgo, TEA más alta)
+    const referenciaCredito =
+        credito
+            ? " del crédito #" + credito
+            : "";
 
-        // Convertir TEA a Tasa Efectiva Mensual (TEM)
-        const i = Math.pow(1 + tea, 1/12) - 1;
+    if (!Number.isFinite(total) || total <= 0) {
 
-        // 2. Fórmula de Amortización Francesa
-        const cuota = (P * i * Math.pow(1 + i, n)) / (Math.pow(1 + i, n) - 1);
+        window.alert(
+            "No se pudo determinar el monto de la cuota."
+        );
 
-        // 3. Lógica para la fecha del primer pago (Al mes siguiente)
-        const diaElegido = parseInt(diaPagoSelect.value);
-        let fechaActual = new Date();
-        let mesPago = fechaActual.getMonth() + 1; // Mes siguiente (0 indexado)
-        let anioPago = fechaActual.getFullYear();
-
-        if (mesPago > 11) { // Si estamos en diciembre, el próximo mes es enero del otro año
-            mesPago = 0;
-            anioPago++;
-        }
-
-        // Formatear números para que tengan un cero delante (ej: 05 en vez de 5)
-        const diaStr = diaElegido.toString().padStart(2, '0');
-        const mesStr = (mesPago + 1).toString().padStart(2, '0');
-
-        // 4. Actualizar la pantalla
-        montoDisplay.innerText = P.toLocaleString();
-        teaDisplay.innerText = (tea * 100).toFixed(2) + "%";
-        fechaPagoDisplay.innerText = `${diaStr}/${mesStr}/${anioPago}`;
-        cuotaDisplay.innerText = "S/ " + cuota.toFixed(2);
+        return false;
     }
 
-    // Escuchar cambios en cualquier control para recalcular al instante
-    montoRange.addEventListener('input', calcularCuota);
-    cuotasSelect.addEventListener('change', calcularCuota);
-    diaPagoSelect.addEventListener('change', calcularCuota);
+    return window.confirm(
+        "Se descontarán S/ "
+        + total.toFixed(2)
+        + " para pagar la cuota N.° "
+        + numeroCuota
+        + referenciaCredito
+        + ".\n\n¿Deseas continuar?"
+    );
+};
 
-    // Calcular por primera vez al cargar la página
-    calcularCuota();
-});
+
+document.addEventListener(
+    "DOMContentLoaded",
+    function () {
+
+        console.log(
+            "prestamos.js v5 cargado correctamente"
+        );
+
+        // =====================================================
+        // ABRIR Y CERRAR CRONOGRAMAS POR CRÉDITO
+        // =====================================================
+
+        const botonesCredito =
+            document.querySelectorAll(
+                ".credito-toggle"
+            );
+
+        botonesCredito.forEach(
+            function (boton) {
+
+                boton.addEventListener(
+                    "click",
+                    function () {
+
+                        const detalleId =
+                            boton.getAttribute(
+                                "aria-controls"
+                            );
+
+                        const detalle =
+                            document.getElementById(
+                                detalleId
+                            );
+
+                        if (!detalle) {
+                            return;
+                        }
+
+                        const quedoCerrado =
+                            detalle.classList.toggle(
+                                "credito-colapsado"
+                            );
+
+                        boton.setAttribute(
+                            "aria-expanded",
+                            String(!quedoCerrado)
+                        );
+                    }
+                );
+            }
+        );
+
+        window.addEventListener(
+            "pageshow",
+            function (event) {
+
+                if (event.persisted) {
+                    window.location.reload();
+                }
+            }
+        );
+
+        const montoRange =
+            document.getElementById("montoRange");
+
+        const montoDisplay =
+            document.getElementById("montoDisplay");
+
+        const cuotasSelect =
+            document.getElementById("cuotasSelect");
+
+        const diaPagoSelect =
+            document.getElementById("diaPagoSelect");
+
+        const ingresosInput =
+            document.getElementById("ingresosMensuales");
+
+        const gastosInput =
+            document.getElementById("gastosMensuales");
+
+        const teaDisplay =
+            document.getElementById("teaDisplay");
+
+        const temDisplay =
+            document.getElementById("temDisplay");
+
+        const fechaPagoDisplay =
+            document.getElementById("fechaPagoDisplay");
+
+        const cuotaDisplay =
+            document.getElementById("cuotaMensual");
+
+        const rdsDisplay =
+            document.getElementById("rdsDisplay");
+
+        const capacidadDisplay =
+            document.getElementById("capacidadDisplay");
+
+        const seguros =
+            document.querySelectorAll(
+                'input[name="tieneSeguro"]'
+            );
+
+        const TEA_CON_SEGURO = 0.4092;
+        const TEA_SIN_SEGURO = 0.4392;
+
+        function obtenerTieneSeguro() {
+
+            const seleccionado =
+                document.querySelector(
+                    'input[name="tieneSeguro"]:checked'
+                );
+
+            return seleccionado
+                ? seleccionado.value === "true"
+                : true;
+        }
+
+        function calcularPrimeraFechaPago(
+            diaElegido
+        ) {
+
+            const hoy = new Date();
+
+            const anio =
+                hoy.getFullYear();
+
+            const mesSiguiente =
+                hoy.getMonth() + 1;
+
+            const ultimoDia =
+                new Date(
+                    anio,
+                    mesSiguiente + 1,
+                    0
+                ).getDate();
+
+            const diaReal =
+                Math.min(
+                    diaElegido,
+                    ultimoDia
+                );
+
+            return new Date(
+                anio,
+                mesSiguiente,
+                diaReal
+            );
+        }
+
+        function actualizarRiesgo(
+            rds,
+            ingresos
+        ) {
+
+            rdsDisplay.classList.remove(
+                "riesgo-sin-calcular",
+                "riesgo-verde",
+                "riesgo-amarillo",
+                "riesgo-rojo"
+            );
+
+            if (ingresos <= 0
+                || !Number.isFinite(rds)) {
+
+                rdsDisplay.textContent =
+                    "Sin calcular";
+
+                rdsDisplay.classList.add(
+                    "riesgo-sin-calcular"
+                );
+
+                return;
+            }
+
+            rdsDisplay.textContent =
+                rds.toFixed(2) + "%";
+
+            if (rds <= 30) {
+
+                rdsDisplay.classList.add(
+                    "riesgo-verde"
+                );
+
+            } else if (rds <= 40) {
+
+                rdsDisplay.classList.add(
+                    "riesgo-amarillo"
+                );
+
+            } else {
+
+                rdsDisplay.classList.add(
+                    "riesgo-rojo"
+                );
+            }
+        }
+
+        function calcularCredito() {
+
+            if (
+                !montoRange
+                || !cuotasSelect
+                || !diaPagoSelect
+                || !teaDisplay
+                || !temDisplay
+                || !fechaPagoDisplay
+                || !cuotaDisplay
+                || !rdsDisplay
+                || !capacidadDisplay
+            ) {
+                return;
+            }
+
+            const monto =
+                Number(montoRange.value);
+
+            const numeroCuotas =
+                Number(cuotasSelect.value);
+
+            const diaElegido =
+                Number(diaPagoSelect.value);
+
+            const ingresos = parseFloat(document.getElementById("ingresosMensuales").value);
+            const gastos = parseFloat(document.getElementById("gastosMensuales").value);
+
+            const tieneSeguro =
+                obtenerTieneSeguro();
+
+            const tea =
+                tieneSeguro
+                    ? TEA_CON_SEGURO
+                    : TEA_SIN_SEGURO;
+
+            const tem =
+                Math.pow(
+                    1 + tea,
+                    1 / 12
+                ) - 1;
+
+            const cuota =
+                (monto * tem)
+                /
+                (
+                    1
+                    - Math.pow(
+                        1 + tem,
+                        -numeroCuotas
+                    )
+                );
+
+            const primeraFecha =
+                calcularPrimeraFechaPago(
+                    diaElegido
+                );
+
+            const datosFinancierosInvalidos =
+                !Number.isFinite(ingresos)
+                || ingresos <= 0
+                || !Number.isFinite(gastos)
+                || gastos < 0;
+
+            let rds = NaN;
+            let capacidadDisponible = NaN;
+
+            if (!datosFinancierosInvalidos) {
+
+                rds =
+                    (
+                        (gastos + cuota)
+                        / ingresos
+                    ) * 100;
+
+                capacidadDisponible =
+                    ingresos
+                    - gastos
+                    - cuota;
+            }
+
+            montoDisplay.textContent =
+                monto.toLocaleString(
+                    "es-PE",
+                    {
+                        minimumFractionDigits: 0,
+                        maximumFractionDigits: 0
+                    }
+                );
+
+            teaDisplay.textContent =
+                (tea * 100).toFixed(2)
+                + "%";
+
+            temDisplay.textContent =
+                (tem * 100).toFixed(4)
+                + "%";
+
+            fechaPagoDisplay.textContent =
+                primeraFecha.toLocaleDateString(
+                    "es-PE"
+                );
+
+            cuotaDisplay.textContent =
+                "S/ "
+                + cuota.toFixed(2);
+
+            actualizarRiesgo(
+                rds,
+                ingresos
+            );
+
+            capacidadDisplay.classList.remove(
+                "capacidad-positiva",
+                "capacidad-negativa"
+            );
+
+            if (datosFinancierosInvalidos) {
+
+                capacidadDisplay.textContent =
+                    "Sin calcular";
+
+            } else {
+
+                capacidadDisplay.textContent =
+                    "S/ "
+                    + capacidadDisponible.toFixed(2);
+
+                capacidadDisplay.classList.add(
+                    capacidadDisponible >= 0
+                        ? "capacidad-positiva"
+                        : "capacidad-negativa"
+                );
+            }
+        }
+
+        if (
+            montoRange
+            && cuotasSelect
+            && diaPagoSelect
+        ) {
+
+            montoRange.addEventListener(
+                "input",
+                calcularCredito
+            );
+
+            cuotasSelect.addEventListener(
+                "change",
+                calcularCredito
+            );
+
+            diaPagoSelect.addEventListener(
+                "change",
+                calcularCredito
+            );
+
+            ingresosInput?.addEventListener(
+                "input",
+                calcularCredito
+            );
+
+            gastosInput?.addEventListener(
+                "input",
+                calcularCredito
+            );
+
+            seguros.forEach(
+                function (seguro) {
+
+                    seguro.addEventListener(
+                        "change",
+                        calcularCredito
+                    );
+                }
+            );
+
+            calcularCredito();
+        }
+
+        window.setTimeout(
+            function () {
+
+                const mensajeExito =
+                    document.getElementById(
+                        "mensajeExito"
+                    );
+
+                const mensajeError =
+                    document.getElementById(
+                        "mensajeError"
+                    );
+
+                if (mensajeExito) {
+                    mensajeExito.style.display =
+                        "none";
+                }
+
+                if (mensajeError) {
+                    mensajeError.style.display =
+                        "none";
+                }
+            },
+            5000
+        );
+    }
+);

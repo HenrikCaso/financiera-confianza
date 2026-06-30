@@ -15,15 +15,15 @@
         <a th:href="@{/dashboard}"><img th:src="@{/img/logos/logo-financiera2.png}" alt="Logo"></a>
     </div>
     <nav class="sidebar-nav">
-        <a th:href="@{/dashboard}" class="nav-item"><i class="fas fa-home"></i> Posición Global</a>
+        <a th:href="@{/dashboard}" class="nav-item"><i class="fas fa-home"></i> Posici&oacute;n Global</a>
         <a th:href="@{/transferencias}" class="nav-item"><i class="fas fa-exchange-alt"></i> Transferencias</a>
         <a th:href="@{/servicios}" class="nav-item"><i class="fas fa-file-invoice-dollar"></i> Pago de Servicios</a>
         <a th:href="@{/tarjetas}" class="nav-item active"><i class="fas fa-credit-card"></i> Tarjetas</a>
-        <a th:href="@{/prestamos}" class="nav-item"><i class="fas fa-piggy-bank"></i> Mis Préstamos</a>
+        <a th:href="@{/prestamos}" class="nav-item"><i class="fas fa-piggy-bank"></i> Mis Pr&eacute;stamos</a>
         <a th:href="@{/perfil}" class="nav-item"><i class="fas fa-user-cog"></i> Mi Perfil</a>
     </nav>
     <div class="sidebar-logout">
-        <a th:href="@{/logout}" class="nav-item text-danger"><i class="fas fa-sign-out-alt"></i> Cerrar Sesión</a>
+        <a th:href="@{/logout}" class="nav-item text-danger"><i class="fas fa-sign-out-alt"></i> Cerrar Sesi&oacute;n</a>
     </div>
 </aside>
 
@@ -31,78 +31,174 @@
     <header class="topbar">
         <div class="welcome-text">
             <h2>Mis Tarjetas</h2>
-            <p>Gestiona la seguridad de tus productos físicos</p>
+            <p>Gestiona la seguridad y los productos asociados a tus tarjetas</p>
         </div>
     </header>
 
     <div class="cards-container">
         <div th:if="${exito}" class="alert alert-success"><i class="fas fa-check-circle"></i> <span th:text="${exito}"></span></div>
         <div th:if="${alerta}" class="alert alert-warning"><i class="fas fa-lock"></i> <span th:text="${alerta}"></span></div>
+        <div th:if="${error}" class="alert alert-error"><i class="fas fa-exclamation-triangle"></i> <span th:text="${error}"></span></div>
 
-        <div class="card-management-wrapper">
-            <div class="credit-card" th:classappend="${usuario.tarjetaBloqueada} ? 'card-locked' : ''">
-                <div class="card-chip"><i class="fas fa-sim-card"></i></div>
-                <div class="card-logo"><i class="fab fa-cc-visa"></i></div>
-                <div class="card-number">
-                    <span>****</span> <span>****</span> <span>****</span>
-                    <span th:text="${usuario.numDoc.length() >= 4 ? usuario.numDoc.substring(usuario.numDoc.length() - 4) : '1234'}">1234</span>
-                </div>
-                <div class="card-details">
-                    <div class="card-holder">
-                        <span class="label">TITULAR</span>
-                        <span class="name" th:text="${#strings.substringBefore(usuario.correo, '@')}">CLIENTE</span>
+        <section class="tarjetas-layout" aria-label="Resumen de tarjetas">
+            <article class="tarjeta-panel">
+                <div class="section-heading">
+                    <div>
+                        <p class="section-eyebrow">Producto activo</p>
+                        <h3>Tarjeta D&eacute;bito Confianza</h3>
                     </div>
-                    <div class="card-expires">
-                        <span class="label">VENCE</span>
-                        <span class="date">12/29</span>
+                    <span class="status-pill status-active"
+                          th:classappend="${usuario.bloqueoDefinitivo} ? ' status-blocked' : (${usuario.tarjetaBloqueada} ? ' status-off' : '')"
+                          th:text="${usuario.bloqueoDefinitivo} ? 'Bloqueada' : (${usuario.tarjetaBloqueada} ? 'Apagada' : 'Activa')">
+                        Activa
+                    </span>
+                </div>
+
+                <div class="debit-card" th:classappend="${usuario.tarjetaBloqueada} ? ' card-locked' : ''">
+                    <div class="card-topline">
+                        <div class="card-chip"><i class="fas fa-sim-card"></i></div>
+                        <div class="card-brand">
+                            <span>Visa</span>
+                            <i class="fab fa-cc-visa"></i>
+                        </div>
+                    </div>
+
+                    <div class="card-title">Tarjeta D&eacute;bito Confianza</div>
+
+                    <div class="card-number">
+                        <span>****</span>
+                        <span>****</span>
+                        <span>****</span>
+                        <span th:text="${usuario.numDoc != null && usuario.numDoc.length() >= 4 ? usuario.numDoc.substring(usuario.numDoc.length() - 4) : '1234'}">1234</span>
+                    </div>
+
+                    <div class="card-details">
+                        <div>
+                            <span class="label">TITULAR</span>
+                            <span class="name"
+                                  th:text="${!#strings.isEmpty(usuario.nombres) ? usuario.nombres + ' ' + (!#strings.isEmpty(usuario.apellidos) ? usuario.apellidos : '') : #strings.substringBefore(usuario.correo, '@')}">
+                                CLIENTE
+                            </span>
+                        </div>
+                        <div>
+                            <span class="label">VENCE</span>
+                            <span class="date">12/29</span>
+                        </div>
+                    </div>
+
+                    <div th:if="${usuario.tarjetaBloqueada}" class="locked-watermark">
+                        <i class="fas fa-lock"></i>
+                        <span th:text="${usuario.bloqueoDefinitivo} ? 'BLOQUEADA' : 'APAGADA'">BLOQUEADA</span>
                     </div>
                 </div>
-                <div th:if="${usuario.tarjetaBloqueada}" class="locked-watermark">
-                    <i class="fas fa-lock"></i> BLOQUEADA
+
+                <div class="card-summary-grid">
+                    <div class="summary-item">
+                        <span>Estado</span>
+                        <strong th:text="${usuario.bloqueoDefinitivo} ? 'Bloqueada definitivamente' : (${usuario.tarjetaBloqueada} ? 'Apagada temporalmente' : 'Activa para operaciones')">Activa</strong>
+                    </div>
+                    <div class="summary-item">
+                        <span>N&uacute;mero</span>
+                        <strong>
+                            **** **** ****
+                            <span th:text="${usuario.numDoc != null && usuario.numDoc.length() >= 4 ? usuario.numDoc.substring(usuario.numDoc.length() - 4) : '1234'}">1234</span>
+                        </strong>
+                    </div>
+                    <div class="summary-item">
+                        <span>Marca</span>
+                        <strong>Visa D&eacute;bito</strong>
+                    </div>
                 </div>
-            </div>
+            </article>
 
-            <div class="security-controls card">
-                <h3>Seguridad de la Tarjeta</h3>
-
-                <div th:if="${usuario.bloqueoDefinitivo}" style="text-align: center; padding: 20px; background-color: #fef2f2; border: 2px dashed #dc2626; border-radius: 8px;">
-                    <i class="fas fa-ban" style="font-size: 40px; color: #dc2626; margin-bottom: 15px;"></i>
-                    <h4 style="color: #991b1b; margin-top: 0;">BLOQUEO DEFINITIVO ACTIVO</h4>
-                    <p style="font-size: 14px; color: #7f1d1d; margin-bottom: 0;">Has reportado esta tarjeta como robada o extraviada. Por tu seguridad, los controles han sido inhabilitados. Acércate a una agencia para emitir un nuevo plástico.</p>
+            <aside class="security-controls">
+                <div class="section-heading">
+                    <div>
+                        <p class="section-eyebrow">Controles</p>
+                        <h3>Seguridad de la tarjeta</h3>
+                    </div>
                 </div>
 
-                <div th:unless="${usuario.bloqueoDefinitivo}">
+                <div th:if="${usuario.bloqueoDefinitivo}" class="definitive-lock-box">
+                    <i class="fas fa-ban"></i>
+                    <h4>Bloqueo definitivo activo</h4>
+                    <p>Has reportado esta tarjeta como robada o extraviada. Por seguridad, los controles han sido inhabilitados. Ac&eacute;rcate a una agencia para emitir un nuevo pl&aacute;stico.</p>
+                </div>
 
-                    <div class="control-row" style="border-bottom: 1px solid #e2e8f0; padding-bottom: 15px; margin-bottom: 15px;">
+                <div th:unless="${usuario.bloqueoDefinitivo}" class="security-list">
+                    <div class="control-row">
                         <div class="control-text">
-                            <strong>Apagar Temporalmente</strong>
-                            <p style="font-size: 12px; color: #64748b;">Congela tus fondos temporalmente. Puedes revertirlo cuando quieras.</p>
+                            <strong>Apagar temporalmente</strong>
+                            <p>Congela el uso de tu tarjeta. Puedes revertirlo cuando quieras.</p>
                         </div>
                         <form th:action="@{/tarjetas/toggle}" method="POST" id="formToggle">
-                            <label class="switch">
+                            <label class="switch" for="toggleSeguridad">
                                 <input type="checkbox" id="toggleSeguridad" th:checked="${usuario.tarjetaBloqueada}">
                                 <span class="slider round"></span>
                             </label>
                         </form>
                     </div>
 
-                    <div class="control-row">
+                    <div class="control-row warning-row">
                         <div class="control-text">
-                            <strong style="color: #dc2626;"><i class="fas fa-exclamation-triangle"></i> Reportar Robo o Extravío</strong>
-                            <p style="font-size: 12px; color: #64748b;">Desactiva la tarjeta de forma permanente. No podrás revertir esta acción.</p>
+                            <strong><i class="fas fa-exclamation-triangle"></i> Reportar robo o extrav&iacute;o</strong>
+                            <p>Si perdiste tu tarjeta, bloqu&eacute;ala definitivamente. Esta acci&oacute;n no se revierte desde la banca web.</p>
                         </div>
-                        <form th:action="@{/tarjetas/bloqueo-definitivo}" method="POST" onsubmit="return confirm('¿Estás SEGURO de reportar tu tarjeta como robada? Esta acción no se puede deshacer desde la aplicación.');">
-                            <button type="submit" style="background-color: #dc2626; color: white; border: none; padding: 8px 15px; border-radius: 6px; cursor: pointer; font-weight: bold; font-size: 13px;">
-                                Bloquear Definitivamente
-                            </button>
-                        </form>
                     </div>
 
+                    <form th:action="@{/tarjetas/bloqueo-definitivo}" method="POST" data-confirm-definitive>
+                        <button type="submit" class="danger-button">Bloquear definitivamente</button>
+                    </form>
+                </div>
+            </aside>
+        </section>
+
+        <section class="available-products" aria-labelledby="otros-productos-title">
+            <div class="section-heading">
+                <div>
+                    <p class="section-eyebrow">Explora opciones</p>
+                    <h3 id="otros-productos-title">Otros productos disponibles</h3>
                 </div>
             </div>
-        </div>
+
+            <div class="product-grid">
+                <article class="product-card">
+                    <div class="product-icon"><i class="fas fa-credit-card"></i></div>
+                    <div class="product-content">
+                        <span class="product-status">No contratada</span>
+                        <h4>Tarjeta de Cr&eacute;dito Confianza</h4>
+                        <p>Una alternativa para compras planificadas y emergencias.</p>
+                        <button type="button" data-card-product-button>Solicitar</button>
+                    </div>
+                </article>
+
+                <article class="product-card">
+                    <div class="product-icon"><i class="fas fa-mobile-alt"></i></div>
+                    <div class="product-content">
+                        <span class="product-status">Pr&oacute;ximamente</span>
+                        <h4>Tarjeta Virtual</h4>
+                        <p>Compra en internet con mayor control y seguridad digital.</p>
+                        <button type="button" data-card-product-button>Ver m&aacute;s</button>
+                    </div>
+                </article>
+
+                <article class="product-card">
+                    <div class="product-icon"><i class="fas fa-user-plus"></i></div>
+                    <div class="product-content">
+                        <span class="product-status">Disponible en agencia</span>
+                        <h4>Tarjeta adicional</h4>
+                        <p>Solicita una tarjeta adicional para tus necesidades familiares.</p>
+                        <button type="button" data-card-product-button>Consultar</button>
+                    </div>
+                </article>
+            </div>
+        </section>
     </div>
 </main>
+
+<div class="tarjetas-toast" role="status" aria-live="polite" data-card-toast>
+    Producto pr&oacute;ximamente disponible.
+</div>
 
 <script th:src="@{/js/tarjetas.js}"></script>
 </body>

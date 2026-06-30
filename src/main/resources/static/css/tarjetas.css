@@ -1,70 +1,482 @@
-/* tarjetas.css - Diseño de Tarjeta y Toggle */
-
-.cards-container { padding: 40px; max-width: 800px; margin: 0 auto; }
-
-/* --- DISEÑO DE LA TARJETA --- */
-.credit-card {
-    background: linear-gradient(135deg, #004b87 0%, #00a4e4 100%);
-    color: white;
-    width: 380px;
-    height: 240px;
-    border-radius: 20px;
-    padding: 25px;
-    box-shadow: 0 15px 25px rgba(0, 0, 0, 0.2);
-    position: relative;
-    overflow: hidden;
-    margin: 0 auto 30px auto;
-    transition: filter 0.3s ease;
+.cards-container {
+    max-width: 1180px;
+    margin: 0 auto;
+    padding: 40px;
 }
 
-.card-locked { filter: grayscale(80%) brightness(70%); } /* Se pone gris si está bloqueada */
+.tarjetas-layout {
+    display: grid;
+    grid-template-columns: minmax(0, 1.15fr) minmax(320px, 0.85fr);
+    gap: 28px;
+}
 
-.card-chip { font-size: 35px; color: #ffd700; margin-bottom: 30px; transform: rotate(90deg); display: inline-block; }
-.card-logo { position: absolute; top: 25px; right: 25px; font-size: 40px; }
+.tarjeta-panel,
+.security-controls,
+.available-products {
+    background: white;
+    border: 1px solid #e2e8f0;
+    border-radius: 8px;
+    box-shadow: 0 12px 26px rgba(15, 23, 42, 0.06);
+    padding: 26px;
+}
 
-.card-number { font-size: 24px; font-family: monospace; letter-spacing: 2px; margin-bottom: 30px; display: flex; gap: 15px; }
+.available-products {
+    margin-top: 28px;
+}
 
-.card-details { display: flex; justify-content: space-between; }
-.label { display: block; font-size: 10px; opacity: 0.7; margin-bottom: 5px; }
-.name { font-size: 16px; text-transform: uppercase; font-weight: bold; letter-spacing: 1px; }
-.date { font-size: 16px; font-family: monospace; }
+.section-heading {
+    align-items: flex-start;
+    display: flex;
+    justify-content: space-between;
+    gap: 16px;
+    margin-bottom: 20px;
+}
+
+.section-heading h3 {
+    color: #0f172a;
+    font-size: 20px;
+    margin: 0;
+}
+
+.section-eyebrow {
+    color: #00a4e4;
+    font-size: 12px;
+    font-weight: 800;
+    letter-spacing: 0;
+    margin: 0 0 6px;
+    text-transform: uppercase;
+}
+
+.status-pill {
+    border-radius: 999px;
+    display: inline-flex;
+    flex-shrink: 0;
+    font-size: 12px;
+    font-weight: 800;
+    padding: 7px 12px;
+}
+
+.status-active {
+    background: #dcfce7;
+    color: #166534;
+}
+
+.status-off {
+    background: #fef3c7;
+    color: #92400e;
+}
+
+.status-blocked {
+    background: #fee2e2;
+    color: #991b1b;
+}
+
+.debit-card {
+    background:
+        radial-gradient(circle at 88% 15%, rgba(255, 255, 255, 0.24), transparent 28%),
+        linear-gradient(135deg, #004b87 0%, #00a4e4 100%);
+    border-radius: 20px;
+    box-shadow: 0 18px 32px rgba(0, 75, 135, 0.25);
+    color: white;
+    max-width: 440px;
+    min-height: 260px;
+    overflow: hidden;
+    padding: 26px;
+    position: relative;
+    transition: filter 0.3s ease, opacity 0.3s ease;
+}
+
+.debit-card.card-locked {
+    filter: grayscale(80%) brightness(74%);
+}
+
+.card-topline,
+.card-details {
+    align-items: center;
+    display: flex;
+    justify-content: space-between;
+    gap: 18px;
+}
+
+.card-chip {
+    color: #facc15;
+    display: inline-block;
+    font-size: 36px;
+    transform: rotate(90deg);
+}
+
+.card-brand {
+    align-items: center;
+    display: flex;
+    gap: 8px;
+    font-weight: 800;
+    text-transform: uppercase;
+}
+
+.card-brand i {
+    font-size: 34px;
+}
+
+.card-title {
+    font-size: 15px;
+    font-weight: 700;
+    margin-top: 28px;
+    opacity: 0.9;
+}
+
+.card-number {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 14px;
+    font-family: Consolas, "Courier New", monospace;
+    font-size: 24px;
+    letter-spacing: 2px;
+    margin: 24px 0 28px;
+}
+
+.label {
+    display: block;
+    font-size: 10px;
+    letter-spacing: 1px;
+    margin-bottom: 6px;
+    opacity: 0.72;
+}
+
+.name {
+    display: block;
+    font-size: 14px;
+    font-weight: 800;
+    letter-spacing: 1px;
+    max-width: 250px;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    text-transform: uppercase;
+    white-space: nowrap;
+}
+
+.date {
+    font-family: Consolas, "Courier New", monospace;
+    font-size: 16px;
+    font-weight: 800;
+}
 
 .locked-watermark {
-    position: absolute; top: 50%; left: 50%;
-    transform: translate(-50%, -50%) rotate(-25deg);
-    font-size: 35px; font-weight: bold; color: rgba(255, 0, 0, 0.8);
-    border: 4px solid rgba(255, 0, 0, 0.8);
-    padding: 10px 20px; border-radius: 10px; text-align: center;
+    align-items: center;
+    border: 4px solid rgba(255, 255, 255, 0.88);
+    border-radius: 10px;
+    color: white;
+    display: flex;
+    font-size: 26px;
+    font-weight: 900;
+    gap: 10px;
+    left: 50%;
+    padding: 10px 18px;
+    position: absolute;
+    top: 50%;
+    transform: translate(-50%, -50%) rotate(-18deg);
 }
 
-/* --- CONTROLES Y TOGGLE SWITCH --- */
-.security-controls { padding: 25px; }
-.control-row { display: flex; justify-content: space-between; align-items: center; border-top: 1px solid #eee; padding-top: 15px; margin-top: 15px; }
-.control-text strong { color: #333; font-size: 16px; }
-.control-text p { color: #777; font-size: 13px; margin-top: 5px; margin-bottom: 0; }
+.card-summary-grid {
+    display: grid;
+    gap: 14px;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    margin-top: 22px;
+}
 
-/* El Switch estilo iOS */
-.switch { position: relative; display: inline-block; width: 50px; height: 28px; }
-.switch input { opacity: 0; width: 0; height: 0; }
-.slider { position: absolute; cursor: pointer; top: 0; left: 0; right: 0; bottom: 0; background-color: #ccc; transition: .4s; }
-.slider:before { position: absolute; content: ""; height: 20px; width: 20px; left: 4px; bottom: 4px; background-color: white; transition: .4s; }
-input:checked + .slider { background-color: #f44336; } /* Rojo al bloquear */
-input:focus + .slider { box-shadow: 0 0 1px #f44336; }
-input:checked + .slider:before { transform: translateX(22px); }
-.slider.round { border-radius: 34px; }
-.slider.round:before { border-radius: 50%; }
+.summary-item {
+    background: #f8fafc;
+    border: 1px solid #e2e8f0;
+    border-radius: 8px;
+    padding: 14px;
+}
 
-/* Alerta amarilla */
-.alert-warning { background-color: #fff3cd; border: 1px solid #ffe69c; color: #856404; }
+.summary-item span {
+    color: #64748b;
+    display: block;
+    font-size: 12px;
+    margin-bottom: 6px;
+}
 
-/* Mensaje de inhabilitación permanente */
-.locked-status-message {
-    background-color: #fde8e8;
-    color: #9b1c1c;
-    padding: 10px 15px;
-    border-radius: 6px;
+.summary-item strong {
+    color: #0f172a;
+    display: block;
     font-size: 13px;
-    font-weight: bold;
-    text-align: right;
-    border: 1px solid #f8b4b4;
+    line-height: 1.35;
+}
+
+.security-list {
+    display: grid;
+    gap: 18px;
+}
+
+.control-row {
+    align-items: center;
+    border-bottom: 1px solid #e2e8f0;
+    display: flex;
+    gap: 18px;
+    justify-content: space-between;
+    padding-bottom: 18px;
+}
+
+.warning-row {
+    border-bottom: 0;
+    padding-bottom: 0;
+}
+
+.control-text strong {
+    color: #1e293b;
+    font-size: 15px;
+}
+
+.warning-row .control-text strong {
+    color: #dc2626;
+}
+
+.control-text p {
+    color: #64748b;
+    font-size: 13px;
+    line-height: 1.45;
+    margin: 6px 0 0;
+}
+
+.switch {
+    display: inline-block;
+    height: 28px;
+    position: relative;
+    width: 50px;
+}
+
+.switch input {
+    height: 0;
+    opacity: 0;
+    width: 0;
+}
+
+.slider {
+    background-color: #16a34a;
+    bottom: 0;
+    cursor: pointer;
+    left: 0;
+    position: absolute;
+    right: 0;
+    top: 0;
+    transition: 0.3s;
+}
+
+.slider:before {
+    background-color: white;
+    bottom: 4px;
+    content: "";
+    height: 20px;
+    left: 4px;
+    position: absolute;
+    transition: 0.3s;
+    width: 20px;
+}
+
+input:checked + .slider {
+    background-color: #dc2626;
+}
+
+input:checked + .slider:before {
+    transform: translateX(22px);
+}
+
+.slider.round {
+    border-radius: 34px;
+}
+
+.slider.round:before {
+    border-radius: 50%;
+}
+
+.danger-button {
+    background: #dc2626;
+    border: 0;
+    border-radius: 6px;
+    color: white;
+    cursor: pointer;
+    font: inherit;
+    font-size: 13px;
+    font-weight: 800;
+    min-height: 40px;
+    padding: 10px 15px;
+}
+
+.danger-button:hover {
+    background: #b91c1c;
+}
+
+.definitive-lock-box {
+    background: #fef2f2;
+    border: 2px dashed #dc2626;
+    border-radius: 8px;
+    color: #7f1d1d;
+    padding: 22px;
+    text-align: center;
+}
+
+.definitive-lock-box i {
+    color: #dc2626;
+    font-size: 40px;
+    margin-bottom: 14px;
+}
+
+.definitive-lock-box h4 {
+    color: #991b1b;
+    margin: 0 0 10px;
+    text-transform: uppercase;
+}
+
+.definitive-lock-box p {
+    font-size: 14px;
+    line-height: 1.5;
+    margin: 0;
+}
+
+.product-grid {
+    display: grid;
+    gap: 18px;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+}
+
+.product-card {
+    background: #f8fafc;
+    border: 1px solid #e2e8f0;
+    border-radius: 8px;
+    display: grid;
+    gap: 16px;
+    grid-template-columns: 54px 1fr;
+    padding: 20px;
+}
+
+.product-icon {
+    align-items: center;
+    background: #e0f2fe;
+    border-radius: 8px;
+    color: #004b87;
+    display: flex;
+    height: 54px;
+    justify-content: center;
+    width: 54px;
+}
+
+.product-icon i {
+    font-size: 23px;
+}
+
+.product-status {
+    color: #64748b;
+    display: block;
+    font-size: 12px;
+    font-weight: 800;
+    margin-bottom: 8px;
+    text-transform: uppercase;
+}
+
+.product-content h4 {
+    color: #0f172a;
+    font-size: 17px;
+    margin: 0 0 8px;
+}
+
+.product-content p {
+    color: #64748b;
+    font-size: 13px;
+    line-height: 1.5;
+    margin: 0 0 14px;
+}
+
+.product-content button {
+    background: #00a4e4;
+    border: 0;
+    border-radius: 6px;
+    color: white;
+    cursor: pointer;
+    font: inherit;
+    font-size: 13px;
+    font-weight: 800;
+    min-height: 38px;
+    padding: 9px 14px;
+}
+
+.product-content button:hover {
+    background: #008cc2;
+}
+
+.alert-warning {
+    background-color: #fff3cd;
+    border: 1px solid #ffe69c;
+    color: #856404;
+}
+
+.tarjetas-toast {
+    background: #004b87;
+    border-radius: 8px;
+    bottom: 24px;
+    box-shadow: 0 16px 28px rgba(15, 23, 42, 0.2);
+    color: white;
+    font-size: 14px;
+    font-weight: 800;
+    opacity: 0;
+    padding: 14px 18px;
+    pointer-events: none;
+    position: fixed;
+    right: 24px;
+    transform: translateY(12px);
+    transition: opacity 0.2s, transform 0.2s;
+    z-index: 20;
+}
+
+.tarjetas-toast.visible {
+    opacity: 1;
+    transform: translateY(0);
+}
+
+@media (max-width: 1040px) {
+    .tarjetas-layout,
+    .product-grid {
+        grid-template-columns: 1fr;
+    }
+}
+
+@media (max-width: 720px) {
+    .cards-container {
+        padding: 24px;
+    }
+
+    .card-summary-grid {
+        grid-template-columns: 1fr;
+    }
+
+    .control-row {
+        align-items: flex-start;
+        flex-direction: column;
+    }
+
+    .debit-card {
+        min-height: 250px;
+    }
+}
+
+@media (max-width: 520px) {
+    .debit-card {
+        padding: 22px;
+    }
+
+    .card-number {
+        font-size: 19px;
+        gap: 10px;
+    }
+
+    .product-card {
+        grid-template-columns: 1fr;
+    }
+
+    .tarjetas-toast {
+        bottom: 16px;
+        left: 16px;
+        right: 16px;
+        text-align: center;
+    }
 }

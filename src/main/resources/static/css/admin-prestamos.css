@@ -11,99 +11,6 @@ body.admin-body {
 }
 
 /* ==============================================================
-   BARRA LATERAL (SIDEBAR EN AZUL CORPORATIVO)
-   ============================================================== */
-.sidebar {
-    width: 260px;
-    min-width: 260px;
-    background-color: #004b87; /* Color azul original de la financiera */
-    color: white;
-    display: flex;
-    flex-direction: column;
-    box-sizing: border-box;
-}
-
-.sidebar-header {
-    padding: 24px 20px;
-    border-bottom: 1px solid rgba(255, 255, 255, 0.1);
-}
-
-.sidebar-header h2 {
-    margin: 0;
-    font-size: 20px;
-    font-weight: bold;
-    color: white;
-}
-
-.sidebar-header p {
-    margin: 5px 0 0 0;
-    font-size: 12px;
-    opacity: 0.8;
-    color: white;
-}
-
-.sidebar-menu {
-    list-style: none; /* Quitamos los puntitos de la lista */
-    padding: 0;
-    margin: 20px 0 0 0;
-    flex-grow: 1;
-}
-
-.sidebar-menu li {
-    margin: 4px 0;
-}
-
-.sidebar-menu li a {
-    display: flex;
-    align-items: center;
-    padding: 14px 20px;
-    color: rgba(255, 255, 255, 0.8);
-    text-decoration: none; /* Quitamos el subrayado azul/púrpura de los links */
-    font-size: 14px;
-    font-weight: 500;
-    transition: all 0.2s ease;
-}
-
-.sidebar-menu li a:hover {
-    background-color: rgba(255, 255, 255, 0.05);
-    color: white;
-}
-
-.sidebar-menu li.active {
-    background-color: rgba(255, 255, 255, 0.1); /* Resaltado de la opción actual */
-}
-
-.sidebar-menu li.active a {
-    color: white;
-    font-weight: 600;
-}
-
-.icon-fixed {
-    width: 24px;
-    font-size: 16px;
-    margin-right: 12px;
-}
-
-.sidebar-footer {
-    padding: 20px;
-    border-top: 1px solid rgba(255, 255, 255, 0.1);
-}
-
-.logout-link {
-    color: #fca5a5;
-    text-decoration: none;
-    display: flex;
-    align-items: center;
-    gap: 10px;
-    font-size: 14px;
-    font-weight: 500;
-}
-
-.logout-link:hover {
-    color: #ef4444;
-}
-
-/* ==============================================================
    CONTENIDO PRINCIPAL Y TABLA DE CRÉDITOS
    ============================================================== */
 .admin-main {
@@ -181,25 +88,166 @@ body.admin-body {
     margin: 0;
 }
 
-.btn-aprobar {
-    background-color: #16a34a;
-    color: white;
-    padding: 8px 16px;
-    border: none;
-    border-radius: 4px;
-    cursor: pointer;
-    font-weight: 600;
-    font-size: 13px;
-    transition: background-color 0.2s;
-}
-
-.btn-aprobar:hover {
-    background-color: #15803d;
-}
-
 .empty-state {
     text-align: center;
     padding: 40px !important;
     color: #94a3b8;
     font-size: 14px;
+}
+
+.inline-form {
+    margin: 0;
+    display: inline-flex;
+}
+
+.badge-etapa {
+    padding: 6px 12px;
+    border-radius: 999px;
+    font-size: 12px;
+    font-weight: 800;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    white-space: nowrap;
+}
+
+.etapa-solicitado {
+    background: #e0f2fe;
+    color: #075985;
+}
+
+.etapa-riesgos {
+    background: #fef3c7;
+    color: #92400e;
+}
+
+.etapa-aprobada {
+    background: #dcfce7;
+    color: #166534;
+}
+
+.etapa-desembolsado {
+    background: #ede9fe;
+    color: #5b21b6;
+}
+
+.etapa-rechazada {
+    background: #fee2e2;
+    color: #991b1b;
+}
+
+/* =====================================================
+   BOTONES DE ACCIÓN - BANDEJA DE CRÉDITOS
+===================================================== */
+
+.table-core th:last-child,
+.table-core td:last-child {
+    width: 290px;
+    min-width: 290px;
+}
+
+.acciones-admin {
+    width: 100%;
+    display: grid !important;
+    grid-template-columns: 1fr 1fr;
+    gap: 8px;
+    align-items: center;
+}
+
+.acciones-admin .inline-form {
+    margin: 0 !important;
+    width: 100%;
+    display: block;
+}
+
+.acciones-admin button,
+.acciones-admin a {
+    width: 100% !important;
+    min-height: 36px;
+    border: none;
+    border-radius: 9px;
+    padding: 8px 10px;
+    font-size: 12px;
+    font-weight: 800;
+    cursor: pointer;
+    text-decoration: none;
+    display: flex !important;
+    align-items: center;
+    justify-content: center;
+    gap: 6px;
+    white-space: nowrap;
+    transition: 0.2s ease;
+}
+
+/* SOLICITADO:
+   [Enviar a riesgos] [Rechazar]
+   [     Ver detalle     ]
+*/
+.acciones-solicitado .btn-detalle {
+    grid-column: 1 / -1 !important;
+}
+
+/* EN RIESGOS:
+   [Aprobar] [Rechazar]
+   [     Ver detalle     ]
+*/
+.acciones-riesgos .btn-detalle {
+    grid-column: 1 / -1 !important;
+}
+
+/* APROBADA:
+   [Desembolsar] [Ver detalle]
+*/
+.acciones-aprobada {
+    grid-template-columns: 1fr 1fr;
+}
+
+.acciones-aprobada .btn-detalle {
+    grid-column: auto !important;
+}
+
+/* COLORES */
+.btn-riesgos {
+    background: #2563eb;
+    color: white;
+}
+
+.btn-riesgos:hover {
+    background: #1d4ed8;
+}
+
+.btn-aprobar {
+    background: #ca8a04;
+    color: white;
+}
+
+.btn-aprobar:hover {
+    background: #a16207;
+}
+
+.btn-rechazar {
+    background: #dc2626;
+    color: white;
+}
+
+.btn-rechazar:hover {
+    background: #b91c1c;
+}
+
+.btn-desembolsar {
+    background: #0891b2;
+    color: white;
+}
+
+.btn-desembolsar:hover {
+    background: #0e7490;
+}
+
+.btn-detalle {
+    background: #e0f2fe;
+    color: #075985;
+}
+
+.btn-detalle:hover {
+    background: #bae6fd;
 }

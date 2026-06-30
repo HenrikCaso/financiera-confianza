@@ -36,80 +36,1372 @@
     </header>
 
     <div class="loan-container">
-        <div class="card loan-simulator">
-            <h3 style="color: #004b87; border-bottom: 2px solid #e2e8f0; padding-bottom: 10px; margin-bottom: 20px;">
-                <i class="fas fa-calculator" style="margin-right: 8px;"></i> Simulador y Evaluación de Crédito
+
+        <!-- RESUMEN -->
+        <div class="card">
+
+            <h3>
+                <i class="fas fa-chart-pie"></i>
+                Resumen de Créditos
             </h3>
 
-            <form th:action="@{/prestamos/solicitar}" method="POST" class="loan-form">
+            <div class="resumen-grid">
+
+                <div class="resumen-item">
+                    <i class="fas fa-file-invoice-dollar"></i>
+                    <h4>Préstamos Registrados</h4>
+                    <p th:text="${solicitudes.size()}"></p>
+                </div>
+
+                <div class="resumen-item">
+                    <i class="fas fa-wallet"></i>
+                    <h4>Cuotas Pendientes</h4>
+                    <p th:text="${cuotasPendientes.size()}"></p>
+                </div>
+
+                <div class="resumen-item">
+                    <i class="fas fa-check-circle"></i>
+                    <h4>Estado General</h4>
+                    <p>Activo</p>
+                </div>
+
+            </div>
+
+        </div>
+
+        <!-- CRÉDITOS ACTIVOS AGRUPADOS -->
+        <div class="card cartera-creditos">
+
+            <div class="cartera-encabezado">
+
+                <div>
+                    <h3>
+                        <i class="fas fa-wallet"></i>
+                        Mis Créditos Activos
+                    </h3>
+
+                    <p>
+                        Cada préstamo muestra su propio cronograma
+                        y progreso de pago.
+                    </p>
+                </div>
+
+                <span class="contador-creditos"
+                      th:text="|${creditosResumen.size()} crédito(s)|">
+                    3 créditos
+                </span>
+            </div>
+
+            <!-- SIN CRÉDITOS ACTIVOS -->
+            <div th:if="${#lists.isEmpty(creditosResumen)}"
+                 class="sin-creditos-activos">
+
+                <i class="fas fa-circle-check"></i>
+
+                <div>
+                    <strong>No tienes créditos activos</strong>
+
+                    <span>
+                        Actualmente no mantienes cuotas pendientes.
+                    </span>
+                </div>
+            </div>
+
+            <!-- TARJETA POR CADA CRÉDITO -->
+            <section th:each="resumen, iterador : ${creditosResumen}"
+                     class="credito-card">
+
+                <button type="button"
+                        class="credito-toggle"
+                        th:attr="
+                            aria-controls=|credito-detalle-${resumen.credito.id}|,
+                            aria-expanded=${iterador.index == 0}
+                        ">
+
+                    <div class="credito-identificacion">
+
+                        <span class="credito-icono">
+                            <i class="fas fa-file-invoice-dollar"></i>
+                        </span>
+
+                        <div>
+                            <span class="credito-etiqueta">
+                                Crédito
+                            </span>
+
+                            <strong th:text="|#${resumen.credito.id}|">
+                                #15
+                            </strong>
+                        </div>
+                    </div>
+
+                    <div class="credito-resumen-cabecera">
+
+                        <div>
+                            <span>Monto original</span>
+
+                            <strong th:text="'S/ ' + ${#numbers.formatDecimal(
+                                    resumen.credito.monto,
+                                    1,
+                                    'DEFAULT',
+                                    2,
+                                    'DEFAULT'
+                            )}">
+                                S/ 1,000.00
+                            </strong>
+                        </div>
+
+                        <div>
+                            <span>Pagadas</span>
+
+                            <strong th:text="|${resumen.cuotasPagadas} de ${resumen.totalCuotas}|">
+                                1 de 12
+                            </strong>
+                        </div>
+
+                        <div>
+                            <span>Próxima cuota</span>
+
+                            <strong th:text="|N.° ${resumen.proximaCuota.numeroCuota}|">
+                                N.° 2
+                            </strong>
+                        </div>
+
+                        <div>
+                            <span>Total base pendiente</span>
+
+                            <strong th:text="'S/ ' + ${#numbers.formatDecimal(
+                                    resumen.totalBasePendiente,
+                                    1,
+                                    'DEFAULT',
+                                    2,
+                                    'DEFAULT'
+                            )}">
+                                S/ 0.00
+                            </strong>
+                        </div>
+                    </div>
+
+                    <span class="credito-estado">
+                        Activo
+                    </span>
+
+                    <i class="fas fa-chevron-down credito-flecha"></i>
+                </button>
+
+                <div class="credito-progreso">
+
+                    <div class="credito-progreso-texto">
+
+                        <span>Progreso del crédito</span>
+
+                        <strong th:text="|${resumen.porcentajePagado}%|">
+                            8%
+                        </strong>
+                    </div>
+
+                    <div class="barra-progreso">
+
+                        <span th:style="|width: ${resumen.porcentajePagado}%;|">
+                        </span>
+                    </div>
+                </div>
+
+                <div class="credito-detalle"
+                     th:id="|credito-detalle-${resumen.credito.id}|"
+                     th:classappend="${iterador.index != 0}
+                            ? ' credito-colapsado'
+                            : ''">
+                    <div class="tabla-credito-scroll">
+
+                        <table class="table-prestamos tabla-credito tabla-financiera-cliente tabla-compacta">
+
+                            <colgroup>
+                                <col class="ancho-cuota">
+                                <col class="ancho-saldo">
+                                <col class="ancho-composicion">
+                                <col class="ancho-pago">
+                                <col class="ancho-vencimiento">
+                                <col class="ancho-fecha-pago">
+                                <col class="ancho-estado">
+                                <col class="ancho-accion">
+                            </colgroup>
+
+                            <thead>
+                            <tr>
+                                <th>Cuota</th>
+                                <th>Saldo</th>
+                                <th>Composición</th>
+                                <th>Pago</th>
+                                <th>Vencimiento</th>
+                                <th>Fecha de pago</th>
+                                <th>Estado</th>
+                                <th>Acción</th>
+                            </tr>
+                            </thead>
+
+                            <tbody>
+
+                            <tr th:each="cuota : ${resumen.todasLasCuotas}"
+                                th:with="
+                                    registroMora=${morasPorCuota[cuota.id]},
+                                    interesMora=${registroMora != null
+                                                 and registroMora.interesMora != null
+                                                 and registroMora.diasAtraso != null
+                                                 and registroMora.diasAtraso > 0
+                                                 ? registroMora.interesMora
+                                                 : 0},
+                                    totalPagar=${cuota.montoCuota + interesMora},
+                                    creditoId=${cuota.solicitudCredito.id},
+                                    numeroPermitido=${primeraCuotaNumeroPorCredito[creditoId]}
+                                "
+                                th:classappend="${cuota.pagada}
+                                        ? ' cuota-pagada'
+                                        : (${cuotasPagablesIds.contains(cuota.id)}
+                                            ? ' cuota-habilitada'
+                                            : '')">
+
+                                <!-- CUOTA -->
+                                <td data-label="Cuota" class="celda-cuota">
+
+                                    <strong class="numero-cuota"
+                                            th:text="|N.° ${cuota.numeroCuota}|">
+                                        N.° 1
+                                    </strong>
+                                </td>
+
+                                <!-- SALDO INICIAL Y FINAL -->
+                                <td data-label="Saldo">
+
+                                    <div class="detalle-financiero">
+
+                                        <div class="detalle-fila">
+                                            <span class="detalle-etiqueta">Inicial</span>
+
+                                            <strong th:if="${cuota.saldoInicial != null}"
+                                                    class="detalle-valor"
+                                                    th:text="'S/ ' + ${#numbers.formatDecimal(
+                                                        cuota.saldoInicial,
+                                                        1,
+                                                        'DEFAULT',
+                                                        2,
+                                                        'DEFAULT'
+                                                    )}">
+                                                S/ 1,000.00
+                                            </strong>
+
+                                            <span th:unless="${cuota.saldoInicial != null}"
+                                                  class="dato-no-disponible">
+                                                —
+                                            </span>
+                                        </div>
+
+                                        <div class="detalle-fila">
+                                            <span class="detalle-etiqueta">Final</span>
+
+                                            <strong th:if="${cuota.saldoFinal != null}"
+                                                    class="detalle-valor"
+                                                    th:text="'S/ ' + ${#numbers.formatDecimal(
+                                                        cuota.saldoFinal,
+                                                        1,
+                                                        'DEFAULT',
+                                                        2,
+                                                        'DEFAULT'
+                                                    )}">
+                                                S/ 929.14
+                                            </strong>
+
+                                            <span th:unless="${cuota.saldoFinal != null}"
+                                                  class="dato-no-disponible">
+                                                —
+                                            </span>
+                                        </div>
+                                    </div>
+                                </td>
+
+                                <!-- CAPITAL E INTERÉS FINANCIERO -->
+                                <td data-label="Composición">
+
+                                    <div class="detalle-financiero">
+
+                                        <div class="detalle-fila">
+                                            <span class="detalle-etiqueta">Capital</span>
+
+                                            <strong th:if="${cuota.capital != null}"
+                                                    class="detalle-valor detalle-capital"
+                                                    th:text="'S/ ' + ${#numbers.formatDecimal(
+                                                        cuota.capital,
+                                                        1,
+                                                        'DEFAULT',
+                                                        2,
+                                                        'DEFAULT'
+                                                    )}">
+                                                S/ 70.86
+                                            </strong>
+
+                                            <span th:unless="${cuota.capital != null}"
+                                                  class="dato-no-disponible">
+                                                —
+                                            </span>
+                                        </div>
+
+                                        <div class="detalle-fila">
+                                            <span class="detalle-etiqueta">Interés</span>
+
+                                            <strong th:if="${cuota.interes != null}"
+                                                    class="detalle-valor detalle-interes-credito"
+                                                    th:text="'S/ ' + ${#numbers.formatDecimal(
+                                                        cuota.interes,
+                                                        1,
+                                                        'DEFAULT',
+                                                        2,
+                                                        'DEFAULT'
+                                                    )}">
+                                                S/ 29.00
+                                            </strong>
+
+                                            <span th:unless="${cuota.interes != null}"
+                                                  class="dato-no-disponible">
+                                                —
+                                            </span>
+                                        </div>
+                                    </div>
+                                </td>
+
+                                <!-- CUOTA BASE, MORA Y TOTAL -->
+                                <td data-label="Pago">
+
+                                    <div class="detalle-financiero">
+
+                                        <div class="detalle-fila">
+                                            <span class="detalle-etiqueta">Base</span>
+
+                                            <strong class="detalle-valor detalle-cuota-base"
+                                                    th:text="'S/ ' + ${#numbers.formatDecimal(
+                                                        cuota.montoCuota,
+                                                        1,
+                                                        'DEFAULT',
+                                                        2,
+                                                        'DEFAULT'
+                                                    )}">
+                                                S/ 99.86
+                                            </strong>
+                                        </div>
+
+                                        <div class="detalle-fila">
+                                            <span class="detalle-etiqueta">Mora</span>
+
+                                            <strong th:class="${interesMora > 0
+                                                        ? 'detalle-valor valor-mora-activa'
+                                                        : 'detalle-valor valor-mora-cero'}"
+                                                    th:text="'S/ ' + ${#numbers.formatDecimal(
+                                                        interesMora,
+                                                        1,
+                                                        'DEFAULT',
+                                                        2,
+                                                        'DEFAULT'
+                                                    )}">
+                                                S/ 0.00
+                                            </strong>
+                                        </div>
+
+                                        <div class="detalle-fila detalle-total">
+                                            <span class="detalle-etiqueta">Total</span>
+
+                                            <strong class="detalle-valor cliente-total-pagar"
+                                                    th:text="'S/ ' + ${#numbers.formatDecimal(
+                                                        totalPagar,
+                                                        1,
+                                                        'DEFAULT',
+                                                        2,
+                                                        'DEFAULT'
+                                                    )}">
+                                                S/ 99.86
+                                            </strong>
+                                        </div>
+                                    </div>
+                                </td>
+
+                                <!-- VENCIMIENTO -->
+                                <td data-label="Vencimiento"
+                                    th:text="${cuota.fechaVencimiento != null
+                                            ? #temporals.format(
+                                                cuota.fechaVencimiento,
+                                                'dd/MM/yyyy'
+                                            )
+                                            : '—'}">
+                                    10/07/2026
+                                </td>
+
+                                <!-- FECHA DE PAGO -->
+                                <td data-label="Fecha de pago">
+
+                                    <span th:if="${cuota.fechaPago != null}"
+                                          class="fecha-pago"
+                                          th:text="${#temporals.format(
+                                                cuota.fechaPago,
+                                                'dd/MM/yyyy'
+                                          )}">
+                                        20/06/2026
+                                    </span>
+
+                                    <span th:unless="${cuota.fechaPago != null}"
+                                          class="dato-no-disponible">
+                                        —
+                                    </span>
+                                </td>
+
+                                <!-- ESTADO -->
+                                <td data-label="Estado">
+
+                                    <span th:if="${cuota.pagada}"
+                                          class="estado-cuota estado-pagada">
+
+                                        <i class="fas fa-circle-check"></i>
+                                        Pagada
+                                    </span>
+
+                                    <span th:if="${!cuota.pagada and cuota.diasAtraso > 0}"
+                                          class="estado-cuota estado-vencida">
+
+                                        <i class="fas fa-triangle-exclamation"></i>
+
+                                        <span th:text="|Vencida - ${cuota.diasAtraso} día(s)|">
+                                            Vencida
+                                        </span>
+                                    </span>
+
+                                    <span th:if="${!cuota.pagada and cuota.diasAtraso == 0}"
+                                          class="estado-cuota estado-pendiente">
+
+                                        <i class="fas fa-clock"></i>
+                                        Pendiente
+                                    </span>
+                                </td>
+
+                                <!-- ACCIÓN -->
+                                <td data-label="Acción">
+
+                                    <span th:if="${cuota.pagada}"
+                                          class="pago-completado">
+
+                                        <i class="fas fa-check"></i>
+                                        Pago realizado
+                                    </span>
+
+                                    <form th:if="${!cuota.pagada
+                                            and cuotasPagablesIds.contains(cuota.id)}"
+                                          th:action="@{/prestamos/pagar-cuota}"
+                                          method="post"
+                                          class="form-pago-cuota"
+                                          th:attr="
+                                              data-total=${totalPagar},
+                                              data-cuota=${cuota.numeroCuota},
+                                              data-credito=${cuota.solicitudCredito.id}
+                                          "
+                                          onsubmit="return window.confirmarPago(this);">
+
+                                        <input type="hidden"
+                                               name="id"
+                                               th:value="${cuota.id}">
+
+                                        <button type="submit"
+                                                class="btn-pagar">
+
+                                            <i class="fas fa-money-bill-wave"></i>
+
+                                            <span th:text="'Pagar S/ ' + ${#numbers.formatDecimal(
+                                                    totalPagar,
+                                                    1,
+                                                    'DEFAULT',
+                                                    2,
+                                                    'DEFAULT'
+                                            )}">
+                                                Pagar
+                                            </span>
+                                        </button>
+                                    </form>
+
+                                    <span th:if="${!cuota.pagada
+                                            and !cuotasPagablesIds.contains(cuota.id)}"
+                                          class="pago-bloqueado">
+
+                                        <i class="fas fa-lock"></i>
+
+                                        <span>
+                                            Primero la cuota
+                                            <strong th:text="${numeroPermitido}">
+                                                1
+                                            </strong>
+                                        </span>
+                                    </span>
+                                </td>
+                            </tr>
+
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </section>
+        </div>
+
+        <!-- =====================================================
+         CRÉDITOS FINALIZADOS
+         ====================================== =============== -->
+        <div class="card cartera-creditos historial-creditos"
+             th:if="${!#lists.isEmpty(creditosFinalizadosResumen)}">
+
+            <div class="cartera-encabezado">
+
+                <div>
+                    <h3>
+                        <i class="fas fa-circle-check"></i>
+                        Mis Créditos Finalizados
+                    </h3>
+
+                    <p>
+                        Consulta los préstamos que ya fueron pagados
+                        completamente.
+                    </p>
+                </div>
+
+                <span class="contador-creditos contador-finalizados"
+                      th:text="|${cantidadCreditosFinalizados} finalizado(s)|">
+                    1 finalizado
+                </span>
+            </div>
+
+            <!-- TARJETA DE CADA CRÉDITO FINALIZADO -->
+            <section th:each="resumen : ${creditosFinalizadosResumen}"
+                     th:with="fechaFinalizacion=${fechasFinalizacionPorCredito[resumen.credito.id]}"
+                     class="credito-card credito-finalizado-card">
+
+                <button type="button"
+                        class="credito-toggle credito-toggle-finalizado"
+                        th:attr="
+                            aria-controls=|credito-finalizado-detalle-${resumen.credito.id}|,
+                            aria-expanded=false
+                        ">
+
+                    <!-- IDENTIFICACIÓN -->
+                    <div class="credito-identificacion">
+
+                        <span class="credito-icono credito-icono-finalizado">
+                            <i class="fas fa-file-circle-check"></i>
+                        </span>
+
+                        <div>
+                            <span class="credito-etiqueta">
+                                Crédito
+                            </span>
+
+                            <strong th:text="|#${resumen.credito.id}|">
+                                #15
+                            </strong>
+                        </div>
+                    </div>
+
+                    <!-- RESUMEN -->
+                    <div class="credito-resumen-cabecera">
+
+                        <div>
+                            <span>Monto original</span>
+
+                            <strong th:text="'S/ ' + ${#numbers.formatDecimal(
+                                    resumen.credito.monto,
+                                    1,
+                                    'DEFAULT',
+                                    2,
+                                    'DEFAULT'
+                            )}">
+                                S/ 1,000.00
+                            </strong>
+                        </div>
+
+                        <div>
+                            <span>Cuotas pagadas</span>
+
+                            <strong th:text="|${resumen.cuotasPagadas} de ${resumen.totalCuotas}|">
+                                12 de 12
+                            </strong>
+                        </div>
+
+                        <div>
+                            <span>Fecha de desembolso</span>
+
+                            <strong th:text="${resumen.credito.fechaDesembolso != null
+                                    ? #temporals.format(
+                                        resumen.credito.fechaDesembolso,
+                                        'dd/MM/yyyy HH:mm'
+                                      )
+                                    : 'No registrada'}">
+                                20/06/2026
+                            </strong>
+                        </div>
+
+                        <div>
+                            <span>Fecha de cancelación</span>
+
+                            <strong th:text="${fechaFinalizacion != null
+                                    ? #temporals.format(
+                                        fechaFinalizacion,
+                                        'dd/MM/yyyy HH:mm'
+                                      )
+                                    : 'No registrada'}">
+                                20/06/2026
+                            </strong>
+                        </div>
+                    </div>
+
+                    <span class="credito-estado credito-estado-finalizado">
+                        <i class="fas fa-check"></i>
+                        Cancelado
+                    </span>
+
+                    <i class="fas fa-chevron-down credito-flecha"></i>
+                </button>
+
+                <!-- PROGRESO COMPLETADO -->
+                <div class="credito-progreso credito-progreso-finalizado">
+
+                    <div class="credito-progreso-texto">
+
+                        <span>Progreso del crédito</span>
+
+                        <strong>100%</strong>
+                    </div>
+
+                    <div class="barra-progreso barra-progreso-finalizada">
+                        <span style="width: 100%;"></span>
+                    </div>
+                </div>
+
+                <!-- CRONOGRAMA COMPLETO -->
+                <div class="credito-detalle credito-colapsado"
+                     th:id="|credito-finalizado-detalle-${resumen.credito.id}|">
+
+                    <div class="tabla-credito-scroll">
+
+                        <table class="table-prestamos
+                                      tabla-credito
+                                      tabla-financiera-cliente
+                                      tabla-finalizados">
+
+                            <thead>
+                            <tr>
+                                <th>Cuota</th>
+                                <th>Saldo</th>
+                                <th>Composición</th>
+                                <th>Cuota base</th>
+                                <th>Vencimiento</th>
+                                <th>Fecha de pago</th>
+                                <th>Estado</th>
+                            </tr>
+                            </thead>
+
+                            <tbody>
+
+                            <tr th:each="cuota : ${resumen.todasLasCuotas}"
+                                class="cuota-finalizada">
+
+                                <!-- CUOTA -->
+                                <td data-label="Cuota"
+                                    class="celda-cuota">
+
+                                    <strong class="numero-cuota"
+                                            th:text="|N.° ${cuota.numeroCuota}|">
+                                        N.° 1
+                                    </strong>
+                                </td>
+
+                                <!-- SALDO -->
+                                <td data-label="Saldo">
+
+                                    <div class="detalle-financiero">
+
+                                        <div class="detalle-fila">
+
+                                                <span class="detalle-etiqueta">
+                                                    Inicial
+                                                </span>
+
+                                            <strong th:if="${cuota.saldoInicial != null}"
+                                                    class="detalle-valor"
+                                                    th:text="'S/ ' + ${#numbers.formatDecimal(
+                                                        cuota.saldoInicial,
+                                                        1,
+                                                        'DEFAULT',
+                                                        2,
+                                                        'DEFAULT'
+                                                    )}">
+                                                S/ 1,000.00
+                                            </strong>
+
+                                            <span th:unless="${cuota.saldoInicial != null}"
+                                                  class="dato-no-disponible">
+                                                —
+                                            </span>
+                                        </div>
+
+                                        <div class="detalle-fila">
+
+                                            <span class="detalle-etiqueta">
+                                                Final
+                                            </span>
+
+                                            <strong th:if="${cuota.saldoFinal != null}"
+                                                    class="detalle-valor"
+                                                    th:text="'S/ ' + ${#numbers.formatDecimal(
+                                                        cuota.saldoFinal,
+                                                        1,
+                                                        'DEFAULT',
+                                                        2,
+                                                        'DEFAULT'
+                                                    )}">
+                                                S/ 929.14
+                                            </strong>
+
+                                            <span th:unless="${cuota.saldoFinal != null}"
+                                                  class="dato-no-disponible">
+                                                —
+                                            </span>
+                                        </div>
+                                    </div>
+                                </td>
+
+                                <!-- COMPOSICIÓN -->
+                                <td data-label="Composición">
+
+                                    <div class="detalle-financiero">
+
+                                        <div class="detalle-fila">
+
+                                            <span class="detalle-etiqueta">
+                                                Capital
+                                            </span>
+
+                                            <strong th:if="${cuota.capital != null}"
+                                                    class="detalle-valor detalle-capital"
+                                                    th:text="'S/ ' + ${#numbers.formatDecimal(
+                                                        cuota.capital,
+                                                        1,
+                                                        'DEFAULT',
+                                                        2,
+                                                        'DEFAULT'
+                                                    )}">
+                                                S/ 70.86
+                                            </strong>
+
+                                            <span th:unless="${cuota.capital != null}"
+                                                  class="dato-no-disponible">
+                                                —
+                                            </span>
+                                        </div>
+
+                                        <div class="detalle-fila">
+
+                                            <span class="detalle-etiqueta">
+                                                Interés
+                                            </span>
+
+                                            <strong th:if="${cuota.interes != null}"
+                                                    class="detalle-valor detalle-interes-credito"
+                                                    th:text="'S/ ' + ${#numbers.formatDecimal(
+                                                        cuota.interes,
+                                                        1,
+                                                        'DEFAULT',
+                                                        2,
+                                                        'DEFAULT'
+                                                    )}">
+                                                S/ 29.00
+                                            </strong>
+
+                                            <span th:unless="${cuota.interes != null}"
+                                                  class="dato-no-disponible">
+                                                —
+                                            </span>
+                                        </div>
+                                    </div>
+                                </td>
+
+                                <!-- CUOTA BASE -->
+                                <td data-label="Cuota base">
+
+                                    <strong class="cliente-total-pagar"
+                                            th:text="'S/ ' + ${#numbers.formatDecimal(
+                                                cuota.montoCuota,
+                                                1,
+                                                'DEFAULT',
+                                                2,
+                                                'DEFAULT'
+                                            )}">
+                                        S/ 99.86
+                                    </strong>
+                                </td>
+
+                                <!-- VENCIMIENTO -->
+                                <td data-label="Vencimiento"
+                                    th:text="${cuota.fechaVencimiento != null
+                                            ? #temporals.format(
+                                                cuota.fechaVencimiento,
+                                                'dd/MM/yyyy'
+                                              )
+                                            : '—'}">
+                                    10/07/2026
+                                </td>
+
+                                <!-- FECHA DE PAGO -->
+                                <td data-label="Fecha de pago">
+
+                                    <span th:if="${cuota.fechaPago != null}"
+                                          class="fecha-pago"
+                                          th:text="${#temporals.format(
+                                                cuota.fechaPago,
+                                                'dd/MM/yyyy'
+                                          )}">
+                                        20/06/2026
+                                    </span>
+
+                                    <span th:unless="${cuota.fechaPago != null}"
+                                          class="dato-no-disponible">
+                                        —
+                                    </span>
+                                </td>
+
+                                <!-- ESTADO -->
+                                <td data-label="Estado">
+
+                                    <span class="estado-cuota estado-pagada">
+
+                                        <i class="fas fa-circle-check"></i>
+                                        Pagada
+                                    </span>
+                                </td>
+                            </tr>
+
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </section>
+        </div>
+
+        <!-- MENSAJES -->
+        <div th:if="${exito}" id="mensajeExito" class="toast-success">
+            <i class="fas fa-check-circle"></i>
+            <span th:text="${exito}"></span>
+        </div>
+
+        <div th:if="${error}" id="mensajeError" class="toast-error">
+            <i class="fas fa-times-circle"></i>
+            <span th:text="${error}"></span>
+        </div>
+
+        <!-- SIMULADOR -->
+        <div class="card loan-simulator">
+
+            <h3>
+                <i class="fas fa-calculator"></i>
+                Simulador y Evaluación de Crédito
+            </h3>
+
+            <div th:if="${!puedeSolicitarNuevoCredito}"
+                 class="bloqueo-prestamo">
+
+                <div class="bloqueo-icono">
+                    <i class="fas fa-lock"></i>
+                </div>
+
+                <div>
+                    <h4>Solicitud temporalmente bloqueada</h4>
+
+                    <p th:text="${motivoBloqueoSolicitud}">
+                        No puedes solicitar otro préstamo porque mantienes créditos activos.
+                    </p>
+
+                    <small th:if="${tieneSolicitudPendiente}">
+                        Espera a que el administrador evalúe tu solicitud actual.
+                    </small>
+
+                    <small th:unless="${tieneSolicitudPendiente}">
+                        Para solicitar un nuevo crédito, primero debes cancelar tus préstamos activos.
+                    </small>
+                </div>
+
+            </div>
+
+            <form th:action="@{/prestamos/solicitar}"
+                  method="POST"
+                  class="loan-form"
+                  id="loanForm">
 
                 <div class="form-section">
-                    <h4 class="section-title"><i class="fas fa-sliders-h"></i> 1. Parámetros del Crédito</h4>
 
                     <div class="form-group">
-                        <label>¿Cuánto dinero necesitas? (S/)</label>
-                        <input type="range" id="montoRange" name="monto" min="500" max="10000" step="100" value="1000" class="range-slider">
-                        <div class="range-value">Monto seleccionado: <span id="montoDisplay" style="color: #16a34a; font-weight: bold; font-size: 1.2em;">1000</span></div>
+
+                        <label for="montoRange">
+                            ¿Cuánto dinero necesitas?
+                        </label>
+
+                        <input type="range"
+                               id="montoRange"
+                               name="monto"
+                               min="500"
+                               max="30000"
+                               step="100"
+                               value="1000"
+                               th:disabled="${!puedeSolicitarNuevoCredito}">
+
+                        <div class="range-value">
+                            S/
+                            <span id="montoDisplay">1,000</span>
+                        </div>
+
+                        <small class="field-help">
+                            Monto permitido: S/ 500 hasta S/ 30,000.
+                        </small>
                     </div>
 
                     <div class="form-row">
+
                         <div class="form-group half-width">
-                            <label>Número de cuotas</label>
-                            <select class="form-control" name="cuotas" id="cuotasSelect">
-                                <option value="6">6 meses (TEA Preferencial)</option>
-                                <option value="12" selected>12 meses (TEA Estándar)</option>
-                                <option value="24">24 meses (TEA Extendida)</option>
+
+                            <label for="cuotasSelect">
+                                Número de cuotas
+                            </label>
+
+                            <select name="cuotas"
+                                    id="cuotasSelect"
+                                    class="form-control"
+                                    required
+                                    th:disabled="${!puedeSolicitarNuevoCredito}">
+
+                                <option value="6">6 meses</option>
+                                <option value="12" selected>12 meses</option>
+                                <option value="18">18 meses</option>
+                                <option value="24">24 meses</option>
+                                <option value="36">36 meses</option>
+
                             </select>
                         </div>
 
                         <div class="form-group half-width">
-                            <label>Día de pago mensual</label>
-                            <select class="form-control" name="diaPago" id="diaPagoSelect">
-                                <option value="15">Los días 15</option>
-                                <option value="30">Los días 30</option>
+
+                            <label for="diaPagoSelect">
+                                Día de pago
+                            </label>
+
+                            <select name="diaPago"
+                                    id="diaPagoSelect"
+                                    class="form-control"
+                                    required
+                                    th:disabled="${!puedeSolicitarNuevoCredito}">
+
+                                <option value="3">Día 3</option>
+                                <option value="5">Día 5</option>
+                                <option value="10" selected>Día 10</option>
+                                <option value="15">Día 15</option>
+
                             </select>
                         </div>
                     </div>
+
+                    <div class="form-group">
+
+                        <label>
+                            Seguro de desgravamen
+                        </label>
+
+                        <div class="insurance-options">
+
+                            <label class="insurance-option">
+
+                                <input type="radio"
+                                       name="tieneSeguro"
+                                       value="true"
+                                       checked
+                                       th:disabled="${!puedeSolicitarNuevoCredito}">
+
+                                <span class="insurance-content">
+                                    <strong>Con seguro</strong>
+                                    <small>TEA: 40.92 %</small>
+                                </span>
+
+                            </label>
+
+                            <label class="insurance-option">
+
+                                <input type="radio"
+                                       name="tieneSeguro"
+                                       value="false"
+                                       th:disabled="${!puedeSolicitarNuevoCredito}">
+
+                                <span class="insurance-content">
+                                    <strong>Sin seguro</strong>
+                                    <small>TEA: 43.92 %</small>
+                                </span>
+
+                            </label>
+                        </div>
+                    </div>
                 </div>
 
-                <div class="form-section" style="background-color: #f8fafc; padding: 20px; border-radius: 8px; margin-top: 20px; border: 1px solid #e2e8f0;">
-                    <h4 class="section-title" style="color: #475569;"><i class="fas fa-file-invoice-dollar"></i> 2. Tu Perfil Financiero</h4>
-                    <p style="font-size: 12px; color: #64748b; margin-top: -10px; margin-bottom: 15px;">Estos datos nos ayudan a evaluar tu capacidad de pago al instante.</p>
+                <div class="form-section">
+
+                    <h4 class="section-title">
+                        Información financiera
+                    </h4>
 
                     <div class="form-row">
+
                         <div class="form-group half-width">
-                            <label><i class="fas fa-arrow-down" style="color: #16a34a;"></i> Ingresos Mensuales Fijos</label>
+
+                            <label for="ingresosMensuales">
+                                Ingresos mensuales
+                            </label>
+
                             <div class="input-with-icon">
                                 <span>S/</span>
-                                <input type="number" name="ingresosMensuales" step="0.01" required class="form-control" placeholder="Ej. 2500.00">
+
+                                <input type="number"
+                                       id="ingresosMensuales"
+                                       name="ingresosMensuales"
+                                       min="1"
+                                       step="0.01"
+                                       placeholder="Ejemplo: 3000"
+                                       required
+                                       th:disabled="${!puedeSolicitarNuevoCredito}">
                             </div>
                         </div>
 
                         <div class="form-group half-width">
-                            <label><i class="fas fa-arrow-up" style="color: #e11d48;"></i> Gastos Mensuales Aprox.</label>
+
+                            <label for="gastosMensuales">
+                                Gastos mensuales
+                            </label>
+
                             <div class="input-with-icon">
                                 <span>S/</span>
-                                <input type="number" name="gastosMensuales" step="0.01" required class="form-control" placeholder="Ej. 1200.00">
+
+                                <input type="number"
+                                       id="gastosMensuales"
+                                       name="gastosMensuales"
+                                       min="0"
+                                       step="0.01"
+                                       placeholder="Ejemplo: 1000"
+                                       required
+                                       th:disabled="${!puedeSolicitarNuevoCredito}">
                             </div>
                         </div>
                     </div>
                 </div>
 
-                <div class="loan-summary" style="margin-top: 25px; border-left: 4px solid #004b87; background-color: #f0f7ff;">
-                    <div class="summary-item"><span>Tasa Efectiva Anual (TEA):</span> <strong id="teaDisplay">15.50%</strong></div>
-                    <div class="summary-item"><span>Primera cuota el:</span> <strong id="fechaPagoDisplay">--/--/----</strong></div>
-                    <div class="summary-item" style="font-size: 1.1em; border-top: 1px dashed #cbd5e1; padding-top: 10px; margin-top: 10px;">
-                        <span>Cuota Mensual Estimada:</span> <strong id="cuotaMensual" style="color: #004b87;">S/ 0.00</strong>
+                <div class="loan-summary">
+
+                    <div class="summary-item">
+                        <span>TEA aplicada</span>
+                        <strong id="teaDisplay">40.92%</strong>
+                    </div>
+
+                    <div class="summary-item">
+                        <span>TEM aplicada</span>
+                        <strong id="temDisplay">0.00%</strong>
+                    </div>
+
+                    <div class="summary-item">
+                        <span>Primer pago</span>
+                        <strong id="fechaPagoDisplay">
+                            -
+                        </strong>
+                    </div>
+
+                    <div class="summary-item">
+                        <span>Cuota estimada</span>
+                        <strong id="cuotaMensual">
+                            S/ 0.00
+                        </strong>
+                    </div>
+
+                    <div class="summary-item">
+                        <span>RDS estimado</span>
+
+                        <strong id="rdsDisplay"
+                                class="riesgo-badge riesgo-sin-calcular">
+                            Sin calcular
+                        </strong>
+                    </div>
+
+                    <div class="summary-item">
+                        <span>Capacidad disponible</span>
+
+                        <strong id="capacidadDisplay">
+                            S/ 0.00
+                        </strong>
                     </div>
                 </div>
 
-                <button type="submit" class="btn-loan" style="width: 100%; margin-top: 20px; font-size: 16px; padding: 15px;">
-                    <i class="fas fa-paper-plane"></i> Enviar Solicitud a Evaluación
+                <div class="risk-help">
+                    <i class="fas fa-circle-info"></i>
+
+                    <span>
+                Verde: hasta 30 %.
+                Amarillo: hasta 40 %.
+                Rojo: mayor a 40 %.
+            </span>
+                </div>
+
+                <button type="submit"
+                        class="btn-loan btn-solicitar-prestamo"
+                        th:disabled="${!puedeSolicitarNuevoCredito}">
+
+                    <i class="fas fa-paper-plane"></i>
+
+                    <span th:if="${puedeSolicitarNuevoCredito}">
+                        Enviar Solicitud
+                    </span>
+
+                    <span th:unless="${puedeSolicitarNuevoCredito}">
+                        Solicitud bloqueada
+                    </span>
+
                 </button>
             </form>
         </div>
+        <!-- HISTORIAL -->
+        <!-- =====================================================
+         MIS SOLICITUDES DE CRÉDITO
+         ===================================================== -->
+        <div class="card solicitudes-card"
+             th:if="${!#lists.isEmpty(solicitudes)}">
+
+            <div class="solicitudes-header">
+
+                <div>
+                    <h3>
+                        <i class="fas fa-clock-rotate-left"></i>
+                        Mis Solicitudes de Crédito
+                    </h3>
+
+                    <p>
+                        Revisa el estado, etapa y seguimiento de tus solicitudes.
+                    </p>
+                </div>
+
+                <span class="contador-solicitudes"
+                      th:text="|${#lists.size(solicitudes)} solicitud(es)|">
+                    3 solicitud(es)
+                </span>
+            </div>
+
+            <div class="tabla-solicitudes-contenedor">
+
+                <table class="tabla-solicitudes">
+
+                    <thead>
+                    <tr>
+                        <th>ID</th>
+                        <th>Monto</th>
+                        <th>Cuotas</th>
+                        <th>Estado</th>
+                        <th>Etapa</th>
+                        <th>Solicitud</th>
+                        <th>Aprobación</th>
+                        <th>Desembolso</th>
+                        <th>Seguimiento</th>
+                    </tr>
+                    </thead>
+
+                    <tbody>
+
+                    <tr th:each="s : ${solicitudes}">
+
+                        <!-- ID -->
+                        <td data-label="ID">
+
+                            <span class="solicitud-id"
+                                  th:text="|#${s.id}|">
+                                #15
+                            </span>
+                        </td>
+
+                        <!-- MONTO -->
+                        <td data-label="Monto">
+
+                            <strong th:text="'S/ ' + ${#numbers.formatDecimal(
+                                    s.monto,
+                                    1,
+                                    'DEFAULT',
+                                    2,
+                                    'DEFAULT'
+                            )}">
+                                S/ 1,000.00
+                            </strong>
+                        </td>
+
+                        <!-- CUOTAS -->
+                        <td data-label="Cuotas">
+
+                            <span class="solicitud-cuotas"
+                                  th:text="|${s.cuotas} cuotas|">
+                                12 cuotas
+                            </span>
+                        </td>
+
+                        <!-- ESTADO -->
+                        <td data-label="Estado">
+
+                            <span th:if="${s.estado == 'PENDIENTE'}"
+                                  class="estado-solicitud estado-pendiente">
+                                <i class="fas fa-clock"></i>
+                                Pendiente
+                            </span>
+
+                            <span th:if="${s.estado == 'APROBADA'}"
+                                  class="estado-solicitud estado-aprobada">
+                                <i class="fas fa-check-circle"></i>
+                                Aprobado
+                            </span>
+
+                            <span th:if="${s.estado == 'RECHAZADA'
+                                   or s.estado == 'RECHAZADO_RIESGO'}"
+                                  class="estado-solicitud estado-rechazada">
+                                <i class="fas fa-times-circle"></i>
+                                Rechazado
+                            </span>
+
+                            <span th:if="${s.estado == 'CANCELADO'}"
+                                  class="estado-solicitud estado-cancelado">
+                                <i class="fas fa-circle-check"></i>
+                                Cancelado
+                            </span>
+
+                            <span th:if="${s.estado == null
+                                           or (s.estado != 'PENDIENTE'
+                                           and s.estado != 'APROBADA'
+                                           and s.estado != 'RECHAZADA'
+                                           and s.estado != 'RECHAZADO_RIESGO'
+                                           and s.estado != 'CANCELADO')}"
+                                  class="estado-solicitud estado-desconocido"
+                                  th:text="${s.estado != null ? s.estado : 'Sin estado'}">
+                                Sin estado
+                            </span>
+
+                        </td>
+
+                        <!-- ETAPA -->
+                        <td data-label="Etapa">
+
+                            <span th:if="${s.etapa == 'SOLICITADO'}"
+                                  class="etapa-solicitud etapa-solicitado">
+                                <i class="fas fa-file-signature"></i>
+                                Solicitado
+                            </span>
+
+                            <span th:if="${s.etapa == 'EN_RIESGOS'}"
+                                  class="etapa-solicitud etapa-evaluacion">
+                                <i class="fas fa-magnifying-glass-chart"></i>
+                                Evaluación
+                            </span>
+
+                            <span th:if="${s.etapa == 'APROBADA'}"
+                                  class="etapa-solicitud etapa-aprobado">
+                                <i class="fas fa-check"></i>
+                                Aprobado
+                            </span>
+
+                            <span th:if="${s.etapa == 'DESEMBOLSADO'}"
+                                  class="etapa-solicitud etapa-desembolsado">
+                                <i class="fas fa-money-bill-transfer"></i>
+                                Desembolsado
+                            </span>
+
+                            <span th:if="${s.etapa == 'FINALIZADO'}"
+                                  class="etapa-solicitud etapa-finalizado">
+                                <i class="fas fa-flag-checkered"></i>
+                                Finalizado
+                            </span>
+
+                            <span th:if="${s.etapa == null
+                                           or (s.etapa != 'SOLICITADO'
+                                           and s.etapa != 'EN_RIESGOS'
+                                           and s.etapa != 'APROBADA'
+                                           and s.etapa != 'DESEMBOLSADO'
+                                           and s.etapa != 'FINALIZADO'
+                                           and s.etapa != 'RECHAZADA')}"
+                                  class="etapa-solicitud etapa-desconocida"
+                                  th:text="${s.etapa != null ? s.etapa : 'Sin etapa'}">
+                                Sin etapa
+                            </span>
+
+                        </td>
+
+                        <!-- FECHA SOLICITUD -->
+                        <td data-label="Solicitud">
+
+                                <span th:if="${s.fechaSolicitud != null}"
+                                      th:text="${#temporals.format(
+                                            s.fechaSolicitud,
+                                            'dd/MM/yyyy HH:mm'
+                                      )}">
+                                    20/06/2026 15:45
+                                </span>
+
+                            <span th:unless="${s.fechaSolicitud != null}"
+                                  class="dato-no-disponible">
+                                —
+                            </span>
+                        </td>
+
+                        <!-- FECHA APROBACIÓN -->
+                        <td data-label="Aprobación">
+
+                            <span th:if="${s.fechaAprobacion != null}"
+                                  th:text="${#temporals.format(
+                                        s.fechaAprobacion,
+                                        'dd/MM/yyyy HH:mm'
+                                  )}">
+                                20/06/2026 15:46
+                            </span>
+
+                            <span th:unless="${s.fechaAprobacion != null}"
+                                  class="dato-no-disponible">
+                                —
+                            </span>
+                        </td>
+
+                        <!-- FECHA DESEMBOLSO -->
+                        <td data-label="Desembolso">
+
+                            <span th:if="${s.fechaDesembolso != null}"
+                                  th:text="${#temporals.format(
+                                        s.fechaDesembolso,
+                                        'dd/MM/yyyy HH:mm'
+                                  )}">
+                                20/06/2026 15:46
+                            </span>
+
+                            <span th:unless="${s.fechaDesembolso != null}"
+                                  class="dato-no-disponible">
+                                —
+                            </span>
+                        </td>
+
+                        <!-- SEGUIMIENTO -->
+                        <td data-label="Seguimiento">
+
+                            <a th:href="@{/prestamos/seguimiento(id=${s.id})}"
+                               class="btn-seguimiento">
+                                <i class="fas fa-eye"></i>
+                                Ver
+                            </a>
+                        </td>
+                    </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
     </div>
 </main>
-<script th:src="@{/js/prestamos.js}"></script>
+<script th:src="@{/js/prestamos.js(v=5)}"></script>
 </body>
 </html>

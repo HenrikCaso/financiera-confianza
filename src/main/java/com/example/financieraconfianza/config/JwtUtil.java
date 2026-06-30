@@ -11,8 +11,11 @@ import java.util.Date;
 @Component
 public class JwtUtil {
 
-    // Genera una llave secreta criptográfica super segura (HS256)
-    private final Key key = Keys.secretKeyFor(SignatureAlgorithm.HS256);
+    private final String SECRET =
+            "FinancieraConfianza2026SuperClaveSegura123456";
+
+    private final Key key =
+            Keys.hmacShaKeyFor(SECRET.getBytes());
 
     // Tiempo de vida del token: 1 hora en milisegundos
     private final long EXPIRATION_TIME = 3600000;

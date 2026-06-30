@@ -64,6 +64,39 @@ public class Usuario {
     // Campo para diferenciar clientes de trabajadores del banco
     private String rol = "CLIENTE"; // Por defecto todos nacen como clientes
 
+    @Column(nullable = false)
+    private Boolean activo = true;
+
+    @Column(nullable = false)
+    private Integer intentosFallidos = 0;
+
+    @Column(nullable = false)
+    private Boolean sesionActiva = false;
+
+    public Boolean getActivo() {
+        return activo;
+    }
+
+    public void setActivo(Boolean activo) {
+        this.activo = activo;
+    }
+
+    public Integer getIntentosFallidos() {
+        return intentosFallidos;
+    }
+
+    public void setIntentosFallidos(Integer intentosFallidos) {
+        this.intentosFallidos = intentosFallidos;
+    }
+
+    public Boolean getSesionActiva() {
+        return sesionActiva;
+    }
+
+    public void setSesionActiva(Boolean sesionActiva) {
+        this.sesionActiva = sesionActiva;
+    }
+
     public String getRol() { return rol; }
     public void setRol(String rol) { this.rol = rol; }
 
@@ -76,5 +109,47 @@ public class Usuario {
 
     public void setBloqueoDefinitivo(Boolean bloqueoDefinitivo) {
         this.bloqueoDefinitivo = bloqueoDefinitivo;
+    }
+
+    @Column(length = 250)
+    private String direccion;
+
+    private String nombres;
+
+    private String apellidos;
+
+    public String getNombres() {
+        return nombres;
+    }
+
+    public void setNombres(String nombres) {
+        this.nombres = nombres;
+    }
+
+    public String getApellidos() {
+        return apellidos;
+    }
+
+    public void setApellidos(String apellidos) {
+        this.apellidos = apellidos;
+    }
+
+    public String getDireccion() {
+        return direccion;
+    }
+
+    public void setDireccion(String direccion) {
+        this.direccion = direccion;
+    }
+
+    @Column(name = "cambio_clave_obligatorio")
+    private Boolean cambioClaveObligatorio = false;
+
+    public Boolean getCambioClaveObligatorio() {
+        return cambioClaveObligatorio;
+    }
+
+    public void setCambioClaveObligatorio(Boolean cambioClaveObligatorio) {
+        this.cambioClaveObligatorio = cambioClaveObligatorio;
     }
 }

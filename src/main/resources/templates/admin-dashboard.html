@@ -1,0 +1,337 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Dashboard Administrativo</title>
+
+    <link rel="stylesheet" th:href="@{/css/admin-sidebar.css}">
+    <link rel="stylesheet" th:href="@{/css/admin-dashboard.css}">
+    <link rel="stylesheet" th:href="@{/css/admin-flash.css}">
+
+    <link rel="stylesheet"
+          href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+</head>
+<body>
+
+<aside class="sidebar">
+
+    <div class="sidebar-logo">
+        <img th:src="@{/img/logos/logo-financiera2.png}" alt="Logo">
+    </div>
+
+    <nav class="sidebar-nav"
+         th:with="rol=${session.adminLogueado != null && session.adminLogueado.rol != null
+            ? session.adminLogueado.rol
+            : ''}">
+
+        <a th:href="@{/admin/dashboard}"
+           th:if="${rol == 'ADMIN'}"
+           th:classappend="${activePage == 'dashboard'} ? 'active' : ''">
+            <i class="fas fa-chart-pie"></i>
+            Dashboard
+        </a>
+
+        <a th:href="@{/admin/prestamos}"
+           th:if="${rol == 'ADMIN'
+            or rol == 'ASESOR'
+            or rol == 'RIESGOS'
+            or rol == 'OPERACIONES'}"
+           th:classappend="${activePage == 'prestamos'} ? 'active' : ''">
+            <i class="fas fa-file-invoice-dollar"></i>
+            Evaluar Créditos
+        </a>
+
+        <a th:href="@{/admin/usuarios}"
+           th:if="${rol == 'ADMIN'}"
+           th:classappend="${activePage == 'usuarios'} ? 'active' : ''">
+            <i class="fas fa-users"></i>
+            Gestión de Usuarios
+        </a>
+
+        <a th:href="@{/admin/tarjetas}"
+           th:if="${rol == 'ADMIN'
+            or rol == 'OPERACIONES'}"
+           th:classappend="${activePage == 'tarjetas'} ? 'active' : ''">
+            <i class="fas fa-credit-card"></i>
+            Soporte Tarjetas
+        </a>
+
+        <a th:href="@{/admin/mora}"
+           th:if="${rol == 'ADMIN'
+            or rol == 'RECUPERACIONES'}"
+           th:classappend="${activePage == 'mora'} ? 'active' : ''">
+            <i class="fas fa-chart-line"></i>
+            Gestión de Mora
+        </a>
+
+        <a th:href="@{/admin/auditoria}"
+           th:if="${rol == 'ADMIN'
+            or rol == 'AUDITOR'}"
+           th:classappend="${activePage == 'auditoria'} ? 'active' : ''">
+            <i class="fas fa-shield-alt"></i>
+            Auditoría
+        </a>
+
+    </nav>
+
+    <div class="sidebar-footer">
+        <a th:href="@{/admin/logout}">
+            <i class="fas fa-sign-out-alt"></i>
+            Cerrar Sesión
+        </a>
+    </div>
+</aside>
+
+<main class="dashboard-content">
+
+    <section
+            id="adminDashboardData"
+            class="dashboard-data"
+            th:data-etapa-solicitado="${etapaSolicitado}"
+            th:data-etapa-riesgos="${etapaRiesgos}"
+            th:data-etapa-aprobada="${etapaAprobada}"
+            th:data-etapa-desembolsado="${etapaDesembolsado}"
+            th:data-etapa-finalizado="${etapaFinalizado}"
+            th:data-etapa-rechazada="${etapaRechazada}"
+            th:data-total-desembolsado="${montoTotalDesembolsado}"
+            th:data-total-pagado="${totalPagadoClientes}"
+            th:data-pendiente-cobrar="${montoPendienteCobrar}"
+            th:data-cartera-al-dia="${carteraAlDia}"
+            th:data-mora-temprana="${moraTemprana}"
+            th:data-mora-intermedia="${moraIntermedia}"
+            th:data-mora-critica="${moraCritica}">
+    </section>
+
+    <div class="dashboard-header">
+        <div>
+            <span class="dashboard-eyebrow">Panel gerencial</span>
+            <h1>Dashboard Administrativo</h1>
+            <p>Indicadores operativos y financieros de Financiera Confianza.</p>
+        </div>
+    </div>
+
+    <div class="flash-container">
+        <div th:if="${exito}" class="flash-message flash-success">
+            <i class="fas fa-check-circle"></i>
+            <span th:text="${exito}"></span>
+        </div>
+
+        <div th:if="${error}" class="flash-message flash-error">
+            <i class="fas fa-exclamation-triangle"></i>
+            <span th:text="${error}"></span>
+        </div>
+    </div>
+
+    <section class="kpi-grid">
+        <article class="kpi-card">
+            <span class="kpi-icon"><i class="fas fa-users"></i></span>
+            <p>Clientes registrados</p>
+            <strong th:text="${totalClientes}">0</strong>
+        </article>
+
+        <article class="kpi-card">
+            <span class="kpi-icon"><i class="fas fa-file-signature"></i></span>
+            <p>Solicitudes pendientes</p>
+            <strong th:text="${solicitudesPendientes}">0</strong>
+        </article>
+
+        <article class="kpi-card">
+            <span class="kpi-icon"><i class="fas fa-check-circle"></i></span>
+            <p>Créditos aprobados</p>
+            <strong th:text="${creditosAprobados}">0</strong>
+        </article>
+
+        <article class="kpi-card">
+            <span class="kpi-icon"><i class="fas fa-money-bill-transfer"></i></span>
+            <p>Créditos desembolsados</p>
+            <strong th:text="${creditosDesembolsados}">0</strong>
+        </article>
+
+        <article class="kpi-card">
+            <span class="kpi-icon"><i class="fas fa-flag-checkered"></i></span>
+            <p>Créditos finalizados</p>
+            <strong th:text="${creditosFinalizados}">0</strong>
+        </article>
+
+        <article class="kpi-card">
+            <span class="kpi-icon"><i class="fas fa-credit-card"></i></span>
+            <p>Tarjetas bloqueadas</p>
+            <strong th:text="${tarjetasBloqueadas}">0</strong>
+        </article>
+
+        <article class="kpi-card">
+            <span class="kpi-icon"><i class="fas fa-calendar-days"></i></span>
+            <p>Cuotas pendientes</p>
+            <strong th:text="${cuotasPendientes}">0</strong>
+        </article>
+
+        <article class="kpi-card kpi-alert">
+            <span class="kpi-icon"><i class="fas fa-triangle-exclamation"></i></span>
+            <p>Cuotas vencidas</p>
+            <strong th:text="${cuotasVencidas}">0</strong>
+        </article>
+
+        <article class="kpi-card kpi-money">
+            <span class="kpi-icon"><i class="fas fa-sack-dollar"></i></span>
+            <p>Monto total desembolsado</p>
+            <strong th:text="|S/ ${#numbers.formatDecimal(montoTotalDesembolsado, 1, 'DEFAULT', 2, 'DEFAULT')}|">
+                S/ 0.00
+            </strong>
+        </article>
+
+        <article class="kpi-card kpi-money">
+            <span class="kpi-icon"><i class="fas fa-hand-holding-dollar"></i></span>
+            <p>Monto pendiente por cobrar</p>
+            <strong th:text="|S/ ${#numbers.formatDecimal(montoPendienteCobrar, 1, 'DEFAULT', 2, 'DEFAULT')}|">
+                S/ 0.00
+            </strong>
+        </article>
+    </section>
+
+    <section class="chart-grid">
+        <article class="panel-card chart-card">
+            <div class="panel-heading">
+                <div>
+                    <h2>Solicitudes por etapa</h2>
+                    <p>Distribución del flujo de crédito.</p>
+                </div>
+                <i class="fas fa-chart-pie"></i>
+            </div>
+            <canvas id="solicitudesEtapaChart"></canvas>
+        </article>
+
+        <article class="panel-card chart-card">
+            <div class="panel-heading">
+                <div>
+                    <h2>Resumen financiero</h2>
+                    <p>Desembolsos, pagos y cartera por cobrar.</p>
+                </div>
+                <i class="fas fa-chart-column"></i>
+            </div>
+            <canvas id="financieroChart"></canvas>
+        </article>
+
+        <article class="panel-card chart-card">
+            <div class="panel-heading">
+                <div>
+                    <h2>Cartera de mora</h2>
+                    <p>Clasificación por días de atraso.</p>
+                </div>
+                <i class="fas fa-chart-line"></i>
+            </div>
+            <canvas id="moraChart"></canvas>
+        </article>
+    </section>
+
+    <section class="table-grid">
+        <article class="panel-card table-card">
+            <div class="panel-heading">
+                <div>
+                    <h2>Últimas solicitudes</h2>
+                    <p>Solicitudes de crédito registradas recientemente.</p>
+                </div>
+                <i class="fas fa-list-check"></i>
+            </div>
+
+            <div class="table-scroll">
+                <table>
+                    <thead>
+                    <tr>
+                        <th>ID</th>
+                        <th>Cliente</th>
+                        <th>Monto</th>
+                        <th>Estado</th>
+                        <th>Etapa</th>
+                        <th>Fecha</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    <tr th:if="${#lists.isEmpty(ultimasSolicitudes)}">
+                        <td colspan="6" class="empty-cell">Sin solicitudes registradas.</td>
+                    </tr>
+
+                    <tr th:each="s : ${ultimasSolicitudes}">
+                        <td th:text="|#${s.id}|">#1</td>
+                        <td>
+                            <span class="table-primary"
+                                  th:text="${s.usuario != null
+                                        ? ((s.usuario.nombres != null ? s.usuario.nombres : '') + ' ' + (s.usuario.apellidos != null ? s.usuario.apellidos : ''))
+                                        : 'Sin cliente'}">
+                                Cliente
+                            </span>
+                            <small th:if="${s.usuario != null}"
+                                   th:text="${s.usuario.numDoc}">
+                                DNI
+                            </small>
+                        </td>
+                        <td th:text="|S/ ${#numbers.formatDecimal(s.monto != null ? s.monto : 0, 1, 'DEFAULT', 2, 'DEFAULT')}|">
+                            S/ 0.00
+                        </td>
+                        <td>
+                            <span class="status-pill" th:text="${s.estado != null ? s.estado : 'SIN ESTADO'}">
+                                PENDIENTE
+                            </span>
+                        </td>
+                        <td>
+                            <span class="status-pill status-stage" th:text="${s.etapa != null ? s.etapa : 'SOLICITADO'}">
+                                SOLICITADO
+                            </span>
+                        </td>
+                        <td th:text="${s.fechaSolicitud != null ? #temporals.format(s.fechaSolicitud, 'dd/MM/yyyy HH:mm') : '-'}">
+                            -
+                        </td>
+                    </tr>
+                    </tbody>
+                </table>
+            </div>
+        </article>
+
+        <article class="panel-card table-card">
+            <div class="panel-heading">
+                <div>
+                    <h2>Actividad reciente</h2>
+                    <p>Últimos eventos registrados en auditoría.</p>
+                </div>
+                <i class="fas fa-clock-rotate-left"></i>
+            </div>
+
+            <div class="table-scroll">
+                <table>
+                    <thead>
+                    <tr>
+                        <th>Fecha</th>
+                        <th>Usuario</th>
+                        <th>Acción</th>
+                        <th>Detalle</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    <tr th:if="${#lists.isEmpty(actividadReciente)}">
+                        <td colspan="4" class="empty-cell">Sin actividad registrada.</td>
+                    </tr>
+
+                    <tr th:each="a : ${actividadReciente}">
+                        <td th:text="${a.fecha != null ? #temporals.format(a.fecha,'dd/MM/yyyy HH:mm') : '-'}">
+                            -
+                        </td>
+                        <td th:text="${a.usuario != null ? a.usuario : '-'}">Usuario</td>
+                        <td>
+                            <span class="status-pill" th:text="${a.accion != null ? a.accion : '-'}">
+                                ACCION
+                            </span>
+                        </td>
+                        <td class="detail-cell" th:text="${a.detalle != null ? a.detalle : '-'}">
+                            Detalle
+                        </td>
+                    </tr>
+                    </tbody>
+                </table>
+            </div>
+        </article>
+    </section>
+</main>
+<script th:src="@{/js/admin-dashboard.js}"></script>
+<script th:src="@{/js/admin-flash.js}"></script>
+</body>
+</html>

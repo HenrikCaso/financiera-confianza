@@ -1,182 +1,240 @@
-/* Variables de color basadas en Financiera Confianza */
-:root {
-    --azul-oscuro: #004b87;
-    --azul-claro: #4b81b8;
-    --blanco: #ffffff;
-    --gris-fondo: #f4f4f4;
-}
+    /* Variables de color basadas en Financiera Confianza */
+    :root {
+        --azul-oscuro: #004b87;
+        --azul-claro: #4b81b8;
+        --blanco: #ffffff;
+        --gris-fondo: #f4f4f4;
+    }
 
-body {
-    margin: 0;
-    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-}
+    body {
+        margin: 0;
+        font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    }
 
-.container {
-    max-width: 1200px;
-    margin: 0 auto;
-    padding: 0 15px;
-}
+    .container {
+        max-width: 1200px;
+        margin: 0 auto;
+        padding: 0 15px;
+    }
 
-/* Barra superior delgada */
-.top-bar {
-    background-color: var(--azul-oscuro);
-    padding: 5px 0;
-    font-size: 12px;
-}
+    /* Barra superior delgada */
+    .top-bar {
+        background-color: var(--azul-oscuro);
+        padding: 5px 0;
+        font-size: 12px;
+    }
 
-.top-bar-content {
-    display: flex;
-    justify-content: flex-end;
-    gap: 20px;
-}
+    .top-bar-content {
+        display: flex;
+        justify-content: flex-end;
+        gap: 20px;
+    }
 
-.top-bar-content a {
-    color: var(--blanco);
-    text-decoration: none;
-}
+    .top-bar-content a {
+        color: var(--blanco);
+        text-decoration: none;
+    }
 
-/* Barra principal */
-.main-nav {
-    background-color: var(--azul-claro);
-    padding: 15px 0;
-}
+    /* Barra principal */
+    .main-nav {
+        background-color: var(--azul-claro);
+        padding: 15px 0;
+    }
 
-.nav-content {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-}
+    .nav-content {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        gap: 18px;
+        flex-wrap: nowrap;
+    }
 
-.logo img {
-    height: 50px; /* Ajusta según el tamaño de tu imagen */
-}
+    .logo img {
+        height: 50px; /* Ajusta según el tamaño de tu imagen */
+    }
 
 
-/* Enlaces del menú */
-.nav-links {
-    list-style: none;
-    display: flex;
-    gap: 25px;
-    margin: 0;
-    padding: 0;
-}
+    /* Enlaces del menú */
+    .nav-links {
+        list-style: none;
+        display: flex;
+        gap: 25px;
+        margin: 0;
+        padding: 0;
+        flex-wrap: nowrap;
+    }
 
-.nav-links a {
-    color: var(--blanco);
-    text-decoration: none;
-    font-weight: 500;
-    font-size: 15px;
-}
+    .nav-links a {
+        color: var(--blanco);
+        text-decoration: none;
+        font-weight: 500;
+        font-size: 15px;
+    }
 
-/* Botones de acción */
-.nav-buttons {
-    display: flex;
-    gap: 10px;
-}
+    /* Botones de acción */
+    .nav-buttons {
+        display: flex;
+        align-items: center;
+        gap: 10px;
+        flex-shrink: 0;
+    }
 
-.btn-outline {
-    border: 2px solid var(--blanco);
-    background-color: transparent;
-    color: var(--blanco);
-    padding: 8px 15px;
-    text-decoration: none;
-    font-size: 12px;
-    font-weight: bold;
-    border-radius: 4px;
-    transition: background-color 0.3s;
-}
+    .btn-outline {
+        border: 2px solid var(--blanco);
+        background-color: transparent;
+        color: var(--blanco);
+        padding: 8px 15px;
+        text-decoration: none;
+        font-size: 12px;
+        font-weight: bold;
+        border-radius: 4px;
+        transition: background-color 0.3s;
+    }
 
-.btn-outline:hover {
-    background-color: var(--blanco);
-    color: var(--azul-claro);
-}
+    .btn-outline:hover {
+        background-color: var(--blanco);
+        color: var(--azul-claro);
+    }
 
-/* =========================================
-   MENÚS DESPLEGABLES (DROPDOWNS)
-   ========================================= */
+    .nav-button-dropdown {
+        position: relative;
+    }
 
-.nav-item {
-    position: relative;
-    padding: 15px 0; /* Aumenta el área interactiva */
-}
+    .nav-button-menu {
+        display: none;
+        position: absolute;
+        top: 100%;
+        right: 0;
+        background-color: #f8f9fa;
+        min-width: 220px;
+        box-shadow: 0 8px 16px rgba(0,0,0,0.2);
+        padding: 0;
+        margin: 0;
+        list-style: none;
+        z-index: 1002;
+    }
 
-.icon-small {
-    font-size: 10px;
-    margin-left: 5px;
-}
+    .nav-button-dropdown:hover .nav-button-menu,
+    .nav-button-dropdown:focus-within .nav-button-menu {
+        display: block;
+    }
 
-/* Primer Nivel del Menú Desplegable */
-.dropdown-menu {
-    display: none; /* Oculto por defecto */
-    position: absolute;
-    top: 100%; /* Justo debajo del texto principal */
-    left: 0;
-    background-color: #f8f9fa; /* Fondo gris muy clarito como en las fotos */
-    min-width: 200px;
-    box-shadow: 0 8px 16px rgba(0,0,0,0.2);
-    padding: 0;
-    margin: 0;
-    list-style: none;
-    z-index: 1000;
-}
+    .nav-button-menu li {
+        border-bottom: 1px solid #e9ecef;
+    }
 
-/* Mostrar menú al pasar el mouse */
-.dropdown:hover .dropdown-menu {
-    display: block;
-}
+    .nav-button-menu a {
+        color: #333333;
+        display: block;
+        font-size: 14px;
+        font-weight: normal;
+        padding: 12px 18px;
+        text-decoration: none;
+    }
 
-.dropdown-menu li {
-    position: relative;
-    border-bottom: 1px solid #e9ecef;
-}
+    .nav-button-menu a:hover {
+        background-color: #005a9e;
+        color: #ffffff;
+    }
 
-.dropdown-menu li a {
-    color: #333333; /* Texto oscuro */
-    padding: 12px 20px;
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    font-size: 14px;
-    font-weight: normal;
-}
+    /* =========================================
+       MENÚS DESPLEGABLES (DROPDOWNS)
+       ========================================= */
 
-/* Efecto hover en el primer nivel (Fondo azul oscuro, texto blanco) */
-.dropdown-menu li:hover > a {
-    background-color: #005a9e;
-    color: #ffffff;
-}
+    .nav-item {
+        position: relative;
+        padding: 15px 0; /* Aumenta el área interactiva */
+    }
 
-.arrow-right {
-    color: #cccccc;
-    font-size: 12px;
-}
+    .icon-small {
+        font-size: 10px;
+        margin-left: 5px;
+    }
 
-.dropdown-menu li:hover > a .arrow-right {
-    color: #ffffff; /* La flechita se vuelve blanca al pasar el mouse */
-}
+    /* Primer Nivel del Menú Desplegable */
+    .dropdown-menu {
+        display: none; /* Oculto por defecto */
+        position: absolute;
+        top: 100%; /* Justo debajo del texto principal */
+        left: 0;
+        background-color: #f8f9fa; /* Fondo gris muy clarito como en las fotos */
+        min-width: 200px;
+        box-shadow: 0 8px 16px rgba(0,0,0,0.2);
+        padding: 0;
+        margin: 0;
+        list-style: none;
+        z-index: 1000;
+    }
 
-/* Segundo Nivel (Submenú) */
-.dropdown-menu-sub {
-    display: none; /* Oculto por defecto */
-    position: absolute;
-    top: 0; /* A la misma altura que su padre */
-    left: 100%; /* A la derecha del menú padre */
-    background-color: #f8f9fa;
-    min-width: 260px;
-    box-shadow: 0 8px 16px rgba(0,0,0,0.2);
-    padding: 0;
-    margin: 0;
-    list-style: none;
-    z-index: 1001;
-}
+    /* Mostrar menú al pasar el mouse */
+    .dropdown:hover .dropdown-menu {
+        display: block;
+    }
 
-/* Mostrar submenú al pasar el mouse sobre la opción */
-.dropdown-submenu:hover .dropdown-menu-sub {
-    display: block;
-}
+    .dropdown-menu li {
+        position: relative;
+        border-bottom: 1px solid #e9ecef;
+    }
 
-/* Efecto hover en el segundo nivel */
-.dropdown-menu-sub li:hover > a {
-    background-color: #e9ecef; /* Fondo gris un poquito más oscuro */
-    color: #005a9e; /* Texto azul */
-}
+    .dropdown-menu li a {
+        color: #333333; /* Texto oscuro */
+        padding: 12px 20px;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        font-size: 14px;
+        font-weight: normal;
+    }
+
+    /* Efecto hover en el primer nivel (Fondo azul oscuro, texto blanco) */
+    .dropdown-menu li:hover > a {
+        background-color: #005a9e;
+        color: #ffffff;
+    }
+
+    .arrow-right {
+        color: #cccccc;
+        font-size: 12px;
+    }
+
+    .dropdown-menu li:hover > a .arrow-right {
+        color: #ffffff; /* La flechita se vuelve blanca al pasar el mouse */
+    }
+
+    /* Segundo Nivel (Submenú) */
+    .dropdown-menu-sub {
+        display: none; /* Oculto por defecto */
+        position: absolute;
+        top: 0; /* A la misma altura que su padre */
+        left: 100%; /* A la derecha del menú padre */
+        background-color: #f8f9fa;
+        min-width: 260px;
+        box-shadow: 0 8px 16px rgba(0,0,0,0.2);
+        padding: 0;
+        margin: 0;
+        list-style: none;
+        z-index: 1001;
+    }
+
+    /* Mostrar submenú al pasar el mouse sobre la opción */
+    .dropdown-submenu:hover .dropdown-menu-sub {
+        display: block;
+    }
+
+    /* Efecto hover en el segundo nivel */
+    .dropdown-menu-sub li:hover > a {
+        background-color: #e9ecef; /* Fondo gris un poquito más oscuro */
+        color: #005a9e; /* Texto azul */
+    }
+
+    @media (max-width: 1100px) {
+        .nav-content {
+            align-items: flex-start;
+            flex-direction: column;
+        }
+
+        .nav-links,
+        .nav-buttons {
+            flex-wrap: wrap;
+        }
+    }

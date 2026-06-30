@@ -7,6 +7,12 @@ document.addEventListener('DOMContentLoaded', function() {
             window.location.reload();
         }
     });
+
+    document.querySelectorAll('[data-dashboard-coming-soon]').forEach(function (elemento) {
+        elemento.addEventListener('click', function () {
+            alert('Función próximamente disponible');
+        });
+    });
 }); // <--- AQUÍ CIERRA EL EVENT LISTENER
 
 // LA FUNCIÓN DEBE ESTAR AFUERA, EN EL ENTORNO GLOBAL

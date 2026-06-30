@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Cuenta de Ahorro Confianza | Financiera Confianza</title>
+    <link rel="stylesheet" th:href="@{/css/style.css}">
+    <link rel="stylesheet" th:href="@{/css/navbar.css}">
+    <link rel="stylesheet" th:href="@{/css/footer.css}">
+    <link rel="stylesheet" th:href="@{/css/productos.css}">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+</head>
+<body class="productos-page">
+<div th:replace="~{fragments/header :: navbar}"></div>
+
+<main>
+    <section class="producto-hero hero-ahorros">
+        <div class="container producto-hero-grid">
+            <div class="producto-hero-copy">
+                <p class="producto-eyebrow">Productos para ti</p>
+                <h1>Cuenta de Ahorro Confianza</h1>
+                <p>Abre tu cuenta de ahorro y administra tu dinero de forma simple, segura y digital.</p>
+                <a href="#contacto" class="producto-primary-btn">Solicitar informaci&oacute;n</a>
+            </div>
+            <div class="producto-hero-card" aria-hidden="true">
+                <i class="fas fa-piggy-bank"></i>
+                <span>Ahorra con confianza</span>
+            </div>
+        </div>
+    </section>
+
+    <section class="producto-content">
+        <div class="container producto-layout">
+            <div class="producto-main">
+                <section class="producto-section">
+                    <h2>Beneficios</h2>
+                    <div class="benefit-grid">
+                        <article class="benefit-card"><i class="fas fa-check-circle"></i><span>Cero costo de mantenimiento</span></article>
+                        <article class="benefit-card"><i class="fas fa-shield-alt"></i><span>Operaciones simples y seguras</span></article>
+                        <article class="benefit-card"><i class="fas fa-list-alt"></i><span>Consulta de saldo y movimientos</span></article>
+                        <article class="benefit-card"><i class="fas fa-laptop"></i><span>Acceso desde la banca por internet</span></article>
+                    </div>
+                </section>
+
+                <section class="producto-section requisitos-card">
+                    <h2>Requisitos b&aacute;sicos</h2>
+                    <ul>
+                        <li>Documento de identidad vigente.</li>
+                        <li>N&uacute;mero de celular y correo de contacto.</li>
+                        <li>Datos personales actualizados.</li>
+                    </ul>
+                </section>
+            </div>
+
+            <aside id="contacto" class="contact-card">
+                <h2>Solicita informaci&oacute;n</h2>
+                <p>Completa tus datos y un asesor se comunicar&aacute; contigo pronto.</p>
+                <form class="producto-form" data-product-form>
+                    <label for="tipoDocAhorros">Tipo de documento</label>
+                    <select id="tipoDocAhorros" name="tipoDoc" required>
+                        <option value="">Selecciona</option>
+                        <option value="DNI">DNI</option>
+                        <option value="CE">Carn&eacute; de Extranjer&iacute;a</option>
+                    </select>
+
+                    <label for="numDocAhorros">N&uacute;mero de documento</label>
+                    <input id="numDocAhorros" type="text" name="numDoc" autocomplete="off" required>
+
+                    <label for="celularAhorros">Celular</label>
+                    <input id="celularAhorros" type="tel" name="celular" inputmode="numeric" pattern="[0-9]{9}" maxlength="9" autocomplete="tel" required>
+
+                    <label for="correoAhorros">Correo</label>
+                    <input id="correoAhorros" type="email" name="correo" autocomplete="email" required>
+
+                    <button type="submit">Enviar solicitud</button>
+                </form>
+            </aside>
+        </div>
+    </section>
+</main>
+
+<div class="producto-toast" data-product-toast role="status" aria-live="polite">
+    Solicitud recibida. Un asesor se comunicar&aacute; contigo pronto.
+</div>
+
+<div th:replace="~{fragments/footer :: footer}"></div>
+<script th:src="@{/js/productos.js}"></script>
+</body>
+</html>

@@ -1,0 +1,351 @@
+<!DOCTYPE html>
+<html lang="es" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Detalle Usuario</title>
+
+    <link rel="stylesheet" th:href="@{/css/admin-sidebar.css}">
+    <link rel="stylesheet" th:href="@{/css/admin-detalle-usuario.css}">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
+</head>
+<body>
+
+<aside class="sidebar">
+    <div class="sidebar-logo">
+        <img th:src="@{/img/logos/logo-financiera2.png}" alt="Logo">
+    </div>
+
+    <nav class="sidebar-nav"
+         th:with="rol=${session.adminLogueado != null && session.adminLogueado.rol != null
+            ? session.adminLogueado.rol
+            : ''}">
+
+        <!-- DASHBOARD: solo ADMIN -->
+        <a th:href="@{/admin/dashboard}"
+           th:if="${rol == 'ADMIN'}"
+           th:classappend="${activePage == 'dashboard'} ? 'active' : ''">
+            <i class="fas fa-chart-pie"></i>
+            Dashboard
+        </a>
+
+        <!-- EVALUAR CRÉDITOS: ADMIN, ASESOR, RIESGOS, OPERACIONES -->
+        <a th:href="@{/admin/prestamos}"
+           th:if="${rol == 'ADMIN'
+            or rol == 'ASESOR'
+            or rol == 'RIESGOS'
+            or rol == 'OPERACIONES'}"
+           th:classappend="${activePage == 'prestamos'} ? 'active' : ''">
+            <i class="fas fa-file-invoice-dollar"></i>
+            Evaluar Créditos
+        </a>
+
+        <!-- USUARIOS: solo ADMIN -->
+        <a th:href="@{/admin/usuarios}"
+           th:if="${rol == 'ADMIN'}"
+           th:classappend="${activePage == 'usuarios'} ? 'active' : ''">
+            <i class="fas fa-users"></i>
+            Gestión de Usuarios
+        </a>
+
+        <!-- TARJETAS: ADMIN y OPERACIONES -->
+        <a th:href="@{/admin/tarjetas}"
+           th:if="${rol == 'ADMIN'
+            or rol == 'OPERACIONES'}"
+           th:classappend="${activePage == 'tarjetas'} ? 'active' : ''">
+            <i class="fas fa-credit-card"></i>
+            Soporte Tarjetas
+        </a>
+
+        <!-- MORA: ADMIN y RECUPERACIONES -->
+        <a th:href="@{/admin/mora}"
+           th:if="${rol == 'ADMIN'
+            or rol == 'RECUPERACIONES'}"
+           th:classappend="${activePage == 'mora'} ? 'active' : ''">
+            <i class="fas fa-chart-line"></i>
+            Gestión de Mora
+        </a>
+
+        <!-- AUDITORÍA: ADMIN y AUDITOR -->
+        <a th:href="@{/admin/auditoria}"
+           th:if="${rol == 'ADMIN'
+            or rol == 'AUDITOR'}"
+           th:classappend="${activePage == 'auditoria'} ? 'active' : ''">
+            <i class="fas fa-shield-alt"></i>
+            Auditoría
+        </a>
+
+    </nav>
+
+    <div class="sidebar-footer">
+        <a th:href="@{/admin/logout}">
+            <i class="fas fa-sign-out-alt"></i> Cerrar Sesión
+        </a>
+    </div>
+</aside>
+
+<main class="main-content">
+
+    <div class="page-header">
+        <h1>Detalle del Cliente</h1>
+        <p>Información personal, bancaria, seguridad y préstamos asociados.</p>
+    </div>
+
+    <div class="usuario-grid">
+
+        <div class="card">
+            <h2>Información Personal</h2>
+
+            <div class="info-row"><span class="info-label">DNI</span><span class="info-value" th:text="${usuario.numDoc}"></span></div>
+            <div class="info-row"><span class="info-label">Nombres</span><span class="info-value" th:text="${usuario.nombres}"></span></div>
+            <div class="info-row"><span class="info-label">Apellidos</span><span class="info-value" th:text="${usuario.apellidos}"></span></div>
+            <div class="info-row"><span class="info-label">Correo</span><span class="info-value" th:text="${usuario.correo}"></span></div>
+            <div class="info-row"><span class="info-label">Celular</span><span class="info-value" th:text="${usuario.celular}"></span></div>
+            <div class="info-row"><span class="info-label">Dirección</span><span class="info-value" th:text="${usuario.direccion}"></span></div>
+        </div>
+
+        <div class="card">
+            <h2>Información Bancaria</h2>
+
+            <div class="info-row"><span class="info-label">Cuenta</span><span class="info-value" th:text="${usuario.numeroCuenta}"></span></div>
+            <div class="info-row"><span class="info-label">CCI</span><span class="info-value" th:text="${usuario.cci}"></span></div>
+            <div class="info-row"><span class="info-label">Saldo</span><span class="info-value" th:text="'S/ ' + ${#numbers.formatDecimal(usuario.saldo,1,'DEFAULT',2,'DEFAULT')}"></span></div>
+            <div class="info-row"><span class="info-label">Rol</span><span class="info-value" th:text="${usuario.rol}"></span></div>
+        </div>
+
+        <div class="card">
+            <h2>Seguridad</h2>
+
+            <div class="info-row">
+                <span class="info-label">Usuario</span>
+                <span th:if="${usuario.activo}" class="estado-activo">Activo</span>
+                <span th:unless="${usuario.activo}" class="estado-bloqueado">Bloqueado</span>
+            </div>
+
+            <div class="info-row">
+                <span class="info-label">Tarjeta</span>
+                <span th:if="${usuario.tarjetaBloqueada}" class="estado-tarjeta-bloqueada">Bloqueada</span>
+                <span th:unless="${usuario.tarjetaBloqueada}" class="estado-tarjeta-ok">Activa</span>
+            </div>
+
+            <div class="info-row"><span class="info-label">Intentos fallidos</span><span class="info-value" th:text="${usuario.intentosFallidos}"></span></div>
+            <div class="info-row"><span class="info-label">Sesión activa</span><span class="info-value" th:text="${usuario.sesionActiva ? 'Sí' : 'No'}"></span></div>
+        </div>
+
+        <div class="card">
+
+            <h2>
+                <i class="fas fa-user-shield"></i>
+                Acciones Administrativas
+            </h2>
+
+            <div th:if="${exito}" class="alert-success">
+                <i class="fas fa-check-circle"></i>
+                <span th:text="${exito}"></span>
+            </div>
+
+            <div th:if="${error}" class="alert-error">
+                <i class="fas fa-triangle-exclamation"></i>
+                <span th:text="${error}"></span>
+            </div>
+
+            <div class="acciones-admin">
+
+                <a th:href="@{/admin/usuarios/editar/{id}(id=${usuario.id})}"
+                   class="btn-azul">
+                    <i class="fas fa-user-pen"></i>
+                    Editar datos
+                </a>
+
+                <!-- BLOQUEAR USUARIO -->
+                <form th:if="${usuario.activo}"
+                      th:action="@{/admin/usuarios/bloquear/{id}(id=${usuario.id})}"
+                      method="post"
+                      onsubmit="return confirm('¿Seguro que deseas bloquear el acceso de este cliente?');">
+
+                    <button type="submit" class="btn-rojo">
+                        <i class="fas fa-user-lock"></i>
+                        Bloquear usuario
+                    </button>
+                </form>
+
+                <!-- DESBLOQUEAR USUARIO -->
+                <form th:if="${!usuario.activo}"
+                      th:action="@{/admin/usuarios/desbloquear/{id}(id=${usuario.id})}"
+                      method="post"
+                      onsubmit="return confirm('¿Deseas desbloquear el acceso de este cliente?');">
+
+                    <button type="submit" class="btn-verde">
+                        <i class="fas fa-user-check"></i>
+                        Desbloquear usuario
+                    </button>
+                </form>
+
+                <!-- BLOQUEAR TARJETA -->
+                <form th:if="${!usuario.tarjetaBloqueada}"
+                      th:action="@{/admin/usuarios/tarjeta/bloquear/{id}(id=${usuario.id})}"
+                      method="post"
+                      onsubmit="return confirm('¿Deseas bloquear temporalmente la tarjeta?');">
+
+                    <button type="submit" class="btn-amarillo">
+                        <i class="fas fa-credit-card"></i>
+                        Bloquear tarjeta
+                    </button>
+                </form>
+
+                <!-- DESBLOQUEAR TARJETA -->
+                <form th:if="${usuario.tarjetaBloqueada}"
+                      th:action="@{/admin/usuarios/tarjeta/desbloquear/{id}(id=${usuario.id})}"
+                      method="post"
+                      onsubmit="return confirm('¿Verificaste la identidad del cliente antes de desbloquear la tarjeta?');">
+
+                    <button type="submit" class="btn-azul">
+                        <i class="fas fa-unlock"></i>
+                        Desbloquear tarjeta
+                    </button>
+                </form>
+            </div>
+        </div>
+
+    </div>
+
+    <div class="table-container">
+        <table>
+            <thead>
+            <tr>
+                <th>ID</th>
+                <th>Monto</th>
+                <th>Estado</th>
+                <th>RDS</th>
+            </tr>
+            </thead>
+
+            <tbody>
+            <tr th:each="prestamo : ${prestamos}">
+                <td th:text="'#' + ${prestamo.id}"></td>
+                <td th:text="'S/ ' + ${#numbers.formatDecimal(prestamo.monto,1,'DEFAULT',2,'DEFAULT')}"></td>
+                <td th:text="${prestamo.estado}"></td>
+                <td th:text="${#numbers.formatDecimal(prestamo.rds,1,'DEFAULT',2,'DEFAULT')} + '%'"></td>
+            </tr>
+
+            <tr th:if="${#lists.isEmpty(prestamos)}">
+                <td colspan="4" style="text-align:center;color:#64748b;padding:25px;">
+                    Este cliente no tiene préstamos registrados.
+                </td>
+            </tr>
+            </tbody>
+        </table>
+    </div>
+
+    <section class="movimientos-section">
+
+        <div class="section-header">
+            <div>
+                <h2>
+                    <i class="fas fa-clock-rotate-left"></i>
+                    Últimos Movimientos
+                </h2>
+
+                <p>
+                    Operaciones bancarias recientes realizadas por el cliente.
+                </p>
+            </div>
+
+            <span class="movement-counter">
+            <i class="fas fa-receipt"></i>
+            <span th:text="${#lists.size(movimientos)}">0</span>
+            movimientos
+        </span>
+        </div>
+
+        <div class="table-container">
+
+            <table class="movimientos-table">
+
+                <thead>
+                <tr>
+                    <th>Fecha</th>
+                    <th>Tipo</th>
+                    <th>Concepto</th>
+                    <th>Destino</th>
+                    <th>Monto</th>
+                </tr>
+                </thead>
+
+                <tbody>
+
+                <tr th:each="mov : ${movimientos}">
+
+                    <td th:text="${#temporals.format(
+                    mov.fecha,
+                    'dd/MM/yyyy HH:mm'
+                )}">
+                        17/06/2026 18:00
+                    </td>
+
+                    <td>
+                    <span class="movement-type"
+                          th:text="${mov.tipo}">
+                        TRANSFERENCIA
+                    </span>
+                    </td>
+
+                    <td th:text="${mov.concepto != null
+                    ? mov.concepto
+                    : 'Sin concepto'}">
+                        Concepto
+                    </td>
+
+                    <td th:text="${mov.destino != null
+                    ? mov.destino
+                    : 'No registrado'}">
+                        Destino
+                    </td>
+
+                    <td>
+                    <span th:class="${mov.monto >= 0
+                            ? 'movement-income'
+                            : 'movement-expense'}">
+
+                        <span th:text="${mov.monto >= 0
+                                ? '+ S/ '
+                                : '- S/ '}">
+                        </span>
+
+                        <span th:text="${#numbers.formatDecimal(
+                            T(java.lang.Math).abs(mov.monto),
+                            1,
+                            'DEFAULT',
+                            2,
+                            'DEFAULT'
+                        )}">
+                            0.00
+                        </span>
+
+                    </span>
+                    </td>
+
+                </tr>
+
+                <tr th:if="${#lists.isEmpty(movimientos)}">
+
+                    <td colspan="5" class="empty-movements">
+
+                        <i class="fas fa-receipt"></i>
+
+                        <strong>
+                            El cliente no tiene movimientos registrados
+                        </strong>
+
+                        <span>
+                        Las transferencias, pagos y desembolsos aparecerán aquí.
+                    </span>
+                    </td>
+                </tr>
+                </tbody>
+            </table>
+        </div>
+    </section>
+</main>
+
+</body>
+</html>

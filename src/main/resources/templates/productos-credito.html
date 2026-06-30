@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Cr&eacute;dito para tu negocio | Financiera Confianza</title>
+    <link rel="stylesheet" th:href="@{/css/style.css}">
+    <link rel="stylesheet" th:href="@{/css/navbar.css}">
+    <link rel="stylesheet" th:href="@{/css/footer.css}">
+    <link rel="stylesheet" th:href="@{/css/productos.css}">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+</head>
+<body class="productos-page">
+<div th:replace="~{fragments/header :: navbar}"></div>
+
+<main>
+    <section class="producto-hero hero-credito">
+        <div class="container producto-hero-grid">
+            <div class="producto-hero-copy">
+                <p class="producto-eyebrow">Productos para ti</p>
+                <h1>Cr&eacute;dito para tu negocio</h1>
+                <p>Impulsa tu emprendimiento con un cr&eacute;dito dise&ntilde;ado para tus necesidades.</p>
+                <div class="producto-actions">
+                    <a href="#contacto" class="producto-primary-btn">Solicitar cr&eacute;dito</a>
+                    <a th:href="@{/login}" class="producto-secondary-btn">Solicitar desde banca web</a>
+                </div>
+            </div>
+            <div class="producto-hero-card" aria-hidden="true">
+                <i class="fas fa-store"></i>
+                <span>Impulsa tu negocio</span>
+            </div>
+        </div>
+    </section>
+
+    <section class="producto-content">
+        <div class="container producto-layout">
+            <div class="producto-main">
+                <section class="producto-section">
+                    <h2>Beneficios</h2>
+                    <div class="benefit-grid">
+                        <article class="benefit-card"><i class="fas fa-bolt"></i><span>Evaluaci&oacute;n r&aacute;pida</span></article>
+                        <article class="benefit-card"><i class="fas fa-calendar-alt"></i><span>Cronograma de pagos</span></article>
+                        <article class="benefit-card"><i class="fas fa-boxes"></i><span>Financiamiento para capital de trabajo</span></article>
+                        <article class="benefit-card"><i class="fas fa-laptop"></i><span>Seguimiento desde la banca web</span></article>
+                    </div>
+                </section>
+
+                <section class="producto-section requisitos-card">
+                    <h2>Requisitos b&aacute;sicos</h2>
+                    <ul>
+                        <li>Documento de identidad vigente.</li>
+                        <li>Informaci&oacute;n b&aacute;sica del negocio.</li>
+                        <li>Celular y correo de contacto.</li>
+                    </ul>
+                </section>
+            </div>
+
+            <aside id="contacto" class="contact-card">
+                <h2>Solicita cr&eacute;dito</h2>
+                <p>Completa tus datos y un asesor se comunicar&aacute; contigo pronto.</p>
+                <form class="producto-form" data-product-form>
+                    <label for="tipoDocCredito">Tipo de documento</label>
+                    <select id="tipoDocCredito" name="tipoDoc" required>
+                        <option value="">Selecciona</option>
+                        <option value="DNI">DNI</option>
+                        <option value="CE">Carn&eacute; de Extranjer&iacute;a</option>
+                    </select>
+
+                    <label for="numDocCredito">N&uacute;mero de documento</label>
+                    <input id="numDocCredito" type="text" name="numDoc" autocomplete="off" required>
+
+                    <label for="celularCredito">Celular</label>
+                    <input id="celularCredito" type="tel" name="celular" inputmode="numeric" pattern="[0-9]{9}" maxlength="9" autocomplete="tel" required>
+
+                    <label for="correoCredito">Correo</label>
+                    <input id="correoCredito" type="email" name="correo" autocomplete="email" required>
+
+                    <button type="submit">Enviar solicitud</button>
+                </form>
+            </aside>
+        </div>
+    </section>
+</main>
+
+<div class="producto-toast" data-product-toast role="status" aria-live="polite">
+    Solicitud recibida. Un asesor se comunicar&aacute; contigo pronto.
+</div>
+
+<div th:replace="~{fragments/footer :: footer}"></div>
+<script th:src="@{/js/productos.js}"></script>
+</body>
+</html>

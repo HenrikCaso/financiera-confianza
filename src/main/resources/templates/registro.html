@@ -16,52 +16,92 @@
         <img th:src="@{/img/logos/logo-financiera2.png}" alt="Financiera Confianza" class="login-logo">
 
         <h2 class="saludo">Crea tu Clave Web</h2>
-        <p style="font-size: 13px; margin-bottom: 20px; color: #d0dbe5;">Ingresa tus datos para habilitar tu Banca por Internet</p>
+        <p class="registro-subtitle">Ingresa tus datos para habilitar tu Banca por Internet</p>
 
-        <form th:action="@{/registro}" method="POST" class="login-form">
+        <div th:if="${error}" class="alert alert-error" role="alert">
+            <i class="fas fa-exclamation-circle"></i>
+            <span th:text="${error}">No se pudo completar el registro.</span>
+        </div>
 
-            <div class="input-group">
-                <div class="select-wrapper">
-                    <i class="fas fa-caret-down select-icon"></i>
-                    <select name="tipoDoc" class="custom-select" required>
-                        <option value="" disabled selected>Tipo de Documento</option>
-                        <option value="DNI">DNI</option>
-                        <option value="CE">Carné de Extranjería</option>
-                    </select>
+        <form th:action="@{/registro}" method="POST" class="login-form registro-form" data-registro-form>
+            <div class="registro-grid">
+                <div class="input-group">
+                    <label for="registroTipoDoc" class="registro-label">Tipo de documento</label>
+                    <div class="select-wrapper">
+                        <i class="fas fa-caret-down select-icon"></i>
+                        <select id="registroTipoDoc" name="tipoDoc" class="custom-select" required data-document-type>
+                            <option value="" disabled th:selected="${tipoDoc == null or tipoDoc == ''}">Tipo de documento</option>
+                            <option value="DNI" th:selected="${tipoDoc == 'DNI'}">DNI</option>
+                            <option value="CE" th:selected="${tipoDoc == 'CE'}">Carn&eacute; de Extranjer&iacute;a</option>
+                        </select>
+                    </div>
                 </div>
-            </div>
 
-            <div class="input-group">
-                <input type="text" name="numDoc" placeholder="Número de Documento" required>
-            </div>
+                <div class="input-group">
+                    <label for="registroNumDoc" class="registro-label">N&uacute;mero de documento</label>
+                    <input id="registroNumDoc" type="text" name="numDoc" placeholder="Ingresa tu documento"
+                           maxlength="12" autocomplete="off" th:value="${numDoc}" required data-num-doc>
+                </div>
 
-            <div class="input-group">
-                <input type="email" name="correo" placeholder="Correo Electrónico" required>
-            </div>
+                <div class="input-group">
+                    <label for="registroNombres" class="registro-label">Nombres</label>
+                    <input id="registroNombres" type="text" name="nombres" placeholder="Nombres" autocomplete="given-name"
+                           maxlength="120" th:value="${nombres}" required>
+                </div>
 
-            <div class="input-group">
-                <input type="text" name="celular" placeholder="Número de Celular" maxlength="9" required>
-            </div>
+                <div class="input-group">
+                    <label for="registroApellidos" class="registro-label">Apellidos</label>
+                    <input id="registroApellidos" type="text" name="apellidos" placeholder="Apellidos" autocomplete="family-name"
+                           maxlength="120" th:value="${apellidos}" required>
+                </div>
 
-            <div class="input-group">
-                <input type="password" name="clave" placeholder="Crea una Clave de 6 dígitos" maxlength="6" required>
+                <div class="input-group">
+                    <label for="registroCorreo" class="registro-label">Correo electr&oacute;nico</label>
+                    <input id="registroCorreo" type="email" name="correo" placeholder="Correo electr&oacute;nico" autocomplete="email"
+                           maxlength="160" th:value="${correo}" required>
+                </div>
+
+                <div class="input-group">
+                    <label for="registroCelular" class="registro-label">Celular</label>
+                    <input id="registroCelular" type="tel" name="celular" placeholder="Celular" inputmode="numeric"
+                           pattern="[0-9]{9}" maxlength="9" autocomplete="tel" th:value="${celular}" required data-celular>
+                </div>
+
+                <div class="input-group registro-field-full">
+                    <label for="registroDireccion" class="registro-label">Direcci&oacute;n</label>
+                    <input id="registroDireccion" type="text" name="direccion" placeholder="Direcci&oacute;n" autocomplete="street-address"
+                           maxlength="250" th:value="${direccion}" required>
+                </div>
+
+                <div class="input-group">
+                    <label for="registroClave" class="registro-label">Clave web</label>
+                    <input id="registroClave" type="password" name="clave" placeholder="Clave web" minlength="6"
+                           autocomplete="new-password" required data-clave>
+                </div>
+
+                <div class="input-group">
+                    <label for="registroConfirmarClave" class="registro-label">Confirmar clave</label>
+                    <input id="registroConfirmarClave" type="password" name="confirmarClave" placeholder="Confirmar clave" minlength="6"
+                           autocomplete="new-password" required data-confirmar-clave>
+                </div>
             </div>
 
             <button type="submit" class="btn-registro">Crear Cuenta</button>
 
-            <div style="margin-top: 15px; font-size: 13px;">
-                <a th:href="@{/login}" style="color: white; text-decoration: underline;">Volver al inicio de sesión</a>
+            <div class="registro-link-wrapper">
+                <a th:href="@{/login}" class="registro-link">Volver al inicio de sesi&oacute;n</a>
             </div>
         </form>
     </div>
 
     <div class="login-footer">
-        <a href="#"><i class="fas fa-map-marker-alt"></i> Encuéntranos</a>
+        <a href="#"><i class="fas fa-map-marker-alt"></i> Encu&eacute;ntranos</a>
         <span class="divider">|</span>
-        <a href="#"><i class="fas fa-phone-alt"></i> Contáctanos</a>
+        <a href="#"><i class="fas fa-phone-alt"></i> Cont&aacute;ctanos</a>
     </div>
 
 </div>
 
+<script th:src="@{/js/registro.js}"></script>
 </body>
 </html>

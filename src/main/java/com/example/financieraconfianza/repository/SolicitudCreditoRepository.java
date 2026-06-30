@@ -8,12 +8,30 @@ import org.springframework.stereotype.Repository;
 import java.util.List;
 
 @Repository
-public interface SolicitudCreditoRepository extends JpaRepository<SolicitudCredito, Long> {
+public interface SolicitudCreditoRepository
+        extends JpaRepository<SolicitudCredito, Long> {
 
-    // Para buscar todas las solicitudes pendientes (Para la vista del empleado del banco)
-    List<SolicitudCredito> findByEstado(String estado);
+    /*
+     * Solicitudes por estado para la bandeja administrativa.
+     */
+    List<SolicitudCredito> findByEstado(
+            String estado
+    );
 
-    // Para que el cliente pueda ver su historial de solicitudes
-    List<SolicitudCredito> findByUsuarioOrderByFechaSolicitudDesc(Usuario usuario);
-    
+    /*
+     * Historial completo del cliente.
+     */
+    List<SolicitudCredito>
+    findByUsuarioOrderByFechaSolicitudDesc(
+            Usuario usuario
+    );
+
+    /*
+     * Comprueba si el cliente ya tiene una solicitud
+     * en un estado determinado.
+     */
+    boolean existsByUsuarioAndEstado(
+            Usuario usuario,
+            String estado
+    );
 }

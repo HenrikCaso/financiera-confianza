@@ -1,0 +1,572 @@
+<!DOCTYPE html>
+<html lang="es" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Gestión de Cobranza | Financiera Confianza</title>
+
+    <link rel="stylesheet" th:href="@{/css/admin-sidebar.css}">
+    <link rel="stylesheet" th:href="@{/css/admin-gestion-cobranza.css}">
+
+    <link rel="stylesheet"
+          href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
+</head>
+
+<body>
+
+<!-- SIDEBAR -->
+<aside class="sidebar">
+
+    <div class="sidebar-logo">
+        <img th:src="@{/img/logos/logo-financiera2.png}"
+             alt="Financiera Confianza">
+    </div>
+
+    <nav class="sidebar-nav"
+         th:with="rol=${session.adminLogueado != null && session.adminLogueado.rol != null
+            ? session.adminLogueado.rol
+            : ''}">
+
+        <!-- DASHBOARD: solo ADMIN -->
+        <a th:href="@{/admin/dashboard}"
+           th:if="${rol == 'ADMIN'}"
+           th:classappend="${activePage == 'dashboard'} ? 'active' : ''">
+            <i class="fas fa-chart-pie"></i>
+            Dashboard
+        </a>
+
+        <!-- EVALUAR CRÉDITOS: ADMIN, ASESOR, RIESGOS, OPERACIONES -->
+        <a th:href="@{/admin/prestamos}"
+           th:if="${rol == 'ADMIN'
+            or rol == 'ASESOR'
+            or rol == 'RIESGOS'
+            or rol == 'OPERACIONES'}"
+           th:classappend="${activePage == 'prestamos'} ? 'active' : ''">
+            <i class="fas fa-file-invoice-dollar"></i>
+            Evaluar Créditos
+        </a>
+
+        <!-- USUARIOS: solo ADMIN -->
+        <a th:href="@{/admin/usuarios}"
+           th:if="${rol == 'ADMIN'}"
+           th:classappend="${activePage == 'usuarios'} ? 'active' : ''">
+            <i class="fas fa-users"></i>
+            Gestión de Usuarios
+        </a>
+
+        <!-- TARJETAS: ADMIN y OPERACIONES -->
+        <a th:href="@{/admin/tarjetas}"
+           th:if="${rol == 'ADMIN'
+            or rol == 'OPERACIONES'}"
+           th:classappend="${activePage == 'tarjetas'} ? 'active' : ''">
+            <i class="fas fa-credit-card"></i>
+            Soporte Tarjetas
+        </a>
+
+        <!-- MORA: ADMIN y RECUPERACIONES -->
+        <a th:href="@{/admin/mora}"
+           th:if="${rol == 'ADMIN'
+            or rol == 'RECUPERACIONES'}"
+           th:classappend="${activePage == 'mora'} ? 'active' : ''">
+            <i class="fas fa-chart-line"></i>
+            Gestión de Mora
+        </a>
+
+        <!-- AUDITORÍA: ADMIN y AUDITOR -->
+        <a th:href="@{/admin/auditoria}"
+           th:if="${rol == 'ADMIN'
+            or rol == 'AUDITOR'}"
+           th:classappend="${activePage == 'auditoria'} ? 'active' : ''">
+            <i class="fas fa-shield-alt"></i>
+            Auditoría
+        </a>
+
+    </nav>
+
+    <div class="sidebar-footer">
+        <a th:href="@{/admin/logout}">
+            <i class="fas fa-sign-out-alt"></i>
+            Cerrar Sesión
+        </a>
+    </div>
+
+</aside>
+
+<!-- CONTENIDO -->
+<main class="admin-main">
+
+    <header class="page-header">
+
+        <div>
+            <h1>
+                <i class="fas fa-headset"></i>
+                Gestión de Cobranza
+            </h1>
+
+            <p>
+                Registra el contacto y seguimiento realizado sobre la cuota vencida.
+            </p>
+        </div>
+
+        <a th:href="@{/admin/mora}" class="btn-back">
+            <i class="fas fa-arrow-left"></i>
+            Volver a Gestión de Mora
+        </a>
+
+    </header>
+
+    <!-- MENSAJES -->
+    <div th:if="${exito}" class="alert alert-success">
+        <i class="fas fa-circle-check"></i>
+        <span th:text="${exito}"></span>
+    </div>
+
+    <div th:if="${error}" class="alert alert-error">
+        <i class="fas fa-triangle-exclamation"></i>
+        <span th:text="${error}"></span>
+    </div>
+
+    <!-- RESUMEN DE LA CUOTA -->
+    <section class="installment-card">
+
+        <div class="card-title">
+            <div>
+                <h2>
+                    <i class="fas fa-file-invoice-dollar"></i>
+                    Información de la deuda
+                </h2>
+
+                <p>
+                    Datos de la cuota seleccionada para cobranza.
+                </p>
+            </div>
+
+            <span class="credit-badge"
+                  th:text="'Crédito #' + ${cuota.solicitudCredito.id}">
+                Crédito #1
+            </span>
+        </div>
+
+        <div class="information-grid">
+
+            <div class="information-box">
+                <span>Cliente</span>
+
+                <strong>
+                    <span th:text="${cuota.solicitudCredito.usuario.nombres != null
+                            ? cuota.solicitudCredito.usuario.nombres
+                            : 'Cliente'}">
+                        Cliente
+                    </span>
+
+                    <span th:if="${cuota.solicitudCredito.usuario.apellidos != null}"
+                          th:text="' ' + ${cuota.solicitudCredito.usuario.apellidos}">
+                    </span>
+                </strong>
+            </div>
+
+            <div class="information-box">
+                <span>DNI</span>
+
+                <strong th:text="${cuota.solicitudCredito.usuario.numDoc}">
+                    00000000
+                </strong>
+            </div>
+
+            <div class="information-box">
+                <span>Número de cuota</span>
+
+                <strong th:text="'Cuota ' + ${cuota.numeroCuota}">
+                    Cuota 1
+                </strong>
+            </div>
+
+            <div class="information-box">
+                <span>Monto</span>
+
+                <strong class="amount"
+                        th:text="'S/ ' + ${#numbers.formatDecimal(
+                                cuota.montoCuota,
+                                1,
+                                'DEFAULT',
+                                2,
+                                'DEFAULT'
+                        )}">
+                    S/ 0.00
+                </strong>
+            </div>
+
+            <div class="information-box">
+                <span>Fecha de vencimiento</span>
+
+                <strong th:text="${#temporals.format(
+                        cuota.fechaVencimiento,
+                        'dd/MM/yyyy'
+                )}">
+                    01/01/2026
+                </strong>
+            </div>
+
+            <div class="information-box">
+                <span>Días de atraso</span>
+
+                <strong class="delay"
+                        th:text="${cuota.diasAtraso} + ' días'">
+                    0 días
+                </strong>
+            </div>
+
+            <div class="information-box">
+                <span>Clasificación</span>
+
+                <strong th:text="${cuota.estadoMora}">
+                    MORA TEMPRANA
+                </strong>
+            </div>
+
+            <div class="information-box">
+                <span>Correo</span>
+
+                <strong th:text="${cuota.solicitudCredito.usuario.correo}">
+                    correo@correo.com
+                </strong>
+            </div>
+
+            <div class="information-box">
+                <span>Celular</span>
+
+                <strong th:text="${cuota.solicitudCredito.usuario.celular != null
+                        ? cuota.solicitudCredito.usuario.celular
+                        : 'No registrado'}">
+                    999999999
+                </strong>
+            </div>
+
+        </div>
+
+    </section>
+
+    <div class="content-grid">
+
+        <!-- FORMULARIO -->
+        <section class="form-card">
+
+            <div class="card-title">
+                <div>
+                    <h2>
+                        <i class="fas fa-phone-volume"></i>
+                        Registrar nueva gestión
+                    </h2>
+
+                    <p>
+                        Ingresa el canal utilizado y el resultado del contacto.
+                    </p>
+                </div>
+            </div>
+
+            <form th:action="@{/admin/mora/gestionar/{id}(id=${cuota.id})}"
+                  method="post"
+                  class="collection-form">
+
+                <div class="form-group">
+
+                    <label for="canal">
+                        Canal de contacto
+                    </label>
+
+                    <select id="canal"
+                            name="canal"
+                            required>
+
+                        <option value="">
+                            Selecciona un canal
+                        </option>
+
+                        <option value="LLAMADA">
+                            Llamada telefónica
+                        </option>
+
+                        <option value="WHATSAPP">
+                            WhatsApp
+                        </option>
+
+                        <option value="CORREO">
+                            Correo electrónico
+                        </option>
+
+                        <option value="SMS">
+                            Mensaje SMS
+                        </option>
+
+                        <option value="VISITA">
+                            Visita presencial
+                        </option>
+
+                    </select>
+
+                </div>
+
+                <div class="form-group">
+
+                    <label for="resultado">
+                        Resultado de la gestión
+                    </label>
+
+                    <select id="resultado"
+                            name="resultado"
+                            required>
+
+                        <option value="">
+                            Selecciona un resultado
+                        </option>
+
+                        <option value="CONTACTADO">
+                            Cliente contactado
+                        </option>
+
+                        <option value="SIN_RESPUESTA">
+                            Sin respuesta
+                        </option>
+
+                        <option value="COMPROMISO_PAGO">
+                            Compromiso de pago
+                        </option>
+
+                        <option value="RECHAZA_PAGO">
+                            Rechaza realizar el pago
+                        </option>
+
+                        <option value="NUMERO_INCORRECTO">
+                            Número incorrecto
+                        </option>
+
+                    </select>
+
+                </div>
+
+                <div class="form-group commitment-group"
+                     id="commitmentGroup">
+
+                    <label for="fechaCompromisoPago">
+                        Fecha de compromiso de pago
+                    </label>
+
+                    <input type="date"
+                           id="fechaCompromisoPago"
+                           name="fechaCompromisoPago"
+                           th:min="${#temporals.format(
+                                   T(java.time.LocalDate).now(),
+                                   'yyyy-MM-dd'
+                           )}">
+
+                    <small>
+                        Solo es obligatorio cuando el cliente promete pagar.
+                    </small>
+
+                </div>
+
+                <div class="form-group">
+
+                    <label for="observacion">
+                        Observación
+                    </label>
+
+                    <textarea id="observacion"
+                              name="observacion"
+                              rows="6"
+                              maxlength="500"
+                              placeholder="Describe lo conversado con el cliente y los acuerdos alcanzados..."></textarea>
+
+                    <div class="character-counter">
+                        Máximo 500 caracteres
+                    </div>
+
+                </div>
+
+                <button type="submit" class="btn-save">
+
+                    <i class="fas fa-floppy-disk"></i>
+                    Registrar gestión
+
+                </button>
+
+            </form>
+
+        </section>
+
+        <!-- RECOMENDACIONES -->
+        <aside class="recommendation-card">
+
+            <div class="recommendation-icon">
+                <i class="fas fa-lightbulb"></i>
+            </div>
+
+            <h3>Buenas prácticas de cobranza</h3>
+
+            <ul>
+                <li>
+                    Identifica al cliente antes de brindar información.
+                </li>
+
+                <li>
+                    Mantén un trato respetuoso y profesional.
+                </li>
+
+                <li>
+                    Registra solamente información relacionada con la deuda.
+                </li>
+
+                <li>
+                    Confirma claramente la fecha cuando exista un compromiso.
+                </li>
+
+                <li>
+                    No registres claves, códigos ni datos sensibles.
+                </li>
+            </ul>
+
+        </aside>
+
+    </div>
+
+    <!-- HISTORIAL -->
+    <section class="history-card">
+
+        <div class="card-title">
+
+            <div>
+                <h2>
+                    <i class="fas fa-clock-rotate-left"></i>
+                    Historial de gestiones
+                </h2>
+
+                <p>
+                    Contactos realizados anteriormente sobre esta cuota.
+                </p>
+            </div>
+
+            <span class="history-counter">
+
+                <i class="fas fa-list"></i>
+
+                <span th:text="${#lists.size(historialGestiones)}">
+                    0
+                </span>
+
+                gestiones
+
+            </span>
+
+        </div>
+
+        <div class="table-container">
+
+            <table class="history-table">
+
+                <thead>
+                <tr>
+                    <th>Fecha</th>
+                    <th>Gestor</th>
+                    <th>Canal</th>
+                    <th>Resultado</th>
+                    <th>Compromiso</th>
+                    <th>Observación</th>
+                </tr>
+                </thead>
+
+                <tbody>
+
+                <tr th:each="gestion : ${historialGestiones}">
+
+                    <td th:text="${#temporals.format(
+                            gestion.fechaGestion,
+                            'dd/MM/yyyy HH:mm'
+                    )}">
+                        01/01/2026 10:00
+                    </td>
+
+                    <td>
+                        <span class="manager-badge">
+                            <i class="fas fa-user-tie"></i>
+
+                            <span th:text="${gestion.gestor.numDoc}">
+                                ADMIN
+                            </span>
+                        </span>
+                    </td>
+
+                    <td>
+                        <span class="channel-badge"
+                              th:text="${gestion.canal}">
+                            LLAMADA
+                        </span>
+                    </td>
+
+                    <td>
+                        <span class="result-badge"
+                              th:text="${#strings.replace(
+                                      gestion.resultado,
+                                      '_',
+                                      ' '
+                              )}">
+                            CONTACTADO
+                        </span>
+                    </td>
+
+                    <td>
+                        <span th:if="${gestion.fechaCompromisoPago != null}"
+                              class="commitment-date"
+                              th:text="${#temporals.format(
+                                      gestion.fechaCompromisoPago,
+                                      'dd/MM/yyyy'
+                              )}">
+                            01/01/2026
+                        </span>
+
+                        <span th:if="${gestion.fechaCompromisoPago == null}"
+                              class="no-data">
+                            Sin compromiso
+                        </span>
+                    </td>
+
+                    <td th:text="${gestion.observacion != null
+                            ? gestion.observacion
+                            : 'Sin observación'}">
+                        Sin observación
+                    </td>
+
+                </tr>
+
+                <tr th:if="${#lists.isEmpty(historialGestiones)}">
+
+                    <td colspan="6" class="empty-state">
+
+                        <i class="fas fa-headset"></i>
+
+                        <strong>
+                            Todavía no existen gestiones registradas
+                        </strong>
+
+                        <span>
+                            Las llamadas, mensajes y compromisos aparecerán aquí.
+                        </span>
+
+                    </td>
+
+                </tr>
+
+                </tbody>
+
+            </table>
+
+        </div>
+
+    </section>
+
+</main>
+
+<script th:src="@{/js/admin-gestion-cobranza.js(v=1)}"></script>
+
+</body>
+</html>

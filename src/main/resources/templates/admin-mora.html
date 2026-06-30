@@ -1,64 +1,694 @@
 <!DOCTYPE html>
-<html xmlns:th="http://www.thymeleaf.org">
+<html lang="es" xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8">
-    <title>Gestión de Mora | Admin Financiera Confianza</title>
-    <link rel="stylesheet" th:href="@{/css/dashboard.css}">
-    <link rel="stylesheet" th:href="@{/css/admin-panel.css}">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Gestión de Mora | Financiera Confianza</title>
+
+    <link rel="stylesheet" th:href="@{/css/admin-sidebar.css}">
+    <link rel="stylesheet" th:href="@{/css/admin-mora.css}">
+    <link rel="stylesheet" th:href="@{/css/admin-flash.css}">
+
+    <link rel="stylesheet"
+          href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
 </head>
+
 <body>
+
+<!-- SIDEBAR -->
 <aside class="sidebar">
+
     <div class="sidebar-logo">
-        <img th:src="@{/img/logos/logo-financiera2.png}" alt="Logo Admin">
+        <img th:src="@{/img/logos/logo-financiera2.png}"
+             alt="Financiera Confianza">
     </div>
-    <nav class="sidebar-nav">
-        <a th:href="@{/admin/prestamos}" class="nav-item"><i class="fas fa-file-signature"></i> Evaluar Créditos</a>
-        <a th:href="@{/admin/tarjetas}" class="nav-item"><i class="fas fa-credit-card"></i> Soporte Tarjetas</a>
-        <a th:href="@{/admin/mora}" class="nav-item active"><i class="fas fa-chart-line"></i> Gestión de Mora</a>
+
+    <nav class="sidebar-nav"
+         th:with="rol=${session.adminLogueado != null && session.adminLogueado.rol != null
+            ? session.adminLogueado.rol
+            : ''}">
+
+        <!-- DASHBOARD: solo ADMIN -->
+        <a th:href="@{/admin/dashboard}"
+           th:if="${rol == 'ADMIN'}"
+           th:classappend="${activePage == 'dashboard'} ? 'active' : ''">
+            <i class="fas fa-chart-pie"></i>
+            Dashboard
+        </a>
+
+        <!-- EVALUAR CRÉDITOS: ADMIN, ASESOR, RIESGOS, OPERACIONES -->
+        <a th:href="@{/admin/prestamos}"
+           th:if="${rol == 'ADMIN'
+            or rol == 'ASESOR'
+            or rol == 'RIESGOS'
+            or rol == 'OPERACIONES'}"
+           th:classappend="${activePage == 'prestamos'} ? 'active' : ''">
+            <i class="fas fa-file-invoice-dollar"></i>
+            Evaluar Créditos
+        </a>
+
+        <!-- USUARIOS: solo ADMIN -->
+        <a th:href="@{/admin/usuarios}"
+           th:if="${rol == 'ADMIN'}"
+           th:classappend="${activePage == 'usuarios'} ? 'active' : ''">
+            <i class="fas fa-users"></i>
+            Gestión de Usuarios
+        </a>
+
+        <!-- TARJETAS: ADMIN y OPERACIONES -->
+        <a th:href="@{/admin/tarjetas}"
+           th:if="${rol == 'ADMIN'
+            or rol == 'OPERACIONES'}"
+           th:classappend="${activePage == 'tarjetas'} ? 'active' : ''">
+            <i class="fas fa-credit-card"></i>
+            Soporte Tarjetas
+        </a>
+
+        <!-- MORA: ADMIN y RECUPERACIONES -->
+        <a th:href="@{/admin/mora}"
+           th:if="${rol == 'ADMIN'
+            or rol == 'RECUPERACIONES'}"
+           th:classappend="${activePage == 'mora'} ? 'active' : ''">
+            <i class="fas fa-chart-line"></i>
+            Gestión de Mora
+        </a>
+
+        <!-- AUDITORÍA: ADMIN y AUDITOR -->
+        <a th:href="@{/admin/auditoria}"
+           th:if="${rol == 'ADMIN'
+            or rol == 'AUDITOR'}"
+           th:classappend="${activePage == 'auditoria'} ? 'active' : ''">
+            <i class="fas fa-shield-alt"></i>
+            Auditoría
+        </a>
+
     </nav>
-    <div class="sidebar-logout">
-        <a th:href="@{/admin/logout}" class="nav-item text-danger"><i class="fas fa-sign-out-alt"></i> Salir del Sistema</a>
+
+    <div class="sidebar-footer">
+        <a th:href="@{/admin/logout}">
+            <i class="fas fa-sign-out-alt"></i>
+            Cerrar Sesión
+        </a>
     </div>
+
 </aside>
 
-<main class="main-content admin-container">
-    <div class="admin-header">
-        <h2>Cartera Activa y Gestión de Mora</h2>
-        <p>Monitoreo de créditos vigentes y seguimiento de clientes en riesgo de impago.</p>
+<!-- CONTENIDO -->
+<main class="admin-main">
+
+    <header class="page-header">
+
+        <div>
+            <h1>
+                <i class="fas fa-chart-line"></i>
+                Gestión de Mora
+            </h1>
+
+            <p>
+                Monitoreo de cuotas pendientes, vencimientos y niveles de atraso.
+            </p>
+        </div>
+
+        <div class="portfolio-status">
+            <i class="fas fa-wallet"></i>
+
+            <div>
+                <span>Cartera actualizada</span>
+
+                <strong th:text="'S/ ' + ${#numbers.formatDecimal(
+                        totalPendiente,
+                        1,
+                        'DEFAULT',
+                        2,
+                        'DEFAULT'
+                )}">
+                    S/ 0.00
+                </strong>
+            </div>
+        </div>
+
+    </header>
+
+    <div class="flash-container">
+        <div th:if="${exito}" class="flash-message flash-success">
+            <i class="fas fa-check-circle"></i>
+            <span th:text="${exito}"></span>
+        </div>
+
+        <div th:if="${error}" class="flash-message flash-error">
+            <i class="fas fa-exclamation-triangle"></i>
+            <span th:text="${error}"></span>
+        </div>
     </div>
 
-    <div class="admin-card">
-        <table class="admin-table">
-            <thead>
-            <tr>
-                <th>ID Crédito</th>
-                <th>DNI Titular</th>
-                <th>Monto Original</th>
-                <th>Cuotas</th>
-                <th>Día de Pago</th>
-                <th>Estado de Cartera</th>
-            </tr>
-            </thead>
-            <tbody>
-            <tr th:if="${#lists.isEmpty(creditos)}">
-                <td colspan="6" style="text-align: center; color: #64748b; padding: 30px;">
-                    No hay créditos activos en la cartera actualmente.
-                </td>
-            </tr>
-            <tr th:each="credito : ${creditos}">
-                <td><strong th:text="'#' + ${credito.id}">#1</strong></td>
-                <td th:text="${credito.usuario.numDoc}">12345678</td>
-                <td style="color: #004b87; font-weight: bold;" th:text="'S/ ' + ${#numbers.formatDecimal(credito.monto, 1, 2)}">S/ 0.00</td>
-                <td th:text="${credito.cuotas} + ' meses'">12 meses</td>
-                <td th:text="'Días ' + ${credito.diaPago}">Días 15</td>
-                <td>
-                    <span style="color: #16a34a; font-weight: bold;"><i class="fas fa-circle" style="font-size: 10px;"></i> Al Día (Vigente)</span>
-                </td>
-            </tr>
-            </tbody>
-        </table>
-    </div>
+    <!-- RESUMEN PRINCIPAL -->
+    <section class="summary-grid">
+
+        <article class="summary-card card-blue">
+
+            <div class="summary-icon">
+                <i class="fas fa-list-check"></i>
+            </div>
+
+            <div>
+                <span>Cuotas pendientes</span>
+
+                <strong th:text="${totalCuotasPendientes}">
+                    0
+                </strong>
+
+                <small>Cuotas aún no pagadas</small>
+            </div>
+
+        </article>
+
+        <article class="summary-card card-red">
+
+            <div class="summary-icon">
+                <i class="fas fa-triangle-exclamation"></i>
+            </div>
+
+            <div>
+                <span>Cuotas vencidas</span>
+
+                <strong th:text="${totalCuotasVencidas}">
+                    0
+                </strong>
+
+                <small>Requieren gestión de cobranza</small>
+            </div>
+
+        </article>
+
+        <article class="summary-card card-cyan">
+
+            <div class="summary-icon">
+                <i class="fas fa-coins"></i>
+            </div>
+
+            <div>
+                <span>Monto pendiente</span>
+
+                <strong th:text="'S/ ' + ${#numbers.formatDecimal(
+                        totalPendiente,
+                        1,
+                        'DEFAULT',
+                        2,
+                        'DEFAULT'
+                )}">
+                                    S/ 0.00
+                </strong>
+
+                <small>Total por cobrar sin intereses</small>
+            </div>
+
+        </article>
+
+        <article class="summary-card card-orange">
+
+            <div class="summary-icon">
+                <i class="fas fa-money-bill-wave"></i>
+            </div>
+
+            <div>
+                <span>Total vencido actualizado</span>
+
+                <strong th:text="'S/ ' + ${#numbers.formatDecimal(
+                        totalVencidoActualizado,
+                        1,
+                        'DEFAULT',
+                        2,
+                        'DEFAULT'
+                )}">
+                    S/ 0.00
+                </strong>
+
+                <small>
+                    Capital vencido:
+                    <b th:text="'S/ ' + ${#numbers.formatDecimal(
+                            totalVencido,
+                            1,
+                            'DEFAULT',
+                            2,
+                            'DEFAULT'
+                    )}">
+                        S/ 0.00
+                    </b>
+                    + intereses
+                </small>
+            </div>
+
+        </article>
+
+        <article class="summary-card card-purple">
+
+            <div class="summary-icon">
+                <i class="fas fa-percent"></i>
+            </div>
+
+            <div>
+                <span>Interés moratorio</span>
+
+                <strong th:text="'S/ ' + ${#numbers.formatDecimal(
+                        totalInteresMora,
+                        1,
+                        'DEFAULT',
+                        2,
+                        'DEFAULT'
+                )}">
+                    S/ 0.00
+                </strong>
+
+                <small>Interés acumulado por atrasos</small>
+            </div>
+
+        </article>
+
+        <article class="summary-card card-dark">
+
+            <div class="summary-icon">
+                <i class="fas fa-calculator"></i>
+            </div>
+
+            <div>
+                <span>Cartera actualizada</span>
+
+                <strong th:text="'S/ ' + ${#numbers.formatDecimal(
+                        totalCarteraActualizada,
+                        1,
+                        'DEFAULT',
+                        2,
+                        'DEFAULT'
+                )}">
+                    S/ 0.00
+                </strong>
+
+                <small>Cuotas pendientes más intereses</small>
+            </div>
+
+        </article>
+
+    </section>
+
+    <!-- CLASIFICACIÓN DE MORA -->
+    <section class="classification-card">
+
+        <div class="section-title">
+            <div>
+                <h2>
+                    <i class="fas fa-gauge-high"></i>
+                    Clasificación de la cartera
+                </h2>
+
+                <p>
+                    Distribución de las cuotas según sus días de atraso.
+                </p>
+            </div>
+        </div>
+
+        <div class="classification-grid">
+
+            <div class="classification-item status-current">
+                <i class="fas fa-circle-check"></i>
+
+                <div>
+                    <strong th:text="${cuotasAlDia}">0</strong>
+                    <span>Al día</span>
+                </div>
+            </div>
+
+            <div class="classification-item status-early">
+                <i class="fas fa-clock"></i>
+
+                <div>
+                    <strong th:text="${moraTemprana}">0</strong>
+                    <span>Mora temprana</span>
+                </div>
+            </div>
+
+            <div class="classification-item status-medium">
+                <i class="fas fa-triangle-exclamation"></i>
+
+                <div>
+                    <strong th:text="${moraIntermedia}">0</strong>
+                    <span>Mora intermedia</span>
+                </div>
+            </div>
+
+            <div class="classification-item status-critical">
+                <i class="fas fa-circle-exclamation"></i>
+
+                <div>
+                    <strong th:text="${moraCritica}">0</strong>
+                    <span>Mora crítica</span>
+                </div>
+            </div>
+
+        </div>
+
+    </section>
+
+    <!-- TABLA DE CUOTAS -->
+    <section class="table-section">
+
+        <div class="section-title">
+
+            <div>
+                <h2>
+                    <i class="fas fa-file-invoice-dollar"></i>
+                    Detalle de cuotas pendientes
+                </h2>
+
+                <p>
+                    Las cuotas más antiguas aparecen primero.
+                </p>
+            </div>
+
+            <span class="table-counter">
+                <i class="fas fa-receipt"></i>
+
+                <span th:text="${totalCuotasPendientes}">
+                    0
+                </span>
+
+                cuotas
+            </span>
+
+        </div>
+
+        <!-- FILTROS DE MORA -->
+        <div class="mora-filters">
+
+            <div class="filter-group filter-search">
+                <label>Buscar</label>
+                <input type="text"
+                       id="filtroMoraTexto"
+                       placeholder="Buscar por crédito, cliente o DNI...">
+            </div>
+
+            <div class="filter-group">
+                <label>Clasificación</label>
+                <select id="filtroMoraClasificacion">
+                    <option value="">Todas</option>
+                    <option value="AL DIA">Al día</option>
+                    <option value="MORA TEMPRANA">Mora temprana</option>
+                    <option value="MORA INTERMEDIA">Mora intermedia</option>
+                    <option value="MORA CRITICA">Mora crítica</option>
+                </select>
+            </div>
+
+            <div class="filter-group">
+                <label>Última gestión</label>
+                <select id="filtroMoraGestion">
+                    <option value="">Todas</option>
+                    <option value="SIN_GESTION">Sin gestión</option>
+                    <option value="SIN_RESPUESTA">Sin respuesta</option>
+                    <option value="CONTACTADO">Contactado</option>
+                    <option value="COMPROMISO_PAGO">Compromiso de pago</option>
+                </select>
+            </div>
+
+            <button type="button" id="limpiarFiltrosMora" class="btn-clear-filter">
+                <i class="fas fa-eraser"></i>
+                Limpiar
+            </button>
+
+        </div>
+
+        <div class="table-container">
+
+            <table class="mora-table">
+
+                <thead>
+                <tr>
+                    <th>Crédito</th>
+                    <th>Cliente</th>
+                    <th>Cuota</th>
+                    <th>Interés mora</th>
+                    <th>Total actualizado</th>
+                    <th>Vencimiento</th>
+                    <th>Días de atraso</th>
+                    <th>Clasificación</th>
+                    <th>Última gestión</th>
+                    <th>Acción</th>
+                </tr>
+                </thead>
+
+                <tbody>
+
+                <tr th:each="cuota : ${cuotas}"
+                    class="mora-row"
+                    th:attr="
+                        data-credito=${cuota.solicitudCredito.id},
+                        data-dni=${cuota.solicitudCredito.usuario.numDoc},
+                        data-cliente=${(cuota.solicitudCredito.usuario.nombres != null ? cuota.solicitudCredito.usuario.nombres : 'Cliente') + ' ' + (cuota.solicitudCredito.usuario.apellidos != null ? cuota.solicitudCredito.usuario.apellidos : '')},
+                        data-clasificacion=${cuota.estadoMora},
+                        data-gestion=${ultimaGestionPorCuota[cuota.id] != null ? ultimaGestionPorCuota[cuota.id].resultado : 'SIN_GESTION'}
+                    ">
+
+                    <!-- CRÉDITO -->
+                    <td>
+                        <strong class="credit-id"
+                                th:text="'#' + ${cuota.solicitudCredito.id}">
+                            #1
+                        </strong>
+                    </td>
+
+                    <!-- CLIENTE -->
+                    <td>
+                        <div class="client-data">
+
+                            <div class="client-avatar">
+                                <i class="fas fa-user"></i>
+                            </div>
+
+                            <div>
+                                <strong>
+                                    <span th:text="${cuota.solicitudCredito.usuario.nombres != null
+                                            ? cuota.solicitudCredito.usuario.nombres
+                                            : 'Cliente'}">
+                                        Cliente
+                                    </span>
+
+                                    <span th:if="${cuota.solicitudCredito.usuario.apellidos != null}"
+                                          th:text="' ' + ${cuota.solicitudCredito.usuario.apellidos}">
+                                    </span>
+                                </strong>
+
+                                <small th:text="'DNI: ' + ${cuota.solicitudCredito.usuario.numDoc}">
+                                    DNI: 00000000
+                                </small>
+                            </div>
+
+                        </div>
+                    </td>
+
+                    <!-- CUOTA -->
+                    <td>
+                        <span class="installment-number"
+                              th:text="'Cuota ' + ${cuota.numeroCuota}">
+                            Cuota 1
+                        </span>
+                    </td>
+
+                    <!-- INTERÉS MORATORIO -->
+                    <td>
+                        <span th:with="registroMora=${morasPorCuota[cuota.id]}"
+                              th:class="${registroMora != null
+                                        && registroMora.interesMora != null
+                                        && registroMora.interesMora > 0
+                                        ? 'interest-amount interest-active'
+                                        : 'interest-amount interest-zero'}"
+
+                              th:text="'S/ ' + ${#numbers.formatDecimal(
+                                        registroMora != null
+                                        && registroMora.interesMora != null
+                                                ? registroMora.interesMora
+                                                : 0,
+                                        1,
+                                        'DEFAULT',
+                                        2,
+                                        'DEFAULT'
+                              )}">
+                            S/ 0.00
+                        </span>
+                    </td>
+
+                    <!-- TOTAL ACTUALIZADO -->
+                    <td th:with="registroMora=${morasPorCuota[cuota.id]}">
+                        <strong class="updated-amount"
+                                th:text="'S/ ' + ${#numbers.formatDecimal(
+                                        (cuota.montoCuota != null ? cuota.montoCuota : 0)
+                                        +
+                                        (registroMora != null
+                                                && registroMora.interesMora != null
+                                                ? registroMora.interesMora
+                                                : 0),
+                                        1,
+                                        'DEFAULT',
+                                        2,
+                                        'DEFAULT'
+                                )}">
+                            S/ 0.00
+                        </strong>
+                    </td>
+
+                    <!-- VENCIMIENTO -->
+                    <td th:text="${#temporals.format(
+                            cuota.fechaVencimiento,
+                            'dd/MM/yyyy'
+                    )}">
+                        01/01/2026
+                    </td>
+
+                    <!-- DÍAS DE ATRASO -->
+                    <td>
+                        <span th:if="${cuota.diasAtraso == 0}"
+                              class="delay-days delay-zero">
+                            0 días
+                        </span>
+
+                        <span th:if="${cuota.diasAtraso > 0}"
+                              class="delay-days delay-overdue"
+                              th:text="${cuota.diasAtraso} + ' días'">
+                            10 días
+                        </span>
+                    </td>
+
+                    <!-- CLASIFICACIÓN -->
+                    <td>
+                        <span th:if="${cuota.estadoMora == 'AL DIA'}"
+                              class="mora-status mora-current">
+                            <i class="fas fa-check-circle"></i>
+                            Al día
+                        </span>
+
+                        <span th:if="${cuota.estadoMora == 'MORA TEMPRANA'}"
+                              class="mora-status mora-early">
+                            <i class="fas fa-clock"></i>
+                            Mora temprana
+                        </span>
+
+                        <span th:if="${cuota.estadoMora == 'MORA INTERMEDIA'}"
+                              class="mora-status mora-medium">
+                            <i class="fas fa-triangle-exclamation"></i>
+                            Mora intermedia
+                        </span>
+
+                        <span th:if="${cuota.estadoMora == 'MORA CRITICA'}"
+                              class="mora-status mora-critical">
+                            <i class="fas fa-circle-exclamation"></i>
+                            Mora crítica
+                        </span>
+                    </td>
+
+                    <!-- ÚLTIMA GESTIÓN -->
+                    <td>
+                        <div th:with="gestion=${ultimaGestionPorCuota[cuota.id]}">
+
+                            <span th:if="${gestion == null}" class="badge-sin-gestion">
+                                Sin gestión
+                            </span>
+
+                            <div th:if="${gestion != null}" class="gestion-resumen">
+
+                                <span class="badge-ultima-gestion"
+                                      th:text="${#strings.replace(gestion.resultado, '_', ' ')}">
+                                    RESULTADO
+                                </span>
+
+                                <small th:if="${gestion.fechaCompromisoPago != null}" class="compromiso-fecha">
+                                    Compromiso:
+                                    <strong th:text="${#temporals.format(gestion.fechaCompromisoPago, 'dd/MM/yyyy')}">
+                                        25/06/2026
+                                    </strong>
+                                </small>
+
+                                <small th:if="${gestion.fechaCompromisoPago == null}" class="sin-compromiso">
+                                    Sin compromiso
+                                </small>
+                            </div>
+                        </div>
+                    </td>
+
+                    <!-- ACCIÓN -->
+                    <td>
+                        <div class="action-buttons">
+
+                            <a th:href="@{/admin/prestamo/{id}(
+                                    id=${cuota.solicitudCredito.id},
+                                    origen='mora'
+                            )}"
+                               class="btn-view">
+
+                                <i class="fas fa-eye"></i>
+                                Ver crédito
+                            </a>
+
+                            <a th:if="${cuota.diasAtraso > 0}"
+                               th:href="@{/admin/mora/gestionar/{id}(
+                                    id=${cuota.id}
+                            )}"
+                               class="btn-collect">
+
+                                <i class="fas fa-headset"></i>
+                                Gestionar
+                            </a>
+
+                            <span th:if="${cuota.diasAtraso == 0}"
+                                  class="collection-disabled">
+
+                                <i class="fas fa-circle-check"></i>
+                                Al día
+                            </span>
+                        </div>
+                    </td>
+
+                </tr>
+
+                    <tr id="moraNoResults" style="display: none;">
+                        <td colspan="10" class="empty-state">
+                            <i class="fas fa-search"></i>
+
+                            <strong>
+                                No se encontraron cuotas con esos filtros
+                            </strong>
+
+                            <span>
+                                Prueba con otro crédito, DNI, cliente o clasificación.
+                            </span>
+                        </td>
+                    </tr>
+
+                    <tr th:if="${#lists.isEmpty(cuotas)}">
+
+                    <td colspan="10" class="empty-state">
+
+                        <i class="fas fa-circle-check"></i>
+
+                        <strong>
+                            No existen cuotas pendientes
+                        </strong>
+
+                        <span>
+                            La cartera se encuentra completamente al día.
+                        </span>
+
+                    </td>
+
+                </tr>
+
+                </tbody>
+
+            </table>
+
+        </div>
+
+    </section>
+
 </main>
+<script th:src="@{/js/admin-mora.js}"></script>
+<script th:src="@{/js/admin-flash.js}"></script>
 </body>
 </html>

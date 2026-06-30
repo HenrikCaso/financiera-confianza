@@ -7,47 +7,96 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import org.springframework.web.servlet.HandlerInterceptor;
 
+import java.util.List;
+
 @Component
 public class JwtInterceptor implements HandlerInterceptor {
 
     @Autowired
     private JwtUtil jwtUtil;
 
-    @Override
-    public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object handler) throws Exception {
-        String uri = request.getRequestURI();
-        HttpSession session = request.getSession();
-        String token = (String) session.getAttribute("tokenJwt");
+    private static final List<String> ROLES_CORPORATIVOS = List.of(
+            "ADMIN",
+            "ASESOR",
+            "RIESGOS",
+            "OPERACIONES",
+            "RECUPERACIONES",
+            "AUDITOR"
+    );
 
-        // 1. SI INTENTAN ENTRAR AL CORE BANCARIO (/admin/**)
-        if (uri.startsWith("/admin") && !uri.equals("/admin/login")) {
+    @Override
+    public boolean preHandle(
+            HttpServletRequest request,
+            HttpServletResponse response,
+            Object handler
+    ) throws Exception {
+
+        String uri = request.getRequestURI();
+        HttpSession session = request.getSession(false);
+
+        if (uri.equals("/admin/login")) {
+            return true;
+        }
+
+        if (uri.startsWith("/admin")) {
+
+            if (session == null) {
+                response.sendRedirect("/admin/login");
+                return false;
+            }
+
+            String token = (String) session.getAttribute("tokenJwt");
+
             if (token == null || !jwtUtil.validarToken(token)) {
                 response.sendRedirect("/admin/login");
                 return false;
             }
 
             String rol = jwtUtil.obtenerRolDeToken(token);
-            if (!"ADMIN".equals(rol)) {
-                // BLINDAJE: Si un cliente intenta infiltrarse, lanzamos un 403 Prohibido
-                response.sendError(HttpServletResponse.SC_FORBIDDEN, "Acceso denegado. No tienes rol de Administrador.");
+
+            rol = rol == null ? "" : rol.trim().toUpperCase();
+
+            if (!ROLES_CORPORATIVOS.contains(rol)) {
+                response.sendError(
+                        HttpServletResponse.SC_FORBIDDEN,
+                        "Acceso denegado. No tienes rol corporativo."
+                );
                 return false;
             }
+
+            return true;
         }
 
-        // 2. SI INTENTAN ENTRAR AL HOMEBANKING CLIENTE (/dashboard, /transferencias, /prestamos, /servicios)
-        if (uri.equals("/dashboard") || uri.equals("/transferencias") || uri.equals("/prestamos") || uri.equals("/servicios") || uri.equals("/perfil")) {
+        if (
+                uri.equals("/dashboard")
+                        || uri.equals("/transferencias")
+                        || uri.equals("/prestamos")
+                        || uri.equals("/servicios")
+                        || uri.equals("/perfil")
+        ) {
+
+            if (session == null) {
+                response.sendRedirect("/login");
+                return false;
+            }
+
+            String token = (String) session.getAttribute("tokenJwt");
+
             if (token == null || !jwtUtil.validarToken(token)) {
                 response.sendRedirect("/login");
                 return false;
             }
 
             String rol = jwtUtil.obtenerRolDeToken(token);
+
+            rol = rol == null ? "" : rol.trim().toUpperCase();
+
             if (!"CLIENTE".equals(rol)) {
-                response.sendRedirect("/admin/login"); // Si un admin se confunde de portal, lo mandamos a su login
+                response.sendRedirect("/admin/login");
                 return false;
             }
         }
 
-        return true; // Si pasa las pruebas, se le permite el acceso
+        return true;
     }
 }

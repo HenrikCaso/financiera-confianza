@@ -1,6 +1,6 @@
 package com.example.financieraconfianza.service;
 
-import com.example.financieraconfianza.model.entity.Movimiento;
+import com.example.financieraconfianza.model.Movimiento;
 import com.example.financieraconfianza.model.entity.Usuario;
 import com.lowagie.text.*;
 import com.lowagie.text.pdf.PdfPCell;

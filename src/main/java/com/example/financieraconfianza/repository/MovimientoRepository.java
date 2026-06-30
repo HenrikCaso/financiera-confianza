@@ -1,7 +1,7 @@
 package com.example.financieraconfianza.repository;
 
 import com.example.financieraconfianza.model.entity.Usuario;
-import com.example.financieraconfianza.model.entity.Movimiento;
+import com.example.financieraconfianza.model.Movimiento;
 import org.springframework.data.jpa.repository.JpaRepository;
 
 import java.time.LocalDateTime;
@@ -15,4 +15,6 @@ public interface MovimientoRepository extends JpaRepository<Movimiento, Long> {
     List<Movimiento> findByUsuarioAndFechaBetweenOrderByFechaDesc(Usuario usuario, LocalDateTime inicio, LocalDateTime fin);
 
     List<Movimiento> findByUsuario(Usuario usuario);
+
+    List<Movimiento> findTop10ByUsuarioOrderByFechaDesc(Usuario usuario);
 }

@@ -1,0 +1,400 @@
+*{
+    margin:0;
+    padding:0;
+    box-sizing:border-box;
+    font-family:'Segoe UI',sans-serif;
+}
+
+body{
+    background:#f4f7fb;
+    display:flex;
+}
+
+.sidebar{
+    width:230px;
+    height:100vh;
+    background:#001f5b;
+    position:fixed;
+    display:flex;
+    flex-direction:column;
+}
+
+.sidebar-logo{
+    padding:25px;
+}
+
+.sidebar-logo img{
+    width:160px;
+}
+
+.sidebar-nav{
+    display:flex;
+    flex-direction:column;
+    padding:10px;
+}
+
+.nav-item{
+    color:white;
+    text-decoration:none;
+    padding:14px;
+    border-radius:12px;
+    margin-bottom:8px;
+}
+
+.nav-item:hover,
+.nav-item.active{
+    background:#1664ff;
+}
+
+.sidebar-footer{
+    margin-top:auto;
+    padding:20px;
+}
+
+.sidebar-footer a{
+    color:#ff4d4d;
+    text-decoration:none;
+}
+
+.content{
+    margin-left:230px;
+    padding:30px;
+    width:100%;
+}
+
+.top-section{
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+    margin-bottom:25px;
+}
+
+.breadcrumb{
+    display:flex;
+    gap:12px;
+    color:#6b7280;
+}
+
+.btn-volver{
+    border:1px solid #1664ff;
+    padding:12px 20px;
+    border-radius:12px;
+    text-decoration:none;
+    color:#1664ff;
+}
+
+.credit-card{
+    background:white;
+    padding:30px;
+    border-radius:20px;
+    display:flex;
+    justify-content:space-between;
+    margin-bottom:25px;
+    box-shadow:0 2px 10px rgba(0,0,0,.05);
+}
+
+.badge{
+    margin-top:20px;
+    background:#e8f0ff;
+    display:inline-block;
+    padding:10px 18px;
+    border-radius:10px;
+    font-weight:600;
+    color:#1664ff;
+}
+
+.estado{
+    margin-top:30px;
+}
+
+.estado-activo{
+    background:#d9f5df;
+    color:#1f8f3c;
+    padding:10px 18px;
+    border-radius:20px;
+    margin-left:10px;
+    font-weight:600;
+}
+
+.right-info{
+    display:grid;
+    grid-template-columns:repeat(2, 1fr);
+    gap:20px;
+    width:650px;
+}
+
+.info-box{
+    display:flex;
+    align-items:center;
+    gap:16px;
+
+    padding:18px;
+    border-radius:14px;
+
+    background:#f8fbff;
+
+    border:1px solid #e4edf9;
+}
+
+.info-box i{
+    font-size:24px;
+    color:#2f6df6;
+    min-width:30px;
+}
+
+.info-box span{
+    display:block;
+    font-size:13px;
+    color:#6b7280;
+    margin-bottom:4px;
+}
+
+.info-box strong{
+    font-size:18px;
+    color:#0d1f54;
+}
+
+.info-item i{
+    font-size:25px;
+    color:#5b8def;
+}
+
+.timeline-card{
+    background:white;
+    padding:30px;
+    border-radius:20px;
+    box-shadow:0 2px 10px rgba(0,0,0,.05);
+}
+
+.timeline-header{
+    display:flex;
+    gap:15px;
+    margin-bottom:25px;
+}
+
+.timeline-header i{
+    font-size:30px;
+    color:#5b8def;
+}
+
+.timeline{
+    position:relative;
+}
+
+.timeline::before{
+    content:'';
+    position:absolute;
+    left:22px;
+    top:0;
+    bottom:0;
+    width:3px;
+    background:#d8e3ff;
+}
+
+.timeline-item{
+    display:flex;
+    margin-bottom:25px;
+    position:relative;
+}
+
+.timeline-icon{
+    width:45px;
+    height:45px;
+    border-radius:50%;
+    background:#1664ff;
+    display:flex;
+    justify-content:center;
+    align-items:center;
+    color:white;
+    z-index:2;
+}
+
+.timeline-content{
+    margin-left:20px;
+    background:white;
+    border:1px solid #e5e7eb;
+    border-radius:15px;
+    padding:20px;
+    width:100%;
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+}
+
+.timeline-left h3{
+    color:#12275e;
+    margin-bottom:8px;
+}
+
+.timeline-left p{
+    color:#4b5563;
+}
+
+.timeline-date{
+    background:#edf4ff;
+    padding:10px 15px;
+    border-radius:10px;
+    color:#1664ff;
+    font-weight:600;
+}
+
+/* =====================================================
+   ESTADO ACTUAL DEL CRÉDITO
+   ===================================================== */
+
+.estado {
+    margin-top: 30px;
+    display: flex;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 10px;
+}
+
+.estado-texto {
+    color: #334155;
+    font-weight: 600;
+}
+
+.estado-badge {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 7px;
+    padding: 9px 16px;
+    border: 1px solid transparent;
+    border-radius: 999px;
+    font-size: 13px;
+    font-weight: 800;
+    white-space: nowrap;
+}
+
+.estado-pendiente {
+    color: #92400e;
+    background: #fef3c7;
+    border-color: #fde68a;
+}
+
+.estado-aprobado {
+    color: #075985;
+    background: #e0f2fe;
+    border-color: #7dd3fc;
+}
+
+.estado-cancelado {
+    color: #166534;
+    background: #dcfce7;
+    border-color: #86efac;
+}
+
+.estado-rechazado {
+    color: #991b1b;
+    background: #fee2e2;
+    border-color: #fca5a5;
+}
+
+.estado-desconocido {
+    color: #475569;
+    background: #f1f5f9;
+    border-color: #cbd5e1;
+}
+
+
+/* =====================================================
+   TIPOS DE EVENTOS DE LA LÍNEA DE TIEMPO
+   ===================================================== */
+
+.evento-solicitado .timeline-icon {
+    background: #2563eb;
+}
+
+.evento-aprobada .timeline-icon {
+    background: #0891b2;
+}
+
+.evento-desembolsada .timeline-icon {
+    background: #7c3aed;
+}
+
+.evento-cuota_pagada .timeline-icon {
+    background: #16a34a;
+}
+
+.evento-cancelado .timeline-icon {
+    background: #15803d;
+}
+
+.evento-rechazada .timeline-icon,
+.evento-rechazado_riesgo .timeline-icon {
+    background: #dc2626;
+}
+
+.evento-desconocido .timeline-icon {
+    background: #64748b;
+}
+
+.evento-aprobada .timeline-content {
+    border-left: 4px solid #0891b2;
+}
+
+.evento-desembolsada .timeline-content {
+    border-left: 4px solid #7c3aed;
+}
+
+.evento-cuota_pagada .timeline-content {
+    border-left: 4px solid #22c55e;
+}
+
+.evento-cancelado .timeline-content {
+    border-left: 4px solid #15803d;
+    background: #f0fdf4;
+}
+
+.evento-rechazada .timeline-content,
+.evento-rechazado_riesgo .timeline-content {
+    border-left: 4px solid #dc2626;
+    background: #fef2f2;
+}
+
+
+/* =====================================================
+   ADAPTACIÓN RESPONSIVA
+   ===================================================== */
+
+@media (max-width: 1000px) {
+
+    .credit-card {
+        flex-direction: column;
+        gap: 25px;
+    }
+
+    .right-info {
+        width: 100%;
+    }
+}
+
+@media (max-width: 700px) {
+
+    .content {
+        padding: 18px;
+    }
+
+    .top-section {
+        align-items: flex-start;
+        flex-direction: column;
+        gap: 15px;
+    }
+
+    .right-info {
+        grid-template-columns: 1fr;
+    }
+
+    .timeline-content {
+        align-items: flex-start;
+        flex-direction: column;
+        gap: 15px;
+    }
+
+    .timeline-date {
+        align-self: flex-start;
+    }
+}

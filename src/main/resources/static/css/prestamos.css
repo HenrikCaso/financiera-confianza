@@ -1,14 +1,15 @@
 /* prestamos.css - Estilos exclusivos para el simulador de créditos */
 
-.loan-container {
-    padding: 40px;
-    display: flex;
-    justify-content: center;
+.loan-container{
+    display:flex;
+    flex-direction:column;
+    gap:25px;
+    width:100%;
 }
 
 .loan-simulator {
-    width: 100%;
-    max-width: 600px;
+    max-width:none;
+    width:100%;
 }
 
 .loan-simulator h3 {
@@ -186,4 +187,1840 @@ input[type="range"]::-moz-range-thumb:hover {
 
 .input-with-icon input:focus {
     box-shadow: inset 0 0 0 2px #004b87; /* Borde azul al hacer clic */
+}
+
+.table-prestamos{
+
+    width:100%;
+
+    border-collapse:separate;
+
+    border-spacing:0;
+
+    overflow:hidden;
+
+    border-radius:15px;
+
+    margin-top:20px;
+
+}
+
+.table-prestamos th{
+
+    background:#004b87;
+
+    color:white;
+
+    padding:15px;
+
+}
+
+.table-prestamos td{
+
+    background:white;
+
+    padding:15px;
+
+    border-bottom:1px solid #e5e7eb;
+
+}
+
+.table-prestamos tr:hover{
+
+    background:#f8fafc;
+
+}
+
+.alert-success{
+    background:#dcfce7;
+    color:#166534;
+    padding:15px;
+    border-radius:10px;
+    margin-bottom:20px;
+}
+
+.alert-error{
+    background:#fee2e2;
+    color:#991b1b;
+    padding:15px;
+    border-radius:10px;
+    margin-bottom:20px;
+}
+
+.card{
+    width:100%;
+    background:white;
+    border-radius:18px;
+    box-shadow:0 8px 20px rgba(0,0,0,.08);
+    padding:30px;
+    box-sizing:border-box;
+}
+
+.btn-pagar{
+
+    background:#16a34a;
+    color:white;
+
+    border:none;
+
+    padding:10px 18px;
+
+    border-radius:10px;
+
+    cursor:pointer;
+
+    font-weight:bold;
+
+    transition:.3s;
+}
+
+.btn-pagar:hover{
+
+    background:#15803d;
+
+}
+
+/* ===== RESUMEN ===== */
+
+.resumen-prestamo{
+    margin-bottom:25px;
+}
+
+.resumen-grid{
+    display:grid;
+    grid-template-columns:repeat(3,1fr);
+    gap:20px;
+}
+
+.resumen-item{
+    background:white;
+    border:1px solid #e2e8f0;
+    border-radius:15px;
+    padding:20px;
+    text-align:center;
+}
+
+.resumen-item{
+    background:#f8fafc;
+    border:1px solid #e2e8f0;
+    border-radius:15px;
+    padding:25px;
+    text-align:center;
+    transition:.3s;
+}
+
+.resumen-item:hover{
+    transform:translateY(-3px);
+    box-shadow:0 8px 20px rgba(0,0,0,.08);
+}
+
+.resumen-item p{
+    font-size:24px;
+    font-weight:bold;
+    color:#004b87;
+}
+
+.resumen-item i{
+    font-size:32px;
+    color:#004b87;
+    margin-bottom:10px;
+}
+
+/* ===== ESTADOS ===== */
+
+.estado{
+    padding:8px 15px;
+    border-radius:20px;
+    font-weight:600;
+    font-size:13px;
+}
+
+.estado-aprobado{
+    background:#dcfce7;
+    color:#166534;
+}
+
+.estado-rechazado{
+    background:#fee2e2;
+    color:#991b1b;
+}
+
+.estado-pendiente{
+    background:#fef3c7;
+    color:#92400e;
+}
+
+/* ===== CUOTAS ===== */
+
+.card-pagos{
+    max-height:550px;
+    overflow-y:auto;
+}
+
+.btn-pagar{
+    background:#16a34a;
+    color:white;
+    border:none;
+    padding:10px 18px;
+    border-radius:10px;
+    cursor:pointer;
+    font-weight:bold;
+}
+
+.card-pagos,
+.card-historial{
+    overflow-x:auto;
+}
+
+.btn-pagar:hover{
+    background:#15803d;
+}
+
+/* ===== HISTORIAL ===== */
+
+.card-historial{
+    margin-top:30px;
+}
+
+/* ===== RESPONSIVE ===== */
+
+@media(max-width:900px){
+
+    .resumen-grid{
+        grid-template-columns:1fr;
+    }
+
+    .form-row{
+        flex-direction:column;
+    }
+}
+.table-prestamos{
+    width:100%;
+    min-width:700px;
+}
+
+.form-control{
+    width:100%;
+    padding:12px;
+    border:1px solid #cbd5e1;
+    border-radius:8px;
+    font-size:14px;
+    box-sizing:border-box;
+}
+
+.form-control:focus{
+    outline:none;
+    border-color:#004b87;
+    box-shadow:0 0 0 3px rgba(0,75,135,.15);
+}
+
+.toast-success,
+.toast-error{
+    position:fixed;
+    top:20px;
+    right:20px;
+    z-index:9999;
+
+    min-width:350px;
+    padding:18px 25px;
+
+    border-radius:12px;
+
+    color:white;
+    font-weight:600;
+
+    box-shadow:0 8px 25px rgba(0,0,0,.2);
+
+    animation:slideIn .4s ease;
+}
+
+.toast-success{
+    background:#16a34a;
+}
+
+.toast-error{
+    background:#dc2626;
+}
+
+@keyframes slideIn{
+    from{
+        opacity:0;
+        transform:translateX(100%);
+    }
+    to{
+        opacity:1;
+        transform:translateX(0);
+    }
+}
+
+.cliente-interes {
+    display: inline-flex;
+    padding: 6px 10px;
+    border-radius: 18px;
+    font-size: 12px;
+    font-weight: 700;
+}
+
+.interes-cero {
+    background: #f1f5f9;
+    color: #64748b;
+}
+
+.interes-activo {
+    background: #fee2e2;
+    color: #b91c1c;
+}
+
+.cliente-total-pagar {
+    color: #7c3aed;
+    font-size: 14px;
+    white-space: nowrap;
+}
+
+.estado-cuota {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    padding: 7px 11px;
+    border-radius: 20px;
+    font-size: 12px;
+    font-weight: 700;
+    white-space: nowrap;
+}
+
+.estado-pendiente {
+    background: #fef3c7;
+    color: #92400e;
+}
+
+.estado-vencida {
+    background: #fee2e2;
+    color: #b91c1c;
+}
+
+.btn-pagar {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 6px;
+    padding: 9px 13px;
+    border: none;
+    border-radius: 8px;
+    background: #16a34a;
+    color: #ffffff;
+    font-family: inherit;
+    font-size: 12px;
+    font-weight: 700;
+    cursor: pointer;
+    white-space: nowrap;
+}
+
+.btn-pagar:hover {
+    background: #15803d;
+}
+
+.pago-bloqueado {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 7px;
+    padding: 9px 12px;
+    border: 1px solid #cbd5e1;
+    border-radius: 8px;
+    background: #f1f5f9;
+    color: #64748b;
+    font-size: 11px;
+    font-weight: 700;
+    white-space: nowrap;
+}
+
+.pago-bloqueado i {
+    color: #94a3b8;
+}
+
+.pago-bloqueado strong {
+    color: #475569;
+}
+
+/* =====================================================
+   SEGURO DE DESGRAVAMEN
+   ===================================================== */
+
+.insurance-options {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 14px;
+}
+
+.insurance-option {
+    position: relative;
+    display: block;
+    cursor: pointer;
+    margin: 0;
+}
+
+.insurance-option input {
+    position: absolute;
+    opacity: 0;
+    pointer-events: none;
+}
+
+.insurance-content {
+    display: flex;
+    flex-direction: column;
+    gap: 5px;
+    padding: 16px;
+    border: 2px solid #dbe4ee;
+    border-radius: 12px;
+    background: #ffffff;
+    transition: 0.2s ease;
+}
+
+.insurance-content strong {
+    color: #0f172a;
+    font-size: 14px;
+}
+
+.insurance-content small {
+    color: #64748b;
+    font-size: 12px;
+}
+
+.insurance-option:hover .insurance-content {
+    border-color: #7dd3fc;
+    background: #f0f9ff;
+}
+
+.insurance-option input:checked
++ .insurance-content {
+    border-color: #009ee3;
+    background: #eaf8ff;
+    box-shadow: 0 0 0 3px rgba(0, 158, 227, 0.12);
+}
+
+/* =====================================================
+   RESUMEN DE RIESGO
+   ===================================================== */
+
+.field-help {
+    color: #64748b;
+    font-size: 12px;
+    margin-top: 5px;
+}
+
+.riesgo-badge {
+    display: inline-flex;
+    justify-content: center;
+    align-items: center;
+    min-width: 95px;
+    padding: 6px 11px;
+    border-radius: 999px;
+    font-size: 12px !important;
+    font-weight: 750;
+}
+
+.riesgo-sin-calcular {
+    background: #e2e8f0;
+    color: #475569 !important;
+}
+
+.riesgo-verde {
+    background: #dcfce7;
+    color: #166534 !important;
+}
+
+.riesgo-amarillo {
+    background: #fef3c7;
+    color: #92400e !important;
+}
+
+.riesgo-rojo {
+    background: #fee2e2;
+    color: #b91c1c !important;
+}
+
+.capacidad-negativa {
+    color: #dc2626 !important;
+}
+
+.capacidad-positiva {
+    color: #16a34a !important;
+}
+
+.risk-help {
+    display: flex;
+    align-items: flex-start;
+    gap: 9px;
+    margin: -8px 0 22px;
+    padding: 12px 14px;
+    border: 1px solid #bae6fd;
+    border-radius: 10px;
+    background: #f0f9ff;
+    color: #075985;
+    font-size: 12px;
+    line-height: 1.5;
+}
+
+.risk-help i {
+    margin-top: 2px;
+}
+
+@media (max-width: 700px) {
+
+    .insurance-options {
+        grid-template-columns: 1fr;
+    }
+}
+
+/* =====================================================
+   IDENTIFICADOR DEL CRÉDITO
+   ===================================================== */
+
+.credito-badge {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    min-width: 52px;
+    padding: 6px 10px;
+    border: 1px solid #bae6fd;
+    border-radius: 999px;
+    background: #eaf8ff;
+    color: #075985;
+    font-size: 12px;
+    font-weight: 800;
+}
+
+.table-prestamos tbody tr:hover .credito-badge {
+    border-color: #38bdf8;
+    background: #dff5ff;
+}
+
+/* =====================================================
+   CARTERA AGRUPADA POR CRÉDITO
+   ===================================================== */
+
+.cartera-encabezado {
+    display: flex;
+    align-items: flex-start;
+    justify-content: space-between;
+    gap: 20px;
+    margin-bottom: 22px;
+}
+
+.cartera-encabezado h3 {
+    margin: 0 0 6px;
+    color: #0f172a;
+}
+
+.cartera-encabezado p {
+    margin: 0;
+    color: #64748b;
+    font-size: 13px;
+}
+
+.contador-creditos {
+    display: inline-flex;
+    align-items: center;
+    padding: 8px 13px;
+    border: 1px solid #bae6fd;
+    border-radius: 999px;
+    background: #eaf8ff;
+    color: #075985;
+    font-size: 12px;
+    font-weight: 800;
+    white-space: nowrap;
+}
+
+.credito-card {
+    overflow: hidden;
+    margin-top: 18px;
+    border: 1px solid #dbe5ef;
+    border-radius: 16px;
+    background: #ffffff;
+    box-shadow: 0 5px 16px rgba(15, 23, 42, 0.06);
+}
+
+.credito-toggle {
+    display: grid;
+    grid-template-columns:
+        minmax(160px, 0.8fr)
+        minmax(550px, 3fr)
+        auto
+        22px;
+    align-items: center;
+    gap: 20px;
+    width: 100%;
+    padding: 20px;
+    border: none;
+    background: #ffffff;
+    color: inherit;
+    font-family: inherit;
+    text-align: left;
+    cursor: pointer;
+}
+
+.credito-toggle:hover {
+    background: #f8fbff;
+}
+
+.credito-identificacion {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+}
+
+.credito-icono {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 44px;
+    height: 44px;
+    border-radius: 12px;
+    background: #e0f2fe;
+    color: #0369a1;
+    font-size: 19px;
+}
+
+.credito-etiqueta {
+    display: block;
+    margin-bottom: 3px;
+    color: #64748b;
+    font-size: 11px;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+}
+
+.credito-identificacion strong {
+    color: #004b87;
+    font-size: 18px;
+}
+
+.credito-resumen-cabecera {
+    display: grid;
+    grid-template-columns: repeat(4, minmax(120px, 1fr));
+    gap: 16px;
+}
+
+.credito-resumen-cabecera div {
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+}
+
+.credito-resumen-cabecera span {
+    color: #64748b;
+    font-size: 11px;
+}
+
+.credito-resumen-cabecera strong {
+    color: #0f172a;
+    font-size: 14px;
+}
+
+.credito-estado {
+    display: inline-flex;
+    justify-content: center;
+    padding: 7px 12px;
+    border-radius: 999px;
+    background: #dcfce7;
+    color: #166534;
+    font-size: 11px;
+    font-weight: 800;
+}
+
+.credito-flecha {
+    color: #64748b;
+    transition: transform 0.25s ease;
+}
+
+.credito-toggle[aria-expanded="true"]
+.credito-flecha {
+    transform: rotate(180deg);
+}
+
+.credito-progreso {
+    padding: 0 20px 18px;
+    background: #ffffff;
+}
+
+.credito-progreso-texto {
+    display: flex;
+    justify-content: space-between;
+    margin-bottom: 7px;
+    color: #64748b;
+    font-size: 11px;
+}
+
+.credito-progreso-texto strong {
+    color: #004b87;
+}
+
+.barra-progreso {
+    width: 100%;
+    height: 8px;
+    overflow: hidden;
+    border-radius: 999px;
+    background: #e2e8f0;
+}
+
+.barra-progreso span {
+    display: block;
+    height: 100%;
+    border-radius: inherit;
+    background: #00a4e4;
+    transition: width 0.3s ease;
+}
+
+.credito-detalle {
+    max-height: 2000px;
+    overflow: hidden;
+    border-top: 1px solid #e2e8f0;
+    opacity: 1;
+    transition:
+            max-height 0.3s ease,
+            opacity 0.2s ease;
+}
+
+.credito-detalle.credito-colapsado {
+    max-height: 0;
+    border-top-color: transparent;
+    opacity: 0;
+}
+
+.tabla-credito-scroll {
+    width: 100%;
+    overflow-x: auto;
+    padding: 0 18px 18px;
+    box-sizing: border-box;
+}
+
+.tabla-credito {
+    min-width: 900px;
+    margin-top: 18px;
+}
+
+.sin-creditos-activos {
+    display: flex;
+    align-items: center;
+    gap: 15px;
+    padding: 24px;
+    border: 1px solid #bbf7d0;
+    border-radius: 14px;
+    background: #f0fdf4;
+    color: #166534;
+}
+
+.sin-creditos-activos i {
+    font-size: 28px;
+}
+
+.sin-creditos-activos div {
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+}
+
+.sin-creditos-activos span {
+    font-size: 13px;
+}
+
+/* =====================================================
+   SOLICITUD BLOQUEADA
+   ===================================================== */
+
+.solicitud-bloqueada {
+    display: flex;
+    align-items: flex-start;
+    gap: 20px;
+    border: 1px solid #fecaca;
+    background: #fffafa;
+}
+
+.solicitud-bloqueada-icono {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    flex: 0 0 54px;
+    height: 54px;
+    border-radius: 15px;
+    background: #fee2e2;
+    color: #dc2626;
+    font-size: 22px;
+}
+
+.solicitud-bloqueada-contenido h3 {
+    margin: 7px 0 8px;
+    color: #7f1d1d;
+}
+
+.solicitud-bloqueada-contenido p {
+    margin: 0;
+    color: #991b1b;
+    line-height: 1.6;
+}
+
+.bloqueo-etiqueta {
+    color: #dc2626;
+    font-size: 11px;
+    font-weight: 800;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+}
+
+.bloqueo-regla {
+    display: flex;
+    align-items: flex-start;
+    gap: 9px;
+    margin-top: 16px;
+    padding: 12px 14px;
+    border-radius: 10px;
+    background: #ffffff;
+    color: #64748b;
+    font-size: 12px;
+    line-height: 1.5;
+}
+
+@media (max-width: 1200px) {
+
+    .credito-toggle {
+        grid-template-columns: 1fr auto auto;
+    }
+
+    .credito-resumen-cabecera {
+        grid-column: 1 / -1;
+        grid-template-columns: repeat(4, 1fr);
+    }
+}
+
+@media (max-width: 750px) {
+
+    .cartera-encabezado {
+        flex-direction: column;
+    }
+
+    .credito-toggle {
+        grid-template-columns: 1fr auto;
+    }
+
+    .credito-resumen-cabecera {
+        grid-template-columns: repeat(2, 1fr);
+    }
+
+    .credito-estado {
+        justify-self: start;
+    }
+
+    .solicitud-bloqueada {
+        flex-direction: column;
+    }
+}
+
+/* =====================================================
+   DETALLE FINANCIERO DEL CRONOGRAMA DEL CLIENTE
+   ===================================================== */
+
+.detalle-capital {
+    color: #047857;
+    font-weight: 800;
+}
+
+.detalle-interes-credito {
+    color: #b45309;
+    font-weight: 800;
+}
+
+.detalle-cuota-base {
+    color: #5b21b6;
+    font-weight: 800;
+}
+
+.dato-no-disponible {
+    color: #94a3b8;
+    font-weight: 700;
+}
+
+.tabla-credito-scroll {
+    width: 100%;
+    overflow-x: auto;
+    padding: 0 18px 18px;
+    box-sizing: border-box;
+}
+
+.tabla-credito-scroll::-webkit-scrollbar {
+    height: 9px;
+}
+
+.tabla-credito-scroll::-webkit-scrollbar-track {
+    border-radius: 999px;
+    background: #e2e8f0;
+}
+
+.tabla-credito-scroll::-webkit-scrollbar-thumb {
+    border-radius: 999px;
+    background: #94a3b8;
+}
+
+.tabla-credito-scroll::-webkit-scrollbar-thumb:hover {
+    background: #64748b;
+}
+
+/* =====================================================
+   CUOTAS PAGADAS EN EL CRONOGRAMA
+   ===================================================== */
+
+.estado-pagada {
+    border: 1px solid #bbf7d0;
+    background: #dcfce7;
+    color: #166534;
+}
+
+.fecha-pago {
+    color: #15803d;
+    font-weight: 700;
+}
+
+.pago-completado {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 6px;
+    padding: 8px 12px;
+    border: 1px solid #bbf7d0;
+    border-radius: 8px;
+    background: #f0fdf4;
+    color: #15803d;
+    font-size: 11px;
+    font-weight: 800;
+    white-space: nowrap;
+}
+
+/* =====================================================
+   TABLA FINANCIERA COMPACTA SIN DESPLAZAMIENTO HORIZONTAL
+   ===================================================== */
+
+.tabla-credito-scroll {
+    width: 100%;
+    overflow-x: visible;
+    padding: 0 16px 18px;
+    box-sizing: border-box;
+}
+
+.tabla-financiera-cliente {
+    width: 100%;
+    min-width: 0;
+    table-layout: fixed;
+}
+
+.tabla-financiera-cliente .ancho-cuota {
+    width: 7%;
+}
+
+.tabla-financiera-cliente .ancho-saldo {
+    width: 14%;
+}
+
+.tabla-financiera-cliente .ancho-composicion {
+    width: 15%;
+}
+
+.tabla-financiera-cliente .ancho-pago {
+    width: 15%;
+}
+
+.tabla-financiera-cliente .ancho-vencimiento {
+    width: 11%;
+}
+
+.tabla-financiera-cliente .ancho-fecha-pago {
+    width: 11%;
+}
+
+.tabla-financiera-cliente .ancho-estado {
+    width: 12%;
+}
+
+.tabla-financiera-cliente .ancho-accion {
+    width: 15%;
+}
+
+.tabla-financiera-cliente th {
+    padding: 13px 6px;
+    font-size: 10px;
+    line-height: 1.2;
+    white-space: normal;
+    text-align: center;
+}
+
+.tabla-financiera-cliente td {
+    padding: 12px 7px;
+    font-size: 11px;
+    line-height: 1.25;
+    white-space: normal;
+    text-align: center;
+    vertical-align: middle;
+    overflow-wrap: anywhere;
+}
+
+.detalle-financiero {
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+    width: 100%;
+}
+
+.detalle-fila {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 6px;
+    width: 100%;
+}
+
+.detalle-etiqueta {
+    color: #64748b;
+    font-size: 9px;
+    font-weight: 600;
+}
+
+.detalle-valor {
+    font-size: 10px;
+    font-weight: 800;
+    white-space: nowrap;
+}
+
+.detalle-total {
+    padding-top: 5px;
+    border-top: 1px dashed #cbd5e1;
+}
+
+.valor-mora-cero {
+    color: #64748b;
+}
+
+.valor-mora-activa {
+    color: #dc2626;
+}
+
+.celda-cuota {
+    text-align: center;
+}
+
+.numero-cuota {
+    font-size: 12px;
+    white-space: nowrap;
+}
+
+.tabla-financiera-cliente .btn-pagar,
+.tabla-financiera-cliente .pago-bloqueado,
+.tabla-financiera-cliente .pago-completado {
+    max-width: 100%;
+    padding: 7px 8px;
+    font-size: 9px;
+    line-height: 1.2;
+    white-space: normal;
+}
+
+.tabla-financiera-cliente .estado-cuota {
+    max-width: 100%;
+    padding: 6px 8px;
+    font-size: 9px;
+    line-height: 1.2;
+    white-space: normal;
+}
+
+/* Vista tipo tarjeta para pantallas más pequeñas */
+@media (max-width: 1150px) {
+
+    .tabla-financiera-cliente colgroup,
+    .tabla-financiera-cliente thead {
+        display: none;
+    }
+
+    .tabla-financiera-cliente,
+    .tabla-financiera-cliente tbody {
+        display: block;
+        width: 100%;
+    }
+
+    .tabla-financiera-cliente tr {
+        display: grid;
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+        gap: 10px;
+        width: 100%;
+        margin-bottom: 14px;
+        padding: 14px;
+        border: 1px solid #dbe5f0;
+        border-radius: 12px;
+        background: #ffffff;
+        box-sizing: border-box;
+    }
+
+    .tabla-financiera-cliente td {
+        display: flex;
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 6px;
+        width: 100%;
+        padding: 8px;
+        border: none;
+        text-align: left;
+        box-sizing: border-box;
+    }
+
+    .tabla-financiera-cliente td::before {
+        content: attr(data-label);
+        color: #64748b;
+        font-size: 9px;
+        font-weight: 800;
+        text-transform: uppercase;
+    }
+
+    .tabla-financiera-cliente .detalle-financiero {
+        width: 100%;
+    }
+
+    .tabla-financiera-cliente .btn-pagar,
+    .tabla-financiera-cliente .pago-bloqueado,
+    .tabla-financiera-cliente .pago-completado {
+        width: 100%;
+        justify-content: center;
+    }
+}
+
+@media (max-width: 650px) {
+
+    .tabla-financiera-cliente tr {
+        grid-template-columns: 1fr;
+    }
+}
+
+/* =====================================================
+   AJUSTE FINAL: COLUMNAS FINANCIERAS MÁS COMPACTAS
+   ===================================================== */
+
+/* Nueva distribución de la tabla */
+.tabla-financiera-cliente .ancho-cuota {
+    width: 7%;
+}
+
+.tabla-financiera-cliente .ancho-saldo {
+    width: 12%;
+}
+
+.tabla-financiera-cliente .ancho-composicion {
+    width: 12%;
+}
+
+.tabla-financiera-cliente .ancho-pago {
+    width: 13%;
+}
+
+.tabla-financiera-cliente .ancho-vencimiento {
+    width: 12%;
+}
+
+.tabla-financiera-cliente .ancho-fecha-pago {
+    width: 12%;
+}
+
+.tabla-financiera-cliente .ancho-estado {
+    width: 13%;
+}
+
+.tabla-financiera-cliente .ancho-accion {
+    width: 19%;
+}
+
+/* Menor altura y espacio en cada fila */
+.tabla-financiera-cliente th {
+    padding: 12px 5px;
+}
+
+.tabla-financiera-cliente td {
+    padding: 10px 5px;
+}
+
+/* Contenedor compacto para saldo, composición y pago */
+.tabla-financiera-cliente .detalle-financiero {
+    display: flex;
+    flex-direction: column;
+    width: max-content;
+    min-width: 118px;
+    margin: 0 auto;
+    padding: 6px 8px;
+    gap: 4px;
+    border: 1px solid #edf2f7;
+    border-radius: 8px;
+    background: #f8fafc;
+    box-sizing: border-box;
+}
+
+/* La etiqueta y el monto permanecen cerca */
+.tabla-financiera-cliente .detalle-fila {
+    display: grid;
+    grid-template-columns: 44px 70px;
+    align-items: center;
+    justify-content: center;
+    column-gap: 5px;
+    width: auto;
+}
+
+/* Etiquetas: Inicial, Final, Capital, Interés... */
+.tabla-financiera-cliente .detalle-etiqueta {
+    font-size: 9px;
+    font-weight: 600;
+    color: #64748b;
+    text-align: left;
+    white-space: nowrap;
+}
+
+/* Montos */
+.tabla-financiera-cliente .detalle-valor {
+    min-width: 0;
+    font-size: 10px;
+    font-weight: 800;
+    text-align: right;
+    white-space: nowrap;
+}
+
+/* Separación discreta antes del total */
+.tabla-financiera-cliente .detalle-total {
+    margin-top: 2px;
+    padding-top: 5px;
+    border-top: 1px dashed #cbd5e1;
+}
+
+/* Evitar que los botones ocupen demasiado espacio */
+.tabla-financiera-cliente .btn-pagar,
+.tabla-financiera-cliente .pago-bloqueado,
+.tabla-financiera-cliente .pago-completado {
+    width: auto;
+    min-width: 105px;
+    max-width: 145px;
+    padding: 7px 9px;
+    margin: 0 auto;
+    white-space: nowrap;
+}
+
+/* =====================================================
+   CRÉDITOS FINALIZADOS
+   ===================================================== */
+
+.historial-creditos {
+    margin-top: 24px;
+}
+
+.historial-creditos .cartera-encabezado {
+    margin-bottom: 16px;
+}
+
+.historial-creditos .cartera-encabezado h3 {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    margin: 0 0 6px;
+}
+
+.historial-creditos .cartera-encabezado h3 i {
+    color: #15803d;
+}
+
+.contador-finalizados {
+    color: #166534;
+    background: #dcfce7;
+    border-color: #86efac;
+}
+
+/* Tarjeta completa del crédito cancelado */
+.credito-finalizado-card {
+    overflow: hidden;
+    margin-bottom: 18px;
+    border: 1px solid #bbf7d0;
+    border-radius: 14px;
+    background: #ffffff;
+    box-shadow: 0 6px 18px rgba(15, 23, 42, 0.06);
+}
+
+/* Elimina el borde negro que actualmente aparece */
+.credito-toggle-finalizado {
+    width: 100%;
+    padding: 18px;
+    border: none;
+    outline: none;
+    background: linear-gradient(
+            90deg,
+            #f0fdf4 0%,
+            #ffffff 55%,
+            #f0fdf4 100%
+    );
+    color: inherit;
+    font: inherit;
+    text-align: left;
+    cursor: pointer;
+}
+
+.credito-toggle-finalizado:hover {
+    background: #ecfdf5;
+}
+
+.credito-toggle-finalizado:focus-visible {
+    outline: 3px solid rgba(34, 197, 94, 0.25);
+    outline-offset: -3px;
+}
+
+/* Icono del crédito finalizado */
+.credito-icono-finalizado {
+    color: #15803d;
+    background: #dcfce7;
+}
+
+/* Estado cancelado */
+.credito-estado-finalizado {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 5px;
+    padding: 7px 12px;
+    border: 1px solid #86efac;
+    border-radius: 999px;
+    color: #166534;
+    background: #dcfce7;
+    font-size: 11px;
+    font-weight: 800;
+    white-space: nowrap;
+}
+
+/* Progreso terminado */
+.credito-progreso-finalizado {
+    padding: 10px 18px 14px;
+    border-top: 1px solid #dcfce7;
+    background: #f8fffa;
+}
+
+.barra-progreso-finalizada {
+    overflow: hidden;
+    height: 7px;
+    border-radius: 999px;
+    background: #dcfce7;
+}
+
+.barra-progreso-finalizada span {
+    display: block;
+    height: 100%;
+    border-radius: inherit;
+    background: #22c55e;
+}
+
+/* Ocultar cronograma al cargar la página */
+.credito-finalizado-card
+.credito-detalle.credito-colapsado {
+    display: none;
+}
+
+/* Mostrarlo cuando JavaScript retire credito-colapsado */
+.credito-finalizado-card .credito-detalle {
+    border-top: 1px solid #dcfce7;
+    background: #ffffff;
+}
+
+/* Flecha */
+.credito-toggle-finalizado .credito-flecha {
+    transition: transform 0.25s ease;
+}
+
+.credito-toggle-finalizado[aria-expanded="true"]
+.credito-flecha {
+    transform: rotate(180deg);
+}
+
+/* Tabla del crédito finalizado */
+.tabla-finalizados {
+    width: 100%;
+    table-layout: fixed;
+}
+
+.tabla-finalizados thead th {
+    padding: 13px 8px;
+    color: #ffffff;
+    background: #075985;
+    font-size: 10px;
+    text-align: center;
+}
+
+.tabla-finalizados tbody td {
+    padding: 11px 8px;
+    vertical-align: middle;
+}
+
+.tabla-finalizados .cuota-finalizada {
+    background: #ffffff;
+}
+
+.tabla-finalizados .cuota-finalizada:hover {
+    background: #f0fdf4;
+}
+
+.tabla-finalizados .detalle-financiero {
+    min-width: 115px;
+    border-color: #dcfce7;
+    background: #f8fffa;
+}
+
+/* Mantener visible que todas las cuotas están pagadas */
+.tabla-finalizados .estado-pagada {
+    color: #166534;
+    background: #dcfce7;
+    border-color: #86efac;
+}
+
+/* =====================================================
+   ADAPTACIÓN PARA PANTALLAS PEQUEÑAS
+   ===================================================== */
+
+@media (max-width: 1100px) {
+
+    .credito-toggle-finalizado {
+        align-items: flex-start;
+    }
+
+    .credito-toggle-finalizado
+    .credito-resumen-cabecera {
+        grid-template-columns: repeat(2, minmax(130px, 1fr));
+        gap: 14px;
+    }
+}
+
+@media (max-width: 700px) {
+
+    .credito-toggle-finalizado {
+        padding: 14px;
+    }
+
+    .credito-toggle-finalizado
+    .credito-resumen-cabecera {
+        grid-template-columns: 1fr;
+    }
+
+    .credito-estado-finalizado {
+        margin-top: 8px;
+    }
+
+    .credito-progreso-finalizado {
+        padding: 10px 14px 14px;
+    }
+}
+
+/* =====================================================
+   ESTADOS DE SOLICITUDES DE CRÉDITO
+   ===================================================== */
+
+.estado-solicitud {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 5px;
+    min-width: 92px;
+    padding: 6px 10px;
+    border: 1px solid transparent;
+    border-radius: 999px;
+    font-size: 11px;
+    font-weight: 700;
+    white-space: nowrap;
+}
+
+.estado-pendiente {
+    color: #92400e;
+    background: #fef3c7;
+    border-color: #fde68a;
+}
+
+.estado-aprobada {
+    color: #166534;
+    background: #dcfce7;
+    border-color: #86efac;
+}
+
+.estado-rechazada {
+    color: #991b1b;
+    background: #fee2e2;
+    border-color: #fca5a5;
+}
+
+.estado-cancelado {
+    color: #166534;
+    background: #f0fdf4;
+    border-color: #4ade80;
+}
+
+.estado-desconocido {
+    color: #475569;
+    background: #f1f5f9;
+    border-color: #cbd5e1;
+}
+
+/* =====================================================
+   MIS SOLICITUDES DE CRÉDITO
+   ===================================================== */
+
+.solicitudes-card {
+    margin-top: 24px;
+}
+
+.solicitudes-header {
+    display: flex;
+    align-items: flex-start;
+    justify-content: space-between;
+    gap: 18px;
+    margin-bottom: 18px;
+}
+
+.solicitudes-header h3 {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    margin: 0 0 6px;
+    color: #0f172a;
+    font-size: 20px;
+}
+
+.solicitudes-header h3 i {
+    color: #075985;
+}
+
+.solicitudes-header p {
+    margin: 0;
+    color: #64748b;
+    font-size: 14px;
+}
+
+.contador-solicitudes {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    min-width: 110px;
+    padding: 8px 14px;
+    border: 1px solid #7dd3fc;
+    border-radius: 999px;
+    color: #075985;
+    background: #e0f2fe;
+    font-size: 12px;
+    font-weight: 800;
+    white-space: nowrap;
+}
+
+.tabla-solicitudes-contenedor {
+    overflow-x: auto;
+    border: 1px solid #dbeafe;
+    border-radius: 14px;
+}
+
+.tabla-solicitudes {
+    width: 100%;
+    min-width: 1050px;
+    border-collapse: collapse;
+    background: #ffffff;
+}
+
+.tabla-solicitudes thead th {
+    padding: 14px 12px;
+    color: #ffffff;
+    background: #075985;
+    font-size: 12px;
+    text-align: center;
+    white-space: nowrap;
+}
+
+.tabla-solicitudes tbody td {
+    padding: 14px 12px;
+    border-bottom: 1px solid #e2e8f0;
+    color: #0f172a;
+    font-size: 13px;
+    text-align: center;
+    vertical-align: middle;
+}
+
+.tabla-solicitudes tbody tr:hover {
+    background: #f8fafc;
+}
+
+.solicitud-id {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    min-width: 52px;
+    padding: 6px 10px;
+    border: 1px solid #bae6fd;
+    border-radius: 999px;
+    color: #075985;
+    background: #e0f2fe;
+    font-weight: 800;
+}
+
+.solicitud-cuotas {
+    font-weight: 700;
+    color: #334155;
+}
+
+/* Etapas */
+.etapa-solicitud {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 5px;
+    min-width: 110px;
+    padding: 6px 10px;
+    border: 1px solid transparent;
+    border-radius: 999px;
+    font-size: 11px;
+    font-weight: 800;
+    white-space: nowrap;
+}
+
+.etapa-solicitado {
+    color: #1d4ed8;
+    background: #dbeafe;
+    border-color: #93c5fd;
+}
+
+.etapa-evaluacion {
+    color: #92400e;
+    background: #fef3c7;
+    border-color: #fde68a;
+}
+
+.etapa-aprobado {
+    color: #075985;
+    background: #e0f2fe;
+    border-color: #7dd3fc;
+}
+
+.etapa-desembolsado {
+    color: #6d28d9;
+    background: #ede9fe;
+    border-color: #c4b5fd;
+}
+
+.etapa-finalizado {
+    color: #166534;
+    background: #dcfce7;
+    border-color: #86efac;
+}
+
+.etapa-desconocida {
+    color: #475569;
+    background: #f1f5f9;
+    border-color: #cbd5e1;
+}
+
+/* Botón seguimiento */
+.btn-seguimiento {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 6px;
+    padding: 8px 13px;
+    border-radius: 8px;
+    color: #ffffff;
+    background: #0284c7;
+    font-size: 12px;
+    font-weight: 800;
+    text-decoration: none;
+    transition: 0.2s ease;
+}
+
+.btn-seguimiento:hover {
+    background: #0369a1;
+    transform: translateY(-1px);
+}
+
+.dato-no-disponible {
+    color: #94a3b8;
+    font-weight: 700;
+}
+
+/* Responsive */
+@media (max-width: 800px) {
+
+    .solicitudes-header {
+        flex-direction: column;
+    }
+
+    .tabla-solicitudes {
+        min-width: 900px;
+    }
+}
+
+/* =====================================================
+   BLOQUEO DE NUEVA SOLICITUD DE PRÉSTAMO
+   ===================================================== */
+
+.bloqueo-prestamo {
+    display: flex;
+    align-items: flex-start;
+    gap: 15px;
+    margin: 18px 0 22px;
+    padding: 18px 20px;
+    border: 1px solid #fecaca;
+    border-radius: 14px;
+    background: #fef2f2;
+}
+
+.bloqueo-icono {
+    width: 44px;
+    height: 44px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 12px;
+    color: #ffffff;
+    background: #dc2626;
+    flex-shrink: 0;
+}
+
+.bloqueo-prestamo h4 {
+    margin: 0 0 6px;
+    color: #991b1b;
+    font-size: 16px;
+    font-weight: 800;
+}
+
+.bloqueo-prestamo p {
+    margin: 0 0 5px;
+    color: #7f1d1d;
+    font-size: 14px;
+    font-weight: 700;
+}
+
+.bloqueo-prestamo small {
+    color: #991b1b;
+    font-size: 12px;
+}
+
+.btn-solicitar-prestamo:disabled,
+button:disabled {
+    cursor: not-allowed;
+    opacity: 0.65;
+    filter: grayscale(0.2);
+}
+
+input:disabled,
+select:disabled {
+    cursor: not-allowed;
+    background: #f1f5f9;
+    color: #64748b;
+}
+
+/* =====================================================
+   SEGURO DE DESGRAVAMEN - ANCHO COMO SELECTS Y DELGADO
+   ===================================================== */
+
+.loan-simulator .insurance-options {
+    display: grid !important;
+    grid-template-columns: repeat(2, minmax(0, 1fr)) !important;
+    gap: 18px !important;
+    width: 100% !important;
+    margin-top: 10px !important;
+    margin-bottom: 24px !important;
+}
+
+.loan-simulator .insurance-option {
+    position: relative !important;
+    display: block !important;
+    width: 100% !important;
+    margin: 0 !important;
+    cursor: pointer !important;
+}
+
+.loan-simulator .insurance-option input[type="radio"] {
+    position: absolute !important;
+    opacity: 0 !important;
+    pointer-events: none !important;
+}
+
+.loan-simulator .insurance-content {
+    width: 100% !important;
+    min-height: 48px !important;
+    box-sizing: border-box !important;
+
+    display: flex !important;
+    flex-direction: row !important;
+    align-items: center !important;
+    justify-content: flex-start !important;
+    gap: 12px !important;
+
+    padding: 10px 14px !important;
+    border: 2px solid #d7e2ee !important;
+    border-radius: 10px !important;
+    background: #ffffff !important;
+
+    text-align: left !important;
+    transition: all 0.2s ease !important;
+}
+
+.loan-simulator .insurance-content strong {
+    display: inline-block !important;
+    margin: 0 !important;
+    color: #001f3f !important;
+    font-size: 14px !important;
+    font-weight: 800 !important;
+    white-space: nowrap !important;
+}
+
+.loan-simulator .insurance-content small {
+    display: inline-block !important;
+    margin-left: 8px !important;
+    color: #536b87 !important;
+    font-size: 12px !important;
+    white-space: nowrap !important;
+}
+
+.loan-simulator .insurance-option input[type="radio"]:checked + .insurance-content {
+    border-color: #0ea5e9 !important;
+    background: #eff9ff !important;
+    box-shadow: 0 0 0 2px rgba(14, 165, 233, 0.12) !important;
+}
+
+.loan-simulator .insurance-option input[type="radio"]:checked + .insurance-content::before {
+    content: "✓" !important;
+    flex: 0 0 20px !important;
+
+    width: 20px !important;
+    height: 20px !important;
+
+    display: inline-flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+
+    border-radius: 50% !important;
+    background: #0ea5e9 !important;
+    color: #ffffff !important;
+
+    font-size: 11px !important;
+    font-weight: 800 !important;
+}
+
+.loan-simulator .insurance-option input[type="radio"]:not(:checked) + .insurance-content::before {
+    content: "" !important;
+    flex: 0 0 20px !important;
+
+    width: 20px !important;
+    height: 20px !important;
+
+    border: 2px solid #cbd5e1 !important;
+    border-radius: 50% !important;
+    background: #ffffff !important;
+    box-sizing: border-box !important;
+}
+
+.loan-simulator .insurance-option input[type="radio"]:disabled + .insurance-content {
+    opacity: 0.55 !important;
+    cursor: not-allowed !important;
+    background: #f3f6f9 !important;
+}
+
+@media (max-width: 900px) {
+    .loan-simulator .insurance-options {
+        grid-template-columns: 1fr !important;
+    }
 }

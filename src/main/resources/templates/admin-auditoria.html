@@ -1,0 +1,161 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Auditoría del Sistema</title>
+
+    <link rel="stylesheet" th:href="@{/css/admin-prestamos.css}">
+    <link rel="stylesheet" th:href="@{/css/admin-auditoria.css}">
+    <link rel="stylesheet" th:href="@{/css/admin-sidebar.css}">
+    <link rel="stylesheet" th:href="@{/css/admin-flash.css}">
+
+    <link rel="stylesheet"
+          href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
+</head>
+<body class="admin-body">
+
+<aside class="sidebar">
+
+    <div class="sidebar-logo">
+        <img th:src="@{/img/logos/logo-financiera2.png}" alt="Logo">
+    </div>
+
+    <nav class="sidebar-nav"
+         th:with="rol=${session.adminLogueado != null && session.adminLogueado.rol != null
+            ? session.adminLogueado.rol
+            : ''}">
+
+        <!-- DASHBOARD: solo ADMIN -->
+        <a th:href="@{/admin/dashboard}"
+           th:if="${rol == 'ADMIN'}"
+           th:classappend="${activePage == 'dashboard'} ? 'active' : ''">
+            <i class="fas fa-chart-pie"></i>
+            Dashboard
+        </a>
+
+        <!-- EVALUAR CRÉDITOS: ADMIN, ASESOR, RIESGOS, OPERACIONES -->
+        <a th:href="@{/admin/prestamos}"
+           th:if="${rol == 'ADMIN'
+            or rol == 'ASESOR'
+            or rol == 'RIESGOS'
+            or rol == 'OPERACIONES'}"
+           th:classappend="${activePage == 'prestamos'} ? 'active' : ''">
+            <i class="fas fa-file-invoice-dollar"></i>
+            Evaluar Créditos
+        </a>
+
+        <!-- USUARIOS: solo ADMIN -->
+        <a th:href="@{/admin/usuarios}"
+           th:if="${rol == 'ADMIN'}"
+           th:classappend="${activePage == 'usuarios'} ? 'active' : ''">
+            <i class="fas fa-users"></i>
+            Gestión de Usuarios
+        </a>
+
+        <!-- TARJETAS: ADMIN y OPERACIONES -->
+        <a th:href="@{/admin/tarjetas}"
+           th:if="${rol == 'ADMIN'
+            or rol == 'OPERACIONES'}"
+           th:classappend="${activePage == 'tarjetas'} ? 'active' : ''">
+            <i class="fas fa-credit-card"></i>
+            Soporte Tarjetas
+        </a>
+
+        <!-- MORA: ADMIN y RECUPERACIONES -->
+        <a th:href="@{/admin/mora}"
+           th:if="${rol == 'ADMIN'
+            or rol == 'RECUPERACIONES'}"
+           th:classappend="${activePage == 'mora'} ? 'active' : ''">
+            <i class="fas fa-chart-line"></i>
+            Gestión de Mora
+        </a>
+
+        <!-- AUDITORÍA: ADMIN y AUDITOR -->
+        <a th:href="@{/admin/auditoria}"
+           th:if="${rol == 'ADMIN'
+            or rol == 'AUDITOR'}"
+           th:classappend="${activePage == 'auditoria'} ? 'active' : ''">
+            <i class="fas fa-shield-alt"></i>
+            Auditoría
+        </a>
+
+    </nav>
+    <div class="sidebar-footer">
+        <a th:href="@{/admin/logout}">
+            <i class="fas fa-sign-out-alt"></i>
+            Cerrar Sesión
+        </a>
+    </div>
+</aside>
+
+<!-- CONTENIDO -->
+<main class="admin-main">
+
+    <h2 class="page-title">
+        <i class="fas fa-shield-alt"></i>
+        Auditoría del Sistema
+    </h2>
+
+    <p class="page-description">
+        Registro histórico de todas las operaciones críticas realizadas por clientes y administradores.
+    </p>
+
+    <div class="flash-container">
+        <div th:if="${exito}" class="flash-message flash-success">
+            <i class="fas fa-check-circle"></i>
+            <span th:text="${exito}"></span>
+        </div>
+
+        <div th:if="${error}" class="flash-message flash-error">
+            <i class="fas fa-exclamation-triangle"></i>
+            <span th:text="${error}"></span>
+        </div>
+    </div>
+
+    <div class="table-container">
+
+        <table class="table-core">
+
+            <thead>
+            <tr>
+                <th>Fecha</th>
+                <th>Usuario</th>
+                <th>Acción</th>
+                <th>Detalle</th>
+            </tr>
+            </thead>
+
+            <tbody>
+
+            <tr th:each="a : ${auditorias}">
+
+                <td th:text="${#temporals.format(a.fecha,'dd/MM/yyyy HH:mm:ss')}"></td>
+
+                <td th:text="${a.usuario}"></td>
+
+                <td>
+                    <span class="badge"
+                          th:text="${a.accion}">
+                    </span>
+                </td>
+
+                <td th:text="${a.detalle}"></td>
+
+            </tr>
+
+            <tr th:if="${#lists.isEmpty(auditorias)}">
+                <td colspan="4" class="empty-state">
+                    No existen registros de auditoría.
+                </td>
+            </tr>
+
+            </tbody>
+
+        </table>
+
+    </div>
+
+</main>
+<script th:src="@{/js/admin-flash.js}"></script>
+</body>
+</html>

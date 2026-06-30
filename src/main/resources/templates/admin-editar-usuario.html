@@ -1,0 +1,368 @@
+<!DOCTYPE html>
+<html lang="es" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Editar Cliente | Financiera Confianza</title>
+
+    <link rel="stylesheet" th:href="@{/css/admin-sidebar.css}">
+    <link rel="stylesheet" th:href="@{/css/admin-editar-usuario.css}">
+
+    <link rel="stylesheet"
+          href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
+</head>
+
+<body>
+
+<aside class="sidebar">
+
+    <div class="sidebar-logo">
+        <img th:src="@{/img/logos/logo-financiera2.png}"
+             alt="Financiera Confianza">
+    </div>
+
+    <nav class="sidebar-nav"
+         th:with="rol=${session.adminLogueado != null && session.adminLogueado.rol != null
+            ? session.adminLogueado.rol
+            : ''}">
+
+        <!-- DASHBOARD: solo ADMIN -->
+        <a th:href="@{/admin/dashboard}"
+           th:if="${rol == 'ADMIN'}"
+           th:classappend="${activePage == 'dashboard'} ? 'active' : ''">
+            <i class="fas fa-chart-pie"></i>
+            Dashboard
+        </a>
+
+        <!-- EVALUAR CRÉDITOS: ADMIN, ASESOR, RIESGOS, OPERACIONES -->
+        <a th:href="@{/admin/prestamos}"
+           th:if="${rol == 'ADMIN'
+            or rol == 'ASESOR'
+            or rol == 'RIESGOS'
+            or rol == 'OPERACIONES'}"
+           th:classappend="${activePage == 'prestamos'} ? 'active' : ''">
+            <i class="fas fa-file-invoice-dollar"></i>
+            Evaluar Créditos
+        </a>
+
+        <!-- USUARIOS: solo ADMIN -->
+        <a th:href="@{/admin/usuarios}"
+           th:if="${rol == 'ADMIN'}"
+           th:classappend="${activePage == 'usuarios'} ? 'active' : ''">
+            <i class="fas fa-users"></i>
+            Gestión de Usuarios
+        </a>
+
+        <!-- TARJETAS: ADMIN y OPERACIONES -->
+        <a th:href="@{/admin/tarjetas}"
+           th:if="${rol == 'ADMIN'
+            or rol == 'OPERACIONES'}"
+           th:classappend="${activePage == 'tarjetas'} ? 'active' : ''">
+            <i class="fas fa-credit-card"></i>
+            Soporte Tarjetas
+        </a>
+
+        <!-- MORA: ADMIN y RECUPERACIONES -->
+        <a th:href="@{/admin/mora}"
+           th:if="${rol == 'ADMIN'
+            or rol == 'RECUPERACIONES'}"
+           th:classappend="${activePage == 'mora'} ? 'active' : ''">
+            <i class="fas fa-chart-line"></i>
+            Gestión de Mora
+        </a>
+
+        <!-- AUDITORÍA: ADMIN y AUDITOR -->
+        <a th:href="@{/admin/auditoria}"
+           th:if="${rol == 'ADMIN'
+            or rol == 'AUDITOR'}"
+           th:classappend="${activePage == 'auditoria'} ? 'active' : ''">
+            <i class="fas fa-shield-alt"></i>
+            Auditoría
+        </a>
+
+    </nav>
+
+    <div class="sidebar-footer">
+        <a th:href="@{/admin/logout}">
+            <i class="fas fa-sign-out-alt"></i>
+            Cerrar Sesión
+        </a>
+    </div>
+
+</aside>
+
+<main class="edit-main">
+
+    <header class="page-header">
+
+        <div>
+            <h1>
+                <i class="fas fa-user-pen"></i>
+                Editar Cliente
+            </h1>
+
+            <p>
+                Actualiza únicamente la información personal y de contacto.
+            </p>
+        </div>
+
+        <a th:href="@{/admin/usuarios/detalle/{id}(id=${usuario.id})}"
+           class="btn-back">
+            <i class="fas fa-arrow-left"></i>
+            Volver al detalle
+        </a>
+
+    </header>
+
+    <div th:if="${exito}" class="alert alert-success">
+        <i class="fas fa-check-circle"></i>
+        <span th:text="${exito}"></span>
+    </div>
+
+    <div th:if="${error}" class="alert alert-error">
+        <i class="fas fa-triangle-exclamation"></i>
+        <span th:text="${error}"></span>
+    </div>
+
+    <div class="edit-grid">
+
+        <!-- FORMULARIO DE DATOS PERSONALES -->
+        <section class="form-card">
+
+            <div class="card-title">
+                <div>
+                    <h2>Información personal</h2>
+                    <p>Campos permitidos para modificación administrativa.</p>
+                </div>
+
+                <i class="fas fa-address-card"></i>
+            </div>
+
+            <form th:action="@{/admin/usuarios/editar/{id}(id=${usuario.id})}"
+                  method="post"
+                  class="edit-form">
+
+                <div class="form-row">
+
+                    <div class="form-group">
+                        <label for="nombres">Nombres</label>
+
+                        <input id="nombres"
+                               type="text"
+                               name="nombres"
+                               th:value="${usuario.nombres}"
+                               maxlength="100"
+                               required>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="apellidos">Apellidos</label>
+
+                        <input id="apellidos"
+                               type="text"
+                               name="apellidos"
+                               th:value="${usuario.apellidos}"
+                               maxlength="120"
+                               required>
+                    </div>
+
+                </div>
+
+                <div class="form-row">
+
+                    <div class="form-group">
+                        <label for="correo">Correo electrónico</label>
+
+                        <input id="correo"
+                               type="text"
+                               name="correo"
+                               th:value="${usuario.correo}"
+                               maxlength="150"
+                               required>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="celular">Celular</label>
+
+                        <input id="celular"
+                               type="text"
+                               name="celular"
+                               th:value="${usuario.celular}"
+                               maxlength="9"
+                               pattern="[0-9]{9}"
+                               inputmode="numeric"
+                               required>
+                    </div>
+
+                </div>
+
+                <div class="form-group">
+                    <label for="direccion">Dirección</label>
+
+                    <textarea id="direccion"
+                              name="direccion"
+                              maxlength="250"
+                              rows="4"
+                              th:text="${usuario.direccion}"></textarea>
+
+                    <small>Máximo 250 caracteres.</small>
+                </div>
+
+                <div class="form-actions">
+
+                    <a th:href="@{/admin/usuarios/detalle/{id}(id=${usuario.id})}"
+                       class="btn-cancel">
+                        Cancelar
+                    </a>
+
+                    <button type="submit" class="btn-save">
+                        <i class="fas fa-floppy-disk"></i>
+                        Guardar cambios
+                    </button>
+
+                </div>
+
+            </form>
+
+        </section>
+
+        <!-- DATOS NO EDITABLES -->
+        <section class="locked-card">
+
+            <div class="card-title">
+                <div>
+                    <h2>Datos protegidos</h2>
+                    <p>Estos valores no pueden modificarse desde este módulo.</p>
+                </div>
+
+                <i class="fas fa-lock"></i>
+            </div>
+
+            <div class="protected-row">
+                <span>DNI</span>
+                <strong th:text="${usuario.numDoc}">70000001</strong>
+            </div>
+
+            <div class="protected-row">
+                <span>Número de cuenta</span>
+                <strong th:text="${usuario.numeroCuenta}">
+                    00000000000000
+                </strong>
+            </div>
+
+            <div class="protected-row">
+                <span>CCI</span>
+                <strong th:text="${usuario.cci}">
+                    00000000000000000000
+                </strong>
+            </div>
+
+            <div class="protected-row">
+                <span>Saldo</span>
+
+                <strong th:text="'S/ ' + ${#numbers.formatDecimal(
+                    usuario.saldo != null ? usuario.saldo : 0,
+                    1,
+                    'DEFAULT',
+                    2,
+                    'DEFAULT'
+                )}">
+                    S/ 0.00
+                </strong>
+            </div>
+
+            <div class="protected-row">
+                <span>Rol</span>
+                <strong th:text="${usuario.rol}">CLIENTE</strong>
+            </div>
+
+            <div class="protected-note">
+                <i class="fas fa-circle-info"></i>
+
+                <p>
+                    El DNI, la cuenta, el CCI, el saldo y el rol requieren
+                    procesos bancarios diferentes y no se editan aquí.
+                </p>
+            </div>
+
+        </section>
+
+    </div>
+
+    <!-- RESTABLECER CLAVE -->
+    <section class="password-card">
+
+        <div class="card-title">
+            <div>
+                <h2>Restablecer clave de acceso</h2>
+
+                <p>
+                    Asigna una nueva clave temporal de exactamente seis dígitos.
+                </p>
+            </div>
+
+            <i class="fas fa-key"></i>
+        </div>
+
+        <form th:action="@{/admin/usuarios/restablecer-clave/{id}(id=${usuario.id})}"
+              method="post"
+              class="password-form"
+              onsubmit="return confirm('¿Confirmas el restablecimiento de la clave del cliente?');">
+
+            <div class="form-group">
+
+                <label for="nuevaClave">
+                    Nueva clave
+                </label>
+
+                <input id="nuevaClave"
+                       type="password"
+                       name="nuevaClave"
+                       maxlength="6"
+                       pattern="[0-9]{6}"
+                       inputmode="numeric"
+                       placeholder="6 dígitos"
+                       required>
+
+            </div>
+
+            <div class="form-group">
+
+                <label for="confirmarClave">
+                    Confirmar clave
+                </label>
+
+                <input id="confirmarClave"
+                       type="password"
+                       name="confirmarClave"
+                       maxlength="6"
+                       pattern="[0-9]{6}"
+                       inputmode="numeric"
+                       placeholder="Repite la clave"
+                       required>
+
+            </div>
+
+            <button type="submit" class="btn-password">
+                <i class="fas fa-rotate"></i>
+                Restablecer clave
+            </button>
+
+        </form>
+
+        <div class="security-warning">
+            <i class="fas fa-shield-halved"></i>
+
+            <span>
+                Al restablecer la clave también se reiniciarán los intentos
+                fallidos y se cerrará cualquier sesión activa.
+            </span>
+        </div>
+
+    </section>
+
+</main>
+
+</body>
+</html>

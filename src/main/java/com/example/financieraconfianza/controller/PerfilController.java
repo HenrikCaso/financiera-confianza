@@ -33,6 +33,9 @@ public class PerfilController {
     @PostMapping("/perfil/actualizar")
     public String actualizarPerfil(
             @RequestParam String celular,
+            @RequestParam String nombres,
+            @RequestParam String apellidos,
+            @RequestParam String direccion,
             @RequestParam(required = false) String clave,
             HttpSession session,
             RedirectAttributes redirectAttributes) {
@@ -43,6 +46,9 @@ public class PerfilController {
         Usuario usuarioBD = usuarioRepository.findById(usuarioSesion.getId()).orElse(null);
 
         usuarioBD.setCelular(celular);
+        usuarioBD.setNombres(nombres);
+        usuarioBD.setApellidos(apellidos);
+        usuarioBD.setDireccion(direccion);
 
         // Cambiamos setPassword por setClave (asumiendo que así se llama en tu entidad)
         if (clave != null && !clave.trim().isEmpty()) {

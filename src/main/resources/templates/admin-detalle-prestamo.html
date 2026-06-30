@@ -1,0 +1,457 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Detalle del Crédito</title>
+
+    <link rel="stylesheet" th:href="@{/css/admin-sidebar.css}">
+    <link rel="stylesheet" th:href="@{/css/admin-detalle-prestamo.css}">
+
+    <link rel="stylesheet"
+          href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
+</head>
+<body>
+
+<aside class="sidebar">
+
+    <div class="sidebar-logo">
+        <img th:src="@{/img/logos/logo-financiera2.png}" alt="Logo">
+    </div>
+
+    <nav class="sidebar-nav"
+         th:with="rol=${session.adminLogueado != null && session.adminLogueado.rol != null
+            ? session.adminLogueado.rol
+            : ''}">
+
+        <!-- DASHBOARD: solo ADMIN -->
+        <a th:href="@{/admin/dashboard}"
+           th:if="${rol == 'ADMIN'}"
+           th:classappend="${activePage == 'dashboard'} ? 'active' : ''">
+            <i class="fas fa-chart-pie"></i>
+            Dashboard
+        </a>
+
+        <!-- EVALUAR CRÉDITOS: ADMIN, ASESOR, RIESGOS, OPERACIONES -->
+        <a th:href="@{/admin/prestamos}"
+           th:if="${rol == 'ADMIN'
+            or rol == 'ASESOR'
+            or rol == 'RIESGOS'
+            or rol == 'OPERACIONES'}"
+           th:classappend="${activePage == 'prestamos'} ? 'active' : ''">
+            <i class="fas fa-file-invoice-dollar"></i>
+            Evaluar Créditos
+        </a>
+
+        <!-- USUARIOS: solo ADMIN -->
+        <a th:href="@{/admin/usuarios}"
+           th:if="${rol == 'ADMIN'}"
+           th:classappend="${activePage == 'usuarios'} ? 'active' : ''">
+            <i class="fas fa-users"></i>
+            Gestión de Usuarios
+        </a>
+
+        <!-- TARJETAS: ADMIN y OPERACIONES -->
+        <a th:href="@{/admin/tarjetas}"
+           th:if="${rol == 'ADMIN'
+            or rol == 'OPERACIONES'}"
+           th:classappend="${activePage == 'tarjetas'} ? 'active' : ''">
+            <i class="fas fa-credit-card"></i>
+            Soporte Tarjetas
+        </a>
+
+        <!-- MORA: ADMIN y RECUPERACIONES -->
+        <a th:href="@{/admin/mora}"
+           th:if="${rol == 'ADMIN'
+            or rol == 'RECUPERACIONES'}"
+           th:classappend="${activePage == 'mora'} ? 'active' : ''">
+            <i class="fas fa-chart-line"></i>
+            Gestión de Mora
+        </a>
+
+        <!-- AUDITORÍA: ADMIN y AUDITOR -->
+        <a th:href="@{/admin/auditoria}"
+           th:if="${rol == 'ADMIN'
+            or rol == 'AUDITOR'}"
+           th:classappend="${activePage == 'auditoria'} ? 'active' : ''">
+            <i class="fas fa-shield-alt"></i>
+            Auditoría
+        </a>
+
+    </nav>
+
+    <div class="sidebar-footer">
+        <a th:href="@{/admin/logout}">
+            <i class="fas fa-sign-out-alt"></i>
+            Cerrar Sesión
+        </a>
+    </div>
+
+</aside>
+
+<main class="content">
+
+    <div class="page-header">
+        <a th:href="${origen == 'mora'}
+                ? @{/admin/mora}
+                : @{/admin/prestamos}"
+           class="btn-volver">
+
+            <i class="fas fa-arrow-left"></i>
+            Volver
+        </a>
+    </div>
+
+    <div class="card-info">
+
+        <h2>Información General</h2>
+
+        <div class="grid">
+
+            <div>
+                <span>ID Crédito</span>
+                <strong th:text="${credito.id}"></strong>
+            </div>
+
+            <div>
+                <span>Cliente</span>
+                <strong th:text="${credito.usuario.nombres + ' ' + credito.usuario.apellidos}"></strong>
+            </div>
+
+            <div>
+                <span>DNI</span>
+                <strong th:text="${credito.usuario.numDoc}"></strong>
+            </div>
+
+            <div>
+                <span>Correo</span>
+                <strong th:text="${credito.usuario.correo}"></strong>
+            </div>
+
+            <div>
+                <span>Monto</span>
+                <strong th:text="'S/ ' + ${credito.monto}"></strong>
+            </div>
+
+            <div>
+                <span>Cuotas</span>
+                <strong th:text="${credito.cuotas}"></strong>
+            </div>
+
+            <div>
+                <span>Estado</span>
+                <strong th:text="${credito.estado}"></strong>
+            </div>
+
+            <div>
+                <span>RDS</span>
+                <strong th:text="${credito.rds + '%'}"></strong>
+            </div>
+
+            <div>
+                <span>Día de pago</span>
+
+                <strong th:text="${credito.diaPago != null
+                        ? 'Día ' + credito.diaPago
+                        : 'No registrado'}">
+                    Día 10
+                </strong>
+            </div>
+
+            <div>
+                <span>Seguro</span>
+
+                <strong th:text="${credito.tieneSeguro
+                        ? 'Con seguro'
+                        : 'Sin seguro'}">
+                    Con seguro
+                </strong>
+            </div>
+
+            <div>
+                <span>TEA</span>
+
+                <strong th:text="${credito.tea != null
+                        ? #numbers.formatDecimal(
+                            credito.tea * 100,
+                            1,
+                            'DEFAULT',
+                            2,
+                            'DEFAULT'
+                          ) + '%'
+                        : '—'}">
+                    40.92%
+                </strong>
+            </div>
+
+            <div>
+                <span>TEM</span>
+
+                <strong th:text="${credito.tem != null
+                        ? #numbers.formatDecimal(
+                            credito.tem * 100,
+                            1,
+                            'DEFAULT',
+                            4,
+                            'DEFAULT'
+                          ) + '%'
+                        : '—'}">
+                    2.8998%
+                </strong>
+            </div>
+
+            <div>
+                <span>Cuota calculada</span>
+
+                <strong th:text="${credito.cuotaCalculada != null
+                        ? 'S/ ' + #numbers.formatDecimal(
+                            credito.cuotaCalculada,
+                            1,
+                            'DEFAULT',
+                            2,
+                            'DEFAULT'
+                          )
+                        : '—'}">
+                    S/ 99.86
+                </strong>
+            </div>
+        </div>
+    </div>
+
+    <div class="card-table">
+
+        <h2>Cronograma de Pagos</h2>
+
+        <div class="cronograma-scroll">
+
+            <table class="tabla-cronograma">
+
+                <thead>
+                <tr>
+                    <th>Cuota</th>
+                    <th>Saldo inicial</th>
+                    <th>Capital</th>
+                    <th>Interés</th>
+                    <th>Cuota total</th>
+                    <th>Saldo final</th>
+                    <th>Vencimiento</th>
+                    <th>Estado</th>
+                </tr>
+                </thead>
+
+                <tbody>
+
+                <tr th:each="cuota : ${cuotas}">
+
+                    <td>
+                        <strong th:text="${cuota.numeroCuota}">
+                            1
+                        </strong>
+                    </td>
+
+                    <td th:text="${cuota.saldoInicial != null
+                        ? 'S/ ' + #numbers.formatDecimal(
+                            cuota.saldoInicial,
+                            1,
+                            'DEFAULT',
+                            2,
+                            'DEFAULT'
+                        )
+                        : '—'}">
+                        S/ 0.00
+                    </td>
+
+                    <td class="monto-capital"
+                        th:text="${cuota.capital != null
+                            ? 'S/ ' + #numbers.formatDecimal(
+                                cuota.capital,
+                                1,
+                                'DEFAULT',
+                                2,
+                                'DEFAULT'
+                            )
+                            : '—'}">
+                        S/ 0.00
+                    </td>
+
+                    <td class="monto-interes"
+                        th:text="${cuota.interes != null
+                            ? 'S/ ' + #numbers.formatDecimal(
+                                cuota.interes,
+                                1,
+                                'DEFAULT',
+                                2,
+                                'DEFAULT'
+                            )
+                            : '—'}">
+                        S/ 0.00
+                    </td>
+
+                    <td class="monto-cuota"
+                        th:text="'S/ ' + ${#numbers.formatDecimal(
+                            cuota.montoCuota,
+                            1,
+                            'DEFAULT',
+                            2,
+                            'DEFAULT'
+                        )}">
+                        S/ 0.00
+                    </td>
+
+                    <td th:text="${cuota.saldoFinal != null
+                            ? 'S/ ' + #numbers.formatDecimal(
+                                cuota.saldoFinal,
+                                1,
+                                'DEFAULT',
+                                2,
+                                'DEFAULT'
+                            )
+                            : '—'}">
+                        S/ 0.00
+                    </td>
+
+                    <td th:text="${#temporals.format(
+                            cuota.fechaVencimiento,
+                            'dd/MM/yyyy'
+                    )}">
+                        01/01/2026
+                    </td>
+
+                    <td>
+                        <span th:if="${cuota.pagada}"
+                              class="estado-pagada">
+
+                            <i class="fas fa-check-circle"></i>
+                            Pagada
+                        </span>
+                        <span th:if="${!cuota.pagada
+                                and cuota.diasAtraso == 0}"
+                              class="estado-pendiente">
+
+                            <i class="fas fa-clock"></i>
+                            Pendiente
+                        </span>
+                        <span th:if="${!cuota.pagada
+                                and cuota.diasAtraso > 0}"
+                              class="estado-vencida">
+
+                            <i class="fas fa-triangle-exclamation"></i>
+                            Vencida
+                        </span>
+                    </td>
+                </tr>
+
+                <!-- CRÉDITO PENDIENTE -->
+                <tr th:if="${#lists.isEmpty(cuotas)
+                            and credito.estado == 'PENDIENTE'}">
+
+                    <td colspan="8"
+                        class="cronograma-vacio">
+
+                        <i class="fas fa-hourglass-half"></i>
+
+                        <strong>
+                            El crédito todavía está en evaluación
+                        </strong>
+
+                        <span>
+                            El cronograma se generará cuando la solicitud
+                            sea aprobada.
+                        </span>
+                    </td>
+                </tr>
+
+                <!-- CRÉDITO RECHAZADO -->
+                <tr th:if="${#lists.isEmpty(cuotas)
+                        and (
+                            credito.estado == 'RECHAZADA'
+                            or credito.estado == 'RECHAZADO_RIESGO'
+                        )}">
+
+                    <td colspan="8"
+                        class="cronograma-vacio cronograma-rechazado">
+
+                        <i class="fas fa-circle-xmark"></i>
+
+                        <strong>
+                            Este crédito fue rechazado
+                        </strong>
+
+                        <span>
+                            No se generó un cronograma porque el préstamo
+                            no fue aprobado.
+                        </span>
+                    </td>
+                </tr>
+
+                <!-- CRÉDITO CANCELADO -->
+                <tr th:if="${#lists.isEmpty(cuotas)
+                        and credito.estado == 'CANCELADO'}">
+
+                    <td colspan="8"
+                        class="cronograma-vacio cronograma-completado">
+
+                        <i class="fas fa-circle-check"></i>
+
+                        <strong>
+                            Crédito completamente cancelado
+                        </strong>
+
+                        <span>
+                            El cliente no mantiene cuotas pendientes.
+                        </span>
+                    </td>
+                </tr>
+
+                <!-- APROBADO SIN CRONOGRAMA -->
+                <tr th:if="${#lists.isEmpty(cuotas)
+                        and credito.estado == 'APROBADA'}">
+
+                    <td colspan="8"
+                        class="cronograma-vacio cronograma-advertencia">
+
+                        <i class="fas fa-triangle-exclamation"></i>
+
+                        <strong>
+                            No se encontró el cronograma
+                        </strong>
+
+                        <span>
+                            El crédito está aprobado, pero no existen
+                            cuotas registradas.
+                        </span>
+                    </td>
+                </tr>
+
+                </tbody>
+            </table>
+        </div>
+    </div>
+    <div class="card-table">
+
+        <h2>Historial del Crédito</h2>
+
+        <table>
+            <thead>
+            <tr>
+                <th>Fecha</th>
+                <th>Estado</th>
+                <th>Observación</th>
+            </tr>
+            </thead>
+
+            <tbody>
+            <tr th:each="h : ${historial}">
+
+                <td th:text="${#temporals.format(h.fecha,'dd/MM/yyyy HH:mm')}"></td>
+
+                <td th:text="${h.estado}"></td>
+
+                <td th:text="${h.observacion}"></td>
+
+            </tr>
+            </tbody>
+        </table>
+    </div>
+</main>
+</body>
+</html>

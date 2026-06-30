@@ -1,0 +1,320 @@
+:root {
+    --producto-azul: #004b87;
+    --producto-azul-oscuro: #003b73;
+    --producto-celeste: #00a4e4;
+    --producto-celeste-suave: #e0f2fe;
+    --producto-fondo: #f8fafc;
+    --producto-texto: #0f172a;
+    --producto-muted: #64748b;
+    --producto-borde: #e2e8f0;
+}
+
+.productos-page {
+    background: var(--producto-fondo);
+    color: var(--producto-texto);
+}
+
+.producto-hero {
+    color: white;
+    overflow: hidden;
+    padding: 72px 0;
+    position: relative;
+}
+
+.producto-hero::after {
+    background: rgba(255, 255, 255, 0.14);
+    border-radius: 50%;
+    content: "";
+    height: 260px;
+    position: absolute;
+    right: -80px;
+    top: -80px;
+    width: 260px;
+}
+
+.hero-ahorros {
+    background: linear-gradient(135deg, #004b87, #00a4e4);
+}
+
+.hero-cts {
+    background: linear-gradient(135deg, #003b73, #0284c7);
+}
+
+.hero-deposito {
+    background: linear-gradient(135deg, #004b87, #0f766e);
+}
+
+.hero-credito {
+    background: linear-gradient(135deg, #003b73, #0ea5e9);
+}
+
+.producto-hero-grid {
+    align-items: center;
+    display: grid;
+    gap: 36px;
+    grid-template-columns: minmax(0, 1.2fr) minmax(260px, 0.8fr);
+    position: relative;
+    z-index: 1;
+}
+
+.producto-eyebrow {
+    color: #bae6fd;
+    font-size: 12px;
+    font-weight: 800;
+    letter-spacing: 0;
+    margin: 0 0 12px;
+    text-transform: uppercase;
+}
+
+.producto-hero-copy h1 {
+    font-size: 46px;
+    line-height: 1.08;
+    margin: 0 0 16px;
+}
+
+.producto-hero-copy p {
+    color: #f8fafc;
+    font-size: 18px;
+    line-height: 1.65;
+    margin: 0;
+    max-width: 680px;
+}
+
+.producto-actions {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 14px;
+}
+
+.producto-primary-btn,
+.producto-secondary-btn {
+    align-items: center;
+    border-radius: 6px;
+    display: inline-flex;
+    font-weight: 800;
+    justify-content: center;
+    margin-top: 26px;
+    min-height: 44px;
+    padding: 12px 20px;
+    text-decoration: none;
+}
+
+.producto-primary-btn {
+    background: white;
+    color: var(--producto-azul);
+}
+
+.producto-secondary-btn {
+    border: 1px solid rgba(255, 255, 255, 0.72);
+    color: white;
+}
+
+.producto-hero-card {
+    align-items: center;
+    backdrop-filter: blur(8px);
+    background: rgba(255, 255, 255, 0.16);
+    border: 1px solid rgba(255, 255, 255, 0.26);
+    border-radius: 8px;
+    box-shadow: 0 16px 36px rgba(15, 23, 42, 0.22);
+    display: flex;
+    flex-direction: column;
+    gap: 18px;
+    justify-content: center;
+    min-height: 230px;
+    padding: 26px;
+    text-align: center;
+}
+
+.producto-hero-card i {
+    font-size: 62px;
+}
+
+.producto-hero-card span {
+    font-size: 20px;
+    font-weight: 800;
+}
+
+.producto-content {
+    padding: 48px 0 72px;
+}
+
+.producto-layout {
+    align-items: start;
+    display: grid;
+    gap: 28px;
+    grid-template-columns: minmax(0, 1fr) 360px;
+}
+
+.producto-main {
+    display: grid;
+    gap: 28px;
+}
+
+.producto-section,
+.contact-card {
+    background: white;
+    border: 1px solid var(--producto-borde);
+    border-radius: 8px;
+    box-shadow: 0 14px 30px rgba(15, 23, 42, 0.06);
+    padding: 26px;
+}
+
+.producto-section h2,
+.contact-card h2 {
+    color: var(--producto-azul);
+    font-size: 24px;
+    margin: 0 0 18px;
+}
+
+.benefit-grid {
+    display: grid;
+    gap: 16px;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+}
+
+.benefit-card {
+    align-items: center;
+    background: var(--producto-fondo);
+    border: 1px solid var(--producto-borde);
+    border-radius: 8px;
+    display: flex;
+    gap: 14px;
+    min-height: 86px;
+    padding: 18px;
+}
+
+.benefit-card i {
+    color: var(--producto-celeste);
+    font-size: 24px;
+}
+
+.benefit-card span {
+    color: var(--producto-texto);
+    font-weight: 700;
+    line-height: 1.35;
+}
+
+.requisitos-card ul {
+    color: var(--producto-muted);
+    line-height: 1.7;
+    margin: 0;
+    padding-left: 20px;
+}
+
+.contact-card {
+    position: sticky;
+    top: 20px;
+}
+
+.contact-card p {
+    color: var(--producto-muted);
+    line-height: 1.55;
+    margin: 0 0 20px;
+}
+
+.producto-form {
+    display: grid;
+    gap: 10px;
+}
+
+.producto-form label {
+    color: var(--producto-texto);
+    font-size: 13px;
+    font-weight: 800;
+}
+
+.producto-form input,
+.producto-form select {
+    border: 1px solid #cbd5e1;
+    border-radius: 6px;
+    font: inherit;
+    min-height: 42px;
+    padding: 10px 12px;
+}
+
+.producto-form input:focus,
+.producto-form select:focus {
+    border-color: var(--producto-celeste);
+    outline: 2px solid rgba(0, 164, 228, 0.18);
+}
+
+.producto-form button {
+    background: var(--producto-celeste);
+    border: 0;
+    border-radius: 6px;
+    color: white;
+    cursor: pointer;
+    font: inherit;
+    font-weight: 800;
+    margin-top: 8px;
+    min-height: 44px;
+    padding: 12px 16px;
+}
+
+.producto-form button:hover {
+    background: #008cc2;
+}
+
+.producto-toast {
+    background: var(--producto-azul);
+    border-radius: 8px;
+    bottom: 24px;
+    box-shadow: 0 16px 28px rgba(15, 23, 42, 0.2);
+    color: white;
+    font-size: 14px;
+    font-weight: 800;
+    opacity: 0;
+    padding: 14px 18px;
+    pointer-events: none;
+    position: fixed;
+    right: 24px;
+    transform: translateY(12px);
+    transition: opacity 0.2s, transform 0.2s;
+    z-index: 20;
+}
+
+.producto-toast.visible {
+    opacity: 1;
+    transform: translateY(0);
+}
+
+@media (max-width: 980px) {
+    .producto-hero-grid,
+    .producto-layout {
+        grid-template-columns: 1fr;
+    }
+
+    .contact-card {
+        position: static;
+    }
+}
+
+@media (max-width: 680px) {
+    .producto-hero {
+        padding: 52px 0;
+    }
+
+    .producto-hero-copy h1 {
+        font-size: 36px;
+    }
+
+    .producto-hero-copy p {
+        font-size: 16px;
+    }
+
+    .benefit-grid {
+        grid-template-columns: 1fr;
+    }
+
+    .producto-section,
+    .contact-card {
+        padding: 22px;
+    }
+
+    .producto-toast {
+        bottom: 16px;
+        left: 16px;
+        right: 16px;
+        text-align: center;
+    }
+}

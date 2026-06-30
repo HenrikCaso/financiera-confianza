@@ -9,185 +9,184 @@
 </head>
 <body>
 
-<header class="academia-header">
-    <div class="container header-flex">
-        <img th:src="@{/img/logos/la_academia.jpg}" alt="La Academia de Confianza" class="logo-aca">
-        <a href="#" class="login-link">Regístrate o inicia sesión</a>
+<header class="public-header">
+    <div class="header-top">
+        <div class="academia-container header-top-inner">
+            <a th:href="@{/}" class="header-link">Inicio Financiera Confianza</a>
+            <div class="header-access">
+                <a th:href="@{/login}">Iniciar sesi&oacute;n</a>
+                <span aria-hidden="true">|</span>
+                <a th:href="@{/registro}">Registrarse</a>
+            </div>
+        </div>
     </div>
+
+    <nav class="public-nav" aria-label="Navegaci&oacute;n Academia">
+        <div class="academia-container nav-inner">
+            <a th:href="@{/}" class="brand-link" aria-label="Financiera Confianza">
+                <img th:src="@{/img/logos/logo-financiera.png}" alt="Financiera Confianza">
+                <span>Academia de Confianza</span>
+            </a>
+
+            <div class="nav-links">
+                <a th:href="@{/}">Inicio</a>
+                <a href="#categorias">Categor&iacute;as</a>
+                <a href="#programas">Programas formativos</a>
+                <a th:href="@{/login}">Banca por Internet</a>
+            </div>
+
+            <a th:href="@{/login}" class="nav-login">Reg&iacute;strate o inicia sesi&oacute;n</a>
+        </div>
+    </nav>
 </header>
 
-<nav class="academia-nav">
-    <div class="container nav-flex">
-        <div class="nav-left">
-            <a href="#" class="nav-active">Inicio</a>
-        </div>
-        <div class="search-box">
-            <i class="fas fa-search"></i>
-        </div>
-    </div>
-</nav>
-
 <main>
-    <section class="aca-hero">
-        <button class="slider-btn left"><i class="fas fa-chevron-left"></i></button>
-        <button class="slider-btn right"><i class="fas fa-chevron-right"></i></button>
-
-        <div class="container hero-container">
-            <div class="hero-left">
-                <div class="hero-box-white">
-                    <h1>¡Potencia tu conocimiento con nosotros!</h1>
-                </div>
-                <div class="hero-box-blue">
-                    <p>Descubre más cursos, aquí</p>
-                </div>
-                <div class="hero-btn-container">
-                    <a href="#" class="btn-hero-cyan">Regístrate aquí</a>
-                </div>
-            </div>
-
-            <div class="hero-right">
-                <div class="hero-logo-box">
-                    <img th:src="@{/img/logos/la_academia.jpg}" alt="La Academia">
+    <section class="academy-hero">
+        <div class="academia-container hero-grid">
+            <div class="hero-copy">
+                <p class="eyebrow">Educaci&oacute;n para crecer</p>
+                <h1>La Academia de Confianza</h1>
+                <p class="hero-subtitle">Potencia tus conocimientos con nosotros</p>
+                <p class="hero-text">
+                    Una plataforma educativa gratuita para fortalecer tus conocimientos financieros, habilidades
+                    digitales y capacidades para tu negocio.
+                </p>
+                <div class="hero-actions">
+                    <a th:href="@{/login}" class="primary-button">Reg&iacute;strate aqu&iacute;</a>
+                    <button type="button" class="secondary-button" data-course-button>Inicia tus cursos</button>
                 </div>
             </div>
-        </div>
-    </section>
 
-    <section class="aca-registro-bar">
-        <div class="container bar-flex">
-            <h2>Regístrate y aprende con nosotros</h2>
-            <a href="#" class="btn-inicia">¡INICIA TUS CURSOS!</a>
-        </div>
-    </section>
-
-    <section class="aca-intro">
-        <div class="container">
-            <p>En Financiera Confianza, hemos creado <strong>La Academia de Confianza</strong>, una plataforma educativa 100% gratuita donde podrás potenciar tus conocimientos y habilidades para aplicarlo a tu negocio. Contarás con cursos, videos y más recursos educativos donde podrás acceder a cualquier hora del día. Recuerda que: <strong>¡No necesitas ser cliente!</strong></p>
-            <p>Para iniciar, <a href="#" class="link-azul">regístrate aquí.</a></p>
-        </div>
-    </section>
-
-    <section class="aca-categorias">
-        <div class="container">
-            <h3 class="section-title">Categorías de aprendizaje</h3>
-            <div class="cat-grid">
-                <div class="cat-card">
-                    <div class="cat-img"></div>
-                    <h4>Educación Financiera</h4>
-                    <ul>
-                        <li><i class="fas fa-user-circle"></i> Financiera Confianza</li>
-                        <li><i class="far fa-file-alt"></i> 2 Actividades</li>
-                        <li><i class="fas fa-laptop"></i> 100% online</li>
-                    </ul>
-                    <a href="#" class="btn-cat">Iniciar <i class="fas fa-arrow-right"></i></a>
+            <div class="hero-visual" aria-hidden="true">
+                <div class="learning-panel">
+                    <i class="fas fa-graduation-cap"></i>
+                    <span>Aprende a tu ritmo</span>
                 </div>
-                <div class="cat-card">
-                    <div class="cat-img"></div>
-                    <h4>Habilidades Blandas</h4>
-                    <ul>
-                        <li><i class="fas fa-user-circle"></i> Financiera Confianza</li>
-                        <li><i class="far fa-file-alt"></i> 1 Actividad</li>
-                        <li><i class="fas fa-laptop"></i> 100% online</li>
-                    </ul>
-                    <a href="#" class="btn-cat">Iniciar <i class="fas fa-arrow-right"></i></a>
-                </div>
-                <div class="cat-card">
-                    <div class="cat-img"></div>
-                    <h4>Habilidades Digitales</h4>
-                    <ul>
-                        <li><i class="fas fa-user-circle"></i> Financiera Confianza</li>
-                        <li><i class="far fa-file-alt"></i> 1 Actividad</li>
-                        <li><i class="fas fa-laptop"></i> 100% online</li>
-                    </ul>
-                    <a href="#" class="btn-cat">Iniciar <i class="fas fa-arrow-right"></i></a>
-                </div>
-                <div class="cat-card">
-                    <div class="cat-img"></div>
-                    <h4>Desarrollo de Negocios</h4>
-                    <ul>
-                        <li><i class="fas fa-user-circle"></i> Financiera Confianza</li>
-                        <li><i class="far fa-file-alt"></i> 2 Actividades</li>
-                        <li><i class="fas fa-laptop"></i> 100% online</li>
-                    </ul>
-                    <a href="#" class="btn-cat">Iniciar <i class="fas fa-arrow-right"></i></a>
-                </div>
-                <div class="cat-card">
-                    <div class="cat-img"></div>
-                    <h4>Medio Ambiente</h4>
-                    <ul>
-                        <li><i class="fas fa-user-circle"></i> Financiera Confianza</li>
-                        <li><i class="far fa-file-alt"></i> 6 Actividades</li>
-                        <li><i class="fas fa-laptop"></i> 100% online</li>
-                    </ul>
-                    <a href="#" class="btn-cat">Iniciar <i class="fas fa-arrow-right"></i></a>
+                <div class="hero-stat">
+                    <strong>5</strong>
+                    <span>Categor&iacute;as de aprendizaje</span>
                 </div>
             </div>
         </div>
     </section>
 
-    <section class="aca-programas">
-        <div class="container">
-            <h3 class="section-title">Programas formativos</h3>
-            <div class="prog-grid">
-                <div class="prog-card">
-                    <div class="prog-img"></div>
-                    <h4>Tips de<br>emprendimiento</h4>
-                    <p>Revisa nuestros<br>artículos para aplicarlo<br>en tu negocio</p>
-                    <a href="#" class="btn-prog">Inicia aquí</a>
-                </div>
-                <div class="prog-card">
-                    <div class="prog-img"></div>
-                    <h4>Consejos del Inge<br>de Confianza</h4>
-                    <p>Cursos dirigido a<br>emprendedores/as<br>con negocios<br>agropecuarios</p>
-                    <a href="#" class="btn-prog">Inicia aquí</a>
-                </div>
+    <section id="categorias" class="academy-section">
+        <div class="academia-container">
+            <div class="section-heading">
+                <p class="eyebrow">Explora contenidos</p>
+                <h2>Categor&iacute;as de aprendizaje</h2>
+            </div>
+
+            <div class="category-grid">
+                <article class="learning-card">
+                    <div class="card-icon icon-blue"><i class="fas fa-coins"></i></div>
+                    <h3>Educaci&oacute;n Financiera</h3>
+                    <p>Aprende a presupuestar, ahorrar y manejar mejor tus decisiones diarias con el dinero.</p>
+                    <button type="button" class="card-button" data-course-button>Iniciar</button>
+                </article>
+
+                <article class="learning-card">
+                    <div class="card-icon icon-cyan"><i class="fas fa-comments"></i></div>
+                    <h3>Habilidades Blandas</h3>
+                    <p>Refuerza comunicaci&oacute;n, liderazgo y organizaci&oacute;n para atender mejor a tus clientes.</p>
+                    <button type="button" class="card-button" data-course-button>Iniciar</button>
+                </article>
+
+                <article class="learning-card">
+                    <div class="card-icon icon-sky"><i class="fas fa-laptop"></i></div>
+                    <h3>Habilidades Digitales</h3>
+                    <p>Conoce herramientas simples para vender, cobrar y promocionar tu negocio en canales digitales.</p>
+                    <button type="button" class="card-button" data-course-button>Iniciar</button>
+                </article>
+
+                <article class="learning-card">
+                    <div class="card-icon icon-indigo"><i class="fas fa-store"></i></div>
+                    <h3>Desarrollo de Negocios</h3>
+                    <p>Mejora precios, inventarios y atenci&oacute;n para impulsar el crecimiento de tu emprendimiento.</p>
+                    <button type="button" class="card-button" data-course-button>Iniciar</button>
+                </article>
+
+                <article class="learning-card">
+                    <div class="card-icon icon-green"><i class="fas fa-leaf"></i></div>
+                    <h3>Medio Ambiente</h3>
+                    <p>Descubre acciones responsables para cuidar recursos y reducir impactos en tu comunidad.</p>
+                    <button type="button" class="card-button" data-course-button>Iniciar</button>
+                </article>
+            </div>
+        </div>
+    </section>
+
+    <section id="programas" class="academy-section programs-section">
+        <div class="academia-container">
+            <div class="section-heading">
+                <p class="eyebrow">Cursos destacados</p>
+                <h2>Programas formativos</h2>
+            </div>
+
+            <div class="program-grid">
+                <article class="program-card">
+                    <div class="program-media"><i class="fas fa-lightbulb"></i></div>
+                    <div class="program-content">
+                        <h3>Tips de emprendimiento</h3>
+                        <p>Consejos pr&aacute;cticos para ordenar tu negocio, atraer clientes y vender con mayor claridad.</p>
+                        <button type="button" class="text-button" data-course-button>Ver curso</button>
+                    </div>
+                </article>
+
+                <article class="program-card">
+                    <div class="program-media"><i class="fas fa-user-tie"></i></div>
+                    <div class="program-content">
+                        <h3>Consejos del Inge de Confianza</h3>
+                        <p>Recomendaciones simples para resolver problemas frecuentes y mejorar tus operaciones.</p>
+                        <button type="button" class="text-button" data-course-button>Ver curso</button>
+                    </div>
+                </article>
+
+                <article class="program-card">
+                    <div class="program-media"><i class="fas fa-chart-line"></i></div>
+                    <div class="program-content">
+                        <h3>Finanzas para mi negocio</h3>
+                        <p>Aprende a separar cuentas, proyectar ventas y cuidar el capital de trabajo.</p>
+                        <button type="button" class="text-button" data-course-button>Ver curso</button>
+                    </div>
+                </article>
+            </div>
+        </div>
+    </section>
+
+    <section class="social-section" aria-labelledby="social-title">
+        <div class="academia-container social-inner">
+            <h2 id="social-title">S&iacute;guenos en nuestras redes sociales</h2>
+            <div class="social-links">
+                <a href="#" aria-label="Facebook"><i class="fab fa-facebook-f"></i></a>
+                <a href="#" aria-label="Twitter"><i class="fab fa-twitter"></i></a>
+                <a href="#" aria-label="Instagram"><i class="fab fa-instagram"></i></a>
+                <a href="#" aria-label="LinkedIn"><i class="fab fa-linkedin-in"></i></a>
+                <a href="#" aria-label="YouTube"><i class="fab fa-youtube"></i></a>
             </div>
         </div>
     </section>
 </main>
 
-<footer>
-    <div class="aca-social-footer">
-        <div class="container">
-            <h4>Síguenos en nuestras redes sociales</h4>
-            <div class="social-squares">
-                <a href="#"><i class="fab fa-facebook-f"></i></a>
-                <a href="#"><i class="fab fa-twitter"></i></a>
-                <a href="#"><i class="fab fa-instagram"></i></a>
-                <a href="#"><i class="fab fa-linkedin-in"></i></a>
-                <a href="#"><i class="fab fa-youtube"></i></a>
-            </div>
+<footer class="public-footer">
+    <div class="academia-container footer-grid">
+        <div>
+            <h2>Financiera Confianza</h2>
+            <p>Educaci&oacute;n financiera para acompa&ntilde;ar tus decisiones y el crecimiento de tu negocio.</p>
         </div>
-    </div>
-
-    <div class="aca-bottom-footer">
-        <div class="container bottom-flex">
-            <div class="footer-logo-small">
-                <img th:src="@{/img/logos/logo-financiera.png}" alt="Logo" style="height:80px; opacity:0.6;">
-            </div>
-            <div class="footer-links-grid">
-                <div class="f-col">
-                    <a href="#">Nuestra Financiera</a>
-                    <a href="#">FMBBVA</a>
-                    <a href="#">Noticias</a>
-                </div>
-                <div class="f-col">
-                    <a href="#">Trabaja con nosotros</a>
-                    <a href="#">Contáctanos</a>
-                    <a href="#">Red de agencias</a>
-                </div>
-                <div class="f-col">
-                    <a href="#">Protección de Datos Personales</a>
-                    <a href="#">Glosario Financiero</a>
-                    <a href="#">Transparencia</a>
-                </div>
-            </div>
-        </div>
-        <div class="aca-copyright">
-            Copyright © 2026 - Financiera Confianza. Todos los derechos reservados.
-        </div>
+        <nav class="footer-links" aria-label="Enlaces p&uacute;blicos">
+            <a href="#">Nuestra Financiera</a>
+            <a href="#">Trabaja con nosotros</a>
+            <a href="#">Protecci&oacute;n de Datos Personales</a>
+            <a href="#">Transparencia</a>
+        </nav>
     </div>
 </footer>
 
+<div class="academy-toast" role="status" aria-live="polite" data-course-toast>
+    Curso pr&oacute;ximamente disponible.
+</div>
+
+<script th:src="@{/js/academia.js}"></script>
 </body>
 </html>

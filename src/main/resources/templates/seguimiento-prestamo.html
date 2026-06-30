@@ -1,0 +1,270 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Seguimiento del Crédito</title>
+
+    <link rel="stylesheet" th:href="@{/css/seguimiento-prestamo.css}">
+    <link rel="stylesheet"
+          href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
+</head>
+<body>
+
+<aside class="sidebar">
+
+    <div class="sidebar-logo">
+        <img th:src="@{/img/logos/logo-financiera2.png}" alt="Logo">
+    </div>
+
+    <nav class="sidebar-nav">
+
+        <a th:href="@{/dashboard}" class="nav-item">
+            <i class="fas fa-home"></i>
+            Posición Global
+        </a>
+
+        <a th:href="@{/transferencias}" class="nav-item">
+            <i class="fas fa-exchange-alt"></i>
+            Transferencias
+        </a>
+
+        <a th:href="@{/servicios}" class="nav-item">
+            <i class="fas fa-file-invoice-dollar"></i>
+            Pago de Servicios
+        </a>
+
+        <a th:href="@{/tarjetas}" class="nav-item">
+            <i class="fas fa-credit-card"></i>
+            Tarjetas
+        </a>
+
+        <a th:href="@{/prestamos}" class="nav-item active">
+            <i class="fas fa-file-invoice"></i>
+            Mis Préstamos
+        </a>
+
+        <a th:href="@{/perfil}" class="nav-item">
+            <i class="fas fa-user"></i>
+            Mi Perfil
+        </a>
+
+    </nav>
+
+    <div class="sidebar-footer">
+        <a th:href="@{/logout}">
+            <i class="fas fa-sign-out-alt"></i>
+            Cerrar Sesión
+        </a>
+    </div>
+
+</aside>
+
+<main class="content">
+
+    <div class="top-section">
+
+        <div class="breadcrumb">
+            <i class="fas fa-home"></i>
+            <span>Mis Préstamos</span>
+            <i class="fas fa-chevron-right"></i>
+            <span>Seguimiento del Crédito</span>
+        </div>
+
+        <a th:href="@{/prestamos}" class="btn-volver">
+            <i class="fas fa-arrow-left"></i>
+            Volver a Mis Préstamos
+        </a>
+
+    </div>
+
+    <div class="credit-card">
+
+        <div class="left-info">
+
+            <h1>Seguimiento del Crédito</h1>
+
+            <div class="badge">
+                Solicitud #<span th:text="${solicitud.id}"></span>
+            </div>
+
+            <div class="estado">
+
+                <span class="estado-texto">Estado actual:</span>
+
+                <span th:if="${solicitud.estado == 'PENDIENTE'}"
+                      class="estado-badge estado-pendiente">
+                    <i class="fas fa-clock"></i>
+                    EN EVALUACIÓN
+                </span>
+
+                <span th:if="${solicitud.estado == 'APROBADA'}"
+                      class="estado-badge estado-aprobado">
+                    <i class="fas fa-check-circle"></i>
+                    ACTIVO
+                </span>
+
+                <span th:if="${solicitud.estado == 'CANCELADO'}"
+                      class="estado-badge estado-cancelado">
+                    <i class="fas fa-circle-check"></i>
+                    CANCELADO
+                </span>
+
+                <span th:if="${solicitud.estado == 'RECHAZADA'
+                   or solicitud.estado == 'RECHAZADO_RIESGO'}"
+                      class="estado-badge estado-rechazado">
+                    <i class="fas fa-circle-xmark"></i>
+                    RECHAZADO
+                </span>
+
+                <span th:if="${solicitud.estado == null
+                               or (solicitud.estado != 'PENDIENTE'
+                               and solicitud.estado != 'APROBADA'
+                               and solicitud.estado != 'CANCELADO'
+                               and solicitud.estado != 'RECHAZADA'
+                               and solicitud.estado != 'RECHAZADO_RIESGO')}"
+                      class="estado-badge estado-desconocido"
+                      th:text="${solicitud.estado != null
+                                ? solicitud.estado
+                                : 'SIN ESTADO'}">
+                    SIN ESTADO
+                </span>
+            </div>
+
+        </div>
+
+        <div class="right-info">
+
+            <div class="info-box">
+                <i class="far fa-money-bill-alt"></i>
+
+                <div>
+                    <span>Monto solicitado</span>
+
+                    <strong>
+                        S/ <span th:text="${#numbers.formatDecimal(solicitud.monto,1,'DEFAULT',2,'DEFAULT')}"></span>
+                    </strong>
+                </div>
+            </div>
+
+            <div class="info-box">
+                <i class="far fa-calendar-alt"></i>
+
+                <div>
+                    <span>Fecha solicitud</span>
+
+                    <strong th:text="${#temporals.format(solicitud.fechaSolicitud,'dd/MM/yyyy HH:mm')}"></strong>
+                </div>
+            </div>
+
+            <div class="info-box">
+                <i class="far fa-file-alt"></i>
+
+                <div>
+                    <span>Número de cuotas</span>
+
+                    <strong th:text="${solicitud.cuotas}"></strong>
+                </div>
+            </div>
+
+            <div class="info-box">
+                <i class="fas fa-check-circle"></i>
+
+                <div>
+                    <span>Estado</span>
+
+                    <strong th:text="${solicitud.estado}"></strong>
+                </div>
+            </div>
+
+        </div>
+    </div>
+
+    <div class="timeline-card">
+
+        <div class="timeline-header">
+            <i class="far fa-clock"></i>
+            <div>
+                <h2>Línea de tiempo del crédito</h2>
+                <p>Aquí puedes ver todo el proceso de tu crédito</p>
+            </div>
+        </div>
+
+        <div class="timeline">
+
+            <div th:each="h : ${historial}"
+                 class="timeline-item"
+                 th:classappend="${h.estado != null
+                    ? ' evento-' + #strings.toLowerCase(h.estado)
+                    : ' evento-desconocido'}">
+
+                <div class="timeline-icon">
+
+                    <th:block th:switch="${h.estado}">
+
+                        <i th:case="'SOLICITADO'"
+                           class="fas fa-file-signature"></i>
+
+                        <i th:case="'APROBADA'"
+                           class="fas fa-check"></i>
+
+                        <i th:case="'DESEMBOLSADA'"
+                           class="fas fa-money-bill-transfer"></i>
+
+                        <i th:case="'CUOTA_PAGADA'"
+                           class="fas fa-receipt"></i>
+
+                        <i th:case="'CANCELADO'"
+                           class="fas fa-flag-checkered"></i>
+
+                        <i th:case="'RECHAZADA'"
+                           class="fas fa-xmark"></i>
+
+                        <i th:case="'RECHAZADO_RIESGO'"
+                           class="fas fa-triangle-exclamation"></i>
+
+                        <i th:case="*"
+                           class="fas fa-circle-info"></i>
+
+                    </th:block>
+
+                </div>
+
+                <div class="timeline-content">
+
+                    <div class="timeline-left">
+
+                        <h3 th:text="${h.estado != null
+                                ? #strings.replace(h.estado, '_', ' ')
+                                : 'EVENTO'}">
+                            SOLICITADO
+                        </h3>
+
+                        <p th:text="${h.observacion}">
+                            Observación
+                        </p>
+
+                    </div>
+
+                    <div class="timeline-date">
+
+                        <i class="far fa-calendar"></i>
+
+                        <span th:text="${#temporals.format(h.fecha,'dd/MM/yyyy HH:mm')}">
+                        </span>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+        </div>
+
+    </div>
+
+</main>
+
+<script th:src="@{/js/seguimiento-prestamo.js}"></script>
+
+</body>
+</html>

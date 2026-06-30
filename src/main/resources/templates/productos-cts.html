@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Cuenta CTS | Financiera Confianza</title>
+    <link rel="stylesheet" th:href="@{/css/style.css}">
+    <link rel="stylesheet" th:href="@{/css/navbar.css}">
+    <link rel="stylesheet" th:href="@{/css/footer.css}">
+    <link rel="stylesheet" th:href="@{/css/productos.css}">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+</head>
+<body class="productos-page">
+<div th:replace="~{fragments/header :: navbar}"></div>
+
+<main>
+    <section class="producto-hero hero-cts">
+        <div class="container producto-hero-grid">
+            <div class="producto-hero-copy">
+                <p class="producto-eyebrow">Productos para ti</p>
+                <h1>Cuenta CTS</h1>
+                <p>Traslada tu CTS y protege el esfuerzo de tu trabajo para el futuro.</p>
+                <a href="#contacto" class="producto-primary-btn">Solicitar informaci&oacute;n</a>
+            </div>
+            <div class="producto-hero-card" aria-hidden="true">
+                <i class="fas fa-briefcase"></i>
+                <span>Protege tu futuro</span>
+            </div>
+        </div>
+    </section>
+
+    <section class="producto-content">
+        <div class="container producto-layout">
+            <div class="producto-main">
+                <section class="producto-section">
+                    <h2>Beneficios</h2>
+                    <div class="benefit-grid">
+                        <article class="benefit-card"><i class="fas fa-lock"></i><span>Seguridad para tu dinero</span></article>
+                        <article class="benefit-card"><i class="fas fa-chart-pie"></i><span>Consulta de saldos</span></article>
+                        <article class="benefit-card"><i class="fas fa-calendar-check"></i><span>Disponibilidad seg&uacute;n normativa vigente</span></article>
+                        <article class="benefit-card"><i class="fas fa-headset"></i><span>Atenci&oacute;n personalizada</span></article>
+                    </div>
+                </section>
+
+                <section class="producto-section requisitos-card">
+                    <h2>Requisitos b&aacute;sicos</h2>
+                    <ul>
+                        <li>Documento de identidad vigente.</li>
+                        <li>Datos del empleador para el traslado de CTS.</li>
+                        <li>Celular y correo de contacto.</li>
+                    </ul>
+                </section>
+            </div>
+
+            <aside id="contacto" class="contact-card">
+                <h2>Solicita informaci&oacute;n</h2>
+                <p>Completa tus datos y un asesor se comunicar&aacute; contigo pronto.</p>
+                <form class="producto-form" data-product-form>
+                    <label for="tipoDocCts">Tipo de documento</label>
+                    <select id="tipoDocCts" name="tipoDoc" required>
+                        <option value="">Selecciona</option>
+                        <option value="DNI">DNI</option>
+                        <option value="CE">Carn&eacute; de Extranjer&iacute;a</option>
+                    </select>
+
+                    <label for="numDocCts">N&uacute;mero de documento</label>
+                    <input id="numDocCts" type="text" name="numDoc" autocomplete="off" required>
+
+                    <label for="celularCts">Celular</label>
+                    <input id="celularCts" type="tel" name="celular" inputmode="numeric" pattern="[0-9]{9}" maxlength="9" autocomplete="tel" required>
+
+                    <label for="correoCts">Correo</label>
+                    <input id="correoCts" type="email" name="correo" autocomplete="email" required>
+
+                    <button type="submit">Enviar solicitud</button>
+                </form>
+            </aside>
+        </div>
+    </section>
+</main>
+
+<div class="producto-toast" data-product-toast role="status" aria-live="polite">
+    Solicitud recibida. Un asesor se comunicar&aacute; contigo pronto.
+</div>
+
+<div th:replace="~{fragments/footer :: footer}"></div>
+<script th:src="@{/js/productos.js}"></script>
+</body>
+</html>

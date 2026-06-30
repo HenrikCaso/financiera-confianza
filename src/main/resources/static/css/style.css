@@ -287,6 +287,10 @@ body {
     width: 250px;
 }
 
+.academia-home-link {
+    display: inline-flex;
+}
+
 /* =========================================
    FRANJA NARANJA Y BLOQUES DE INFORMACIÓN
    ========================================= */

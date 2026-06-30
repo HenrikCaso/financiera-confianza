@@ -1,0 +1,152 @@
+<!DOCTYPE html>
+<html lang="es" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport"
+          content="width=device-width, initial-scale=1.0">
+
+    <title>Cambiar clave | Financiera Confianza</title>
+
+    <link rel="stylesheet"
+          th:href="@{/css/cambiar-clave-temporal.css}">
+
+    <link rel="stylesheet"
+          href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
+</head>
+
+<body>
+
+<main class="password-page">
+
+    <section class="password-card">
+
+        <div class="brand">
+            <img th:src="@{/img/logos/logo-financiera2.png}"
+                 alt="Financiera Confianza">
+        </div>
+
+        <div class="security-icon">
+            <i class="fas fa-key"></i>
+        </div>
+
+        <h1>Crea una nueva clave</h1>
+
+        <p class="description">
+            Por seguridad, debes reemplazar la clave temporal antes de
+            ingresar a tu banca por internet.
+        </p>
+
+        <div class="client-reference">
+            <i class="fas fa-user-shield"></i>
+
+            <div>
+                <span>Cliente</span>
+
+                <strong th:text="${usuario.numDoc}">
+                    70000001
+                </strong>
+            </div>
+        </div>
+
+        <div th:if="${error}" class="alert alert-error">
+            <i class="fas fa-triangle-exclamation"></i>
+            <span th:text="${error}"></span>
+        </div>
+
+        <form th:action="@{/cambiar-clave-temporal}"
+              method="post"
+              class="password-form">
+
+            <div class="form-group">
+
+                <label for="nuevaClave">
+                    Nueva clave de 6 dígitos
+                </label>
+
+                <div class="password-input">
+
+                    <i class="fas fa-lock input-icon"></i>
+
+                    <input type="password"
+                           id="nuevaClave"
+                           name="nuevaClave"
+                           maxlength="6"
+                           minlength="6"
+                           pattern="[0-9]{6}"
+                           inputmode="numeric"
+                           autocomplete="new-password"
+                           placeholder="••••••"
+                           required>
+
+                    <button type="button"
+                            class="toggle-password"
+                            data-target="nuevaClave"
+                            aria-label="Mostrar clave">
+
+                        <i class="fas fa-eye"></i>
+                    </button>
+
+                </div>
+
+            </div>
+
+            <div class="form-group">
+
+                <label for="confirmarClave">
+                    Confirma la nueva clave
+                </label>
+
+                <div class="password-input">
+
+                    <i class="fas fa-lock input-icon"></i>
+
+                    <input type="password"
+                           id="confirmarClave"
+                           name="confirmarClave"
+                           maxlength="6"
+                           minlength="6"
+                           pattern="[0-9]{6}"
+                           inputmode="numeric"
+                           autocomplete="new-password"
+                           placeholder="••••••"
+                           required>
+
+                    <button type="button"
+                            class="toggle-password"
+                            data-target="confirmarClave"
+                            aria-label="Mostrar clave">
+
+                        <i class="fas fa-eye"></i>
+                    </button>
+
+                </div>
+
+            </div>
+
+            <div class="security-message">
+                <i class="fas fa-circle-info"></i>
+
+                <span>
+                    La nueva clave debe tener exactamente 6 números y ser
+                    diferente de la clave temporal.
+                </span>
+            </div>
+
+            <button type="submit" class="btn-change-password">
+                <i class="fas fa-shield-check"></i>
+                Guardar nueva clave
+            </button>
+
+        </form>
+
+        <a th:href="@{/logout}" class="logout-link">
+            <i class="fas fa-arrow-right-from-bracket"></i>
+            Cancelar y cerrar sesión
+        </a>
+    </section>
+</main>
+
+<script th:src="@{/js/cambiar-clave-temporal.js}"></script>
+
+</body>
+</html>

@@ -20,11 +20,11 @@
 
     <section class="quick-access">
         <div class="container access-grid">
-            <a href="#" class="access-item">
+            <a th:href="@{/productos/credito}" class="access-item">
                 <div class="icon-circle icon-pink"><i class="fas fa-money-bill-wave"></i></div>
                 <p>Créditos</p>
             </a>
-            <a href="#" class="access-item">
+            <a th:href="@{/productos/ahorros}" class="access-item">
                 <div class="icon-circle icon-orange"><i class="fas fa-piggy-bank"></i></div>
                 <p>Ahorros</p>
             </a>
@@ -73,7 +73,9 @@
 
     <section class="academia-section text-center">
         <div class="container">
-            <img th:src="@{/img/logos/la_academia.jpg}" alt="La Academia de Confianza" class="logo-academia">
+            <a th:href="@{/academia}" class="academia-home-link">
+                <img th:src="@{/img/logos/la_academia.jpg}" alt="La Academia de Confianza" class="logo-academia">
+            </a>
         </div>
     </section>
 

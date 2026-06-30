@@ -1,37 +1,59 @@
-// tarjetas.js
-
-document.addEventListener('DOMContentLoaded', function() {
-
-    // Evitar caché de página (Atrás)
-    window.addEventListener('pageshow', function (event) {
-        if (event.persisted) window.location.reload();
+document.addEventListener("DOMContentLoaded", function () {
+    window.addEventListener("pageshow", function (event) {
+        if (event.persisted) {
+            window.location.reload();
+        }
     });
 
-    // Enviar el formulario automáticamente al cambiar el interruptor
-    const toggleSeguridad = document.getElementById('toggleSeguridad');
-    const formToggle = document.getElementById('formToggle');
+    const toggleSeguridad = document.getElementById("toggleSeguridad");
+    const formToggle = document.getElementById("formToggle");
 
     if (toggleSeguridad && formToggle) {
-        toggleSeguridad.addEventListener('change', function() {
-            // Cuando el usuario mueve el switch, enviamos la petición al servidor
+        toggleSeguridad.addEventListener("change", function () {
             formToggle.submit();
         });
     }
-});
-document.addEventListener('DOMContentLoaded', function() {
-    const toggle = document.getElementById('toggleSeguridad');
-    const form = document.getElementById('formToggle');
 
-    if (toggle) {
-        toggle.addEventListener('change', function() {
-            // Cuando el usuario mueve el switch, enviamos el formulario
-            form.submit();
+    const formBloqueoDefinitivo = document.querySelector("[data-confirm-definitive]");
+
+    if (formBloqueoDefinitivo) {
+        formBloqueoDefinitivo.addEventListener("submit", function (event) {
+            const confirmado = window.confirm(
+                "\u00bfEstas seguro de reportar tu tarjeta como robada o extraviada? Esta accion no se puede deshacer desde la aplicacion."
+            );
+
+            if (!confirmado) {
+                event.preventDefault();
+            }
         });
     }
 
-    // Auto-ocultar alertas (la misma lógica de siempre)
-    const alertas = document.querySelectorAll('.alert');
-    setTimeout(() => {
-        alertas.forEach(a => a.style.display = 'none');
+    const toast = document.querySelector("[data-card-toast]");
+    let toastTimer;
+
+    function mostrarProductoNoDisponible() {
+        if (!toast) {
+            window.alert("Producto proximamente disponible.");
+            return;
+        }
+
+        window.clearTimeout(toastTimer);
+        toast.classList.add("visible");
+
+        toastTimer = window.setTimeout(function () {
+            toast.classList.remove("visible");
+        }, 2400);
+    }
+
+    document.querySelectorAll("[data-card-product-button]").forEach(function (button) {
+        button.addEventListener("click", mostrarProductoNoDisponible);
+    });
+
+    const alertas = document.querySelectorAll(".alert");
+
+    window.setTimeout(function () {
+        alertas.forEach(function (alerta) {
+            alerta.style.display = "none";
+        });
     }, 4000);
 });

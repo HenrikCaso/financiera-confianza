@@ -32,7 +32,7 @@
             <i class="fas fa-check-circle"></i> <span th:text="${exito}"></span>
         </div>
         <div class="welcome-text">
-            <h2>¡Hola, <span th:text="${usuario.correo}">usuario@correo.com</span>!</h2>
+            <h2>¡Hola, <span th:text="${nombreCliente}">Juan Pérez</span>!</h2>
             <p>Último acceso: Hoy a las 10:45 a.m.</p>
         </div>
         <div class="user-profile">
@@ -73,30 +73,30 @@
                 <span class="currency">S/</span> <span th:text="${#numbers.formatDecimal(usuario.saldo, 1, 'DEFAULT', 2, 'DEFAULT')}">0.00</span>
             </div>
             <div class="balance-actions">
-                <button class="btn-action"><i class="fas fa-paper-plane"></i> Transferir</button>
-                <button class="btn-action"><i class="fas fa-download"></i> Estado de Cuenta</button>
+                <a th:href="@{/transferencias}" class="btn-action"><i class="fas fa-paper-plane"></i> Transferir</a>
+                <a th:href="@{/dashboard/descargar-pdf}" class="btn-action"><i class="fas fa-download"></i> Estado de Cuenta</a>
             </div>
         </div>
 
         <div class="card quick-actions-card">
             <h3>Operaciones Frecuentes</h3>
             <div class="actions-grid">
-                <div class="action-btn">
+                <a th:href="@{/servicios}" class="action-btn">
                     <div class="icon-circle bg-blue"><i class="fas fa-mobile-alt"></i></div>
                     <span>Recargas</span>
-                </div>
-                <div class="action-btn">
+                </a>
+                <a th:href="@{/servicios}" class="action-btn">
                     <div class="icon-circle bg-cyan"><i class="fas fa-lightbulb"></i></div>
                     <span>Luz/Agua</span>
-                </div>
-                <div class="action-btn">
+                </a>
+                <a th:href="@{/transferencias}" class="action-btn">
                     <div class="icon-circle bg-green"><i class="fas fa-qrcode"></i></div>
                     <span>Plin</span>
-                </div>
-                <div class="action-btn">
+                </a>
+                <button type="button" class="action-btn" data-dashboard-coming-soon>
                     <div class="icon-circle bg-gray"><i class="fas fa-plus"></i></div>
                     <span>Nuevo</span>
-                </div>
+                </button>
             </div>
         </div>
 
@@ -130,25 +130,27 @@
                     </td>
                 </tr>
 
-                <div th:each="mov : ${movimientos}" class="movement-row">
+                <tr th:each="mov : ${movimientos}">
+                    <td colspan="3" class="movement-row">
 
-                    <div class="movement-details">
-                        <div class="movement-icon" th:classappend="${mov.monto > 0 ? 'icon-ingreso' : 'icon-salida'}">
-                            <i class="fas" th:classappend="${mov.monto > 0 ? 'fa-arrow-down' : 'fa-arrow-up'}"></i>
+                        <div class="movement-details">
+                            <div class="movement-icon" th:classappend="${mov.monto > 0 ? 'icon-ingreso' : 'icon-salida'}">
+                                <i class="fas" th:classappend="${mov.monto > 0 ? 'fa-arrow-down' : 'fa-arrow-up'}"></i>
+                            </div>
+
+                            <div class="movement-text">
+                                <p class="movement-concept" th:text="${mov.concepto}">Concepto</p>
+                                <p class="movement-date" th:text="${#temporals.format(mov.fecha, 'dd MMM. yyyy, HH:mm')}">Fecha</p>
+                            </div>
                         </div>
 
-                        <div class="movement-text">
-                            <p class="movement-concept" th:text="${mov.concepto}">Concepto</p>
-                            <p class="movement-date" th:text="${#temporals.format(mov.fecha, 'dd MMM. yyyy, HH:mm')}">Fecha</p>
+                        <div class="movement-amount" th:classappend="${mov.monto > 0 ? 'text-ingreso' : 'text-salida'}">
+                            <span th:text="${mov.monto > 0 ? '+ S/ ' : '- S/ '}"></span>
+                            <span th:text="${#numbers.formatDecimal(T(java.lang.Math).abs(mov.monto), 1, 'DEFAULT', 2, 'DEFAULT')}">0.00</span>
                         </div>
-                    </div>
 
-                    <div class="movement-amount" th:classappend="${mov.monto > 0 ? 'text-ingreso' : 'text-salida'}">
-                        <span th:text="${mov.monto > 0 ? '+ S/ ' : '- S/ '}"></span>
-                        <span th:text="${#numbers.formatDecimal(T(java.lang.Math).abs(mov.monto), 1, 'DEFAULT', 2, 'DEFAULT')}">0.00</span>
-                    </div>
-
-                </div>
+                    </td>
+                </tr>
                 </tbody>
             </table>
         </div>

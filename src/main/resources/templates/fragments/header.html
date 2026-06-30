@@ -21,7 +21,6 @@
             </div>
 
             <ul class="nav-links">
-
                 <li class="nav-item dropdown">
                     <a href="#">Negocios <i class="fas fa-chevron-down icon-small"></i></a>
                     <ul class="dropdown-menu">
@@ -129,7 +128,7 @@
                             <a href="#">Canales y servicios digitales <i class="fas fa-caret-right arrow-right"></i></a>
                             <ul class="dropdown-menu-sub">
                                 <li><a href="#">Aplicación Móvil</a></li>
-                                <li><a href="#">Banca por Internet</a></li>
+                                <li><a th:href="@{/login}">Banca por Internet</a></li>
                                 <li><a href="#">Línea de Atención</a></li>
                                 <li><a href="#">Registro Digital</a></li>
                                 <li><a href="#">Plin</a></li>
@@ -151,7 +150,7 @@
 
                         <li><a href="#">Noticias</a></li>
                         <li><a href="#">Becas Financiera Confianza</a></li>
-                        <li><a href="#">La Academia de Confianza</a></li>
+                        <li><a th:href="@{/academia}">La Academia de Confianza</a></li>
                         <li><a href="#">Trabaja con Nosotros</a></li>
                         <li><a href="#">Accionistas</a></li>
                         <li><a href="#">Contáctanos</a></li>
@@ -161,7 +160,15 @@
 
             <div class="nav-buttons">
                 <a th:href="@{/login}" class="btn btn-outline">BANCA POR INTERNET</a>
-                <a href="#" class="btn btn-outline">PRODUCTOS PARA TI</a>
+                <div class="nav-button-dropdown">
+                    <a th:href="@{/productos/ahorros}" class="btn btn-outline">PRODUCTOS PARA TI <i class="fas fa-chevron-down icon-small"></i></a>
+                    <ul class="nav-button-menu">
+                        <li><a th:href="@{/productos/ahorros}">Ahorros</a></li>
+                        <li><a th:href="@{/productos/cts}">CTS</a></li>
+                        <li><a th:href="@{/productos/deposito-plazo-fijo}">Dep&oacute;sito a Plazo Fijo</a></li>
+                        <li><a th:href="@{/productos/credito}">Cr&eacute;ditos</a></li>
+                    </ul>
+                </div>
                 <a th:href="@{/academia}" class="btn btn-outline">ACADEMIA DE CONFIANZA</a>
             </div>
         </div>

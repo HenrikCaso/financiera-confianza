@@ -23,7 +23,7 @@ public class WebMvcConfig implements WebMvcConfigurer {
         // 1. Registramos tu interceptor JWT antiguo
         registry.addInterceptor(jwtInterceptor)
                 .addPathPatterns("/**")
-                .excludePathPatterns("/css/**", "/js/**", "/img/**", "/login", "/registro", "/", "/academia");
+                .excludePathPatterns("/css/**", "/js/**", "/img/**", "/login", "/registro", "/", "/academia", "/productos/**");
 
         // 2. Registramos el NUEVO interceptor de Sesión en el mismo método
         registry.addInterceptor(sessionInterceptor)

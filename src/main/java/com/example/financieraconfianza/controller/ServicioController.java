@@ -1,6 +1,6 @@
 package com.example.financieraconfianza.controller;
 
-import com.example.financieraconfianza.model.entity.Movimiento;
+import com.example.financieraconfianza.model.Movimiento;
 import com.example.financieraconfianza.model.entity.Usuario;
 import com.example.financieraconfianza.repository.MovimientoRepository;
 import com.example.financieraconfianza.repository.UsuarioRepository;

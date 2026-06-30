@@ -1,5 +1,6 @@
-package com.example.financieraconfianza.model.entity;
+package com.example.financieraconfianza.model;
 
+import com.example.financieraconfianza.model.entity.Usuario;
 import jakarta.persistence.*;
 import java.time.LocalDateTime;
 @Entity

@@ -1,0 +1,488 @@
+/* =========================================================
+   DETALLE DE USUARIO - PANEL ADMINISTRATIVO
+   ========================================================= */
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    min-height: 100vh;
+    background-color: #f4f7fb;
+    color: #1e293b;
+    font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+}
+
+/* =========================================================
+   CONTENIDO PRINCIPAL
+   ========================================================= */
+
+.main-content {
+    margin-left: 240px;
+    width: calc(100% - 240px);
+    min-height: 100vh;
+    padding: 32px;
+}
+
+/* =========================================================
+   CABECERA
+   ========================================================= */
+
+.page-header {
+    margin-bottom: 26px;
+}
+
+.page-header h1 {
+    margin: 0 0 7px;
+    color: #004b87;
+    font-size: 30px;
+    font-weight: 700;
+}
+
+.page-header p {
+    margin: 0;
+    color: #64748b;
+    font-size: 14px;
+    line-height: 1.5;
+}
+
+/* =========================================================
+   CUADRÍCULA DE INFORMACIÓN
+   ========================================================= */
+
+.usuario-grid {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 24px;
+    margin-bottom: 26px;
+}
+
+/* =========================================================
+   TARJETAS
+   ========================================================= */
+
+.card {
+    width: 100%;
+    padding: 24px;
+    background-color: #ffffff;
+    border: 1px solid #e2e8f0;
+    border-radius: 15px;
+    box-shadow: 0 5px 18px rgba(15, 23, 42, 0.06);
+}
+
+.card h2 {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    margin: 0 0 20px;
+    padding-bottom: 13px;
+    color: #004b87;
+    font-size: 19px;
+    font-weight: 700;
+    border-bottom: 1px solid #e2e8f0;
+}
+
+/* =========================================================
+   FILAS DE INFORMACIÓN
+   ========================================================= */
+
+.info-row {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 18px;
+    min-height: 48px;
+    padding: 11px 0;
+    border-bottom: 1px solid #edf2f7;
+}
+
+.info-row:last-child {
+    border-bottom: none;
+}
+
+.info-label {
+    flex-shrink: 0;
+    color: #64748b;
+    font-size: 14px;
+    font-weight: 600;
+}
+
+.info-value {
+    color: #1e293b;
+    font-size: 14px;
+    font-weight: 600;
+    text-align: right;
+    overflow-wrap: anywhere;
+}
+
+/* =========================================================
+   ESTADOS
+   ========================================================= */
+
+.estado-activo,
+.estado-bloqueado,
+.estado-tarjeta-ok,
+.estado-tarjeta-bloqueada {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    min-width: 85px;
+    padding: 7px 13px;
+    border-radius: 30px;
+    font-size: 12px;
+    font-weight: 700;
+    text-align: center;
+}
+
+.estado-activo,
+.estado-tarjeta-ok {
+    background-color: #dcfce7;
+    color: #166534;
+    border: 1px solid #bbf7d0;
+}
+
+.estado-bloqueado {
+    background-color: #fee2e2;
+    color: #991b1b;
+    border: 1px solid #fecaca;
+}
+
+.estado-tarjeta-bloqueada {
+    background-color: #fef3c7;
+    color: #92400e;
+    border: 1px solid #fde68a;
+}
+
+/* =========================================================
+   ACCIONES ADMINISTRATIVAS
+   ========================================================= */
+
+.acciones-admin {
+    display: flex;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 12px;
+}
+
+.acciones-admin form {
+    margin: 0;
+}
+
+.btn-rojo,
+.btn-verde,
+.btn-azul {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    min-height: 42px;
+    padding: 11px 18px;
+    border: none;
+    border-radius: 9px;
+    color: #ffffff;
+    font-family: inherit;
+    font-size: 13px;
+    font-weight: 700;
+    cursor: pointer;
+    transition:
+            background-color 0.2s ease,
+            transform 0.2s ease,
+            box-shadow 0.2s ease;
+}
+
+.btn-rojo {
+    background-color: #dc2626;
+    box-shadow: 0 4px 10px rgba(220, 38, 38, 0.18);
+}
+
+.btn-rojo:hover {
+    background-color: #b91c1c;
+    transform: translateY(-1px);
+}
+
+.btn-verde {
+    background-color: #16a34a;
+    box-shadow: 0 4px 10px rgba(22, 163, 74, 0.18);
+}
+
+.btn-verde:hover {
+    background-color: #15803d;
+    transform: translateY(-1px);
+}
+
+.btn-azul {
+    background-color: #004b87;
+    box-shadow: 0 4px 10px rgba(0, 75, 135, 0.18);
+}
+
+.btn-azul:hover {
+    background-color: #003b6b;
+    transform: translateY(-1px);
+}
+
+.btn-rojo:active,
+.btn-verde:active,
+.btn-azul:active {
+    transform: scale(0.98);
+}
+
+/* =========================================================
+   TABLA DE PRÉSTAMOS
+   ========================================================= */
+
+.table-container {
+    width: 100%;
+    overflow-x: auto;
+    background-color: #ffffff;
+    border: 1px solid #e2e8f0;
+    border-radius: 15px;
+    box-shadow: 0 5px 18px rgba(15, 23, 42, 0.06);
+}
+
+.table-container table {
+    width: 100%;
+    min-width: 680px;
+    border-collapse: collapse;
+}
+
+.table-container thead {
+    background-color: #004b87;
+}
+
+.table-container th {
+    padding: 15px 18px;
+    color: #ffffff;
+    font-size: 12px;
+    font-weight: 700;
+    text-align: left;
+    text-transform: uppercase;
+    letter-spacing: 0.04em;
+}
+
+.table-container td {
+    padding: 15px 18px;
+    color: #334155;
+    font-size: 14px;
+    border-bottom: 1px solid #e2e8f0;
+}
+
+.table-container tbody tr:last-child td {
+    border-bottom: none;
+}
+
+.table-container tbody tr {
+    transition: background-color 0.2s ease;
+}
+
+.table-container tbody tr:hover {
+    background-color: #f8fafc;
+}
+
+/* =========================================================
+   MENSAJES DEL SISTEMA
+   ========================================================= */
+
+.alert-success,
+.alert-error {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    margin-bottom: 22px;
+    padding: 14px 17px;
+    border-radius: 10px;
+    font-size: 14px;
+    font-weight: 600;
+}
+
+.alert-success {
+    background-color: #dcfce7;
+    color: #166534;
+    border: 1px solid #bbf7d0;
+}
+
+.alert-error {
+    background-color: #fee2e2;
+    color: #991b1b;
+    border: 1px solid #fecaca;
+}
+
+/* =========================================================
+   ÚLTIMOS MOVIMIENTOS
+   ========================================================= */
+
+.movimientos-section {
+    margin-top: 26px;
+}
+
+.section-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 20px;
+    margin-bottom: 16px;
+}
+
+.section-header h2 {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    margin-bottom: 5px;
+    color: #004b87;
+    font-size: 21px;
+}
+
+.section-header h2 i {
+    color: #00a4e4;
+}
+
+.section-header p {
+    color: #64748b;
+    font-size: 13px;
+}
+
+.movement-counter {
+    display: inline-flex;
+    align-items: center;
+    gap: 7px;
+    flex-shrink: 0;
+    padding: 9px 13px;
+    border: 1px solid #bae6fd;
+    border-radius: 9px;
+    background: #e0f2fe;
+    color: #075985;
+    font-size: 12px;
+    font-weight: 700;
+}
+
+.movimientos-table {
+    width: 100%;
+    min-width: 850px;
+    border-collapse: collapse;
+}
+
+.movement-type {
+    display: inline-flex;
+    padding: 6px 10px;
+    border-radius: 20px;
+    background: #e8f0ff;
+    color: #1664ff;
+    font-size: 11px;
+    font-weight: 700;
+}
+
+.movement-income {
+    color: #16a34a;
+    font-weight: 750;
+    white-space: nowrap;
+}
+
+.movement-expense {
+    color: #dc2626;
+    font-weight: 750;
+    white-space: nowrap;
+}
+
+.empty-movements {
+    padding: 42px 20px !important;
+    color: #64748b !important;
+    text-align: center !important;
+}
+
+.empty-movements i {
+    display: block;
+    margin-bottom: 10px;
+    color: #94a3b8;
+    font-size: 30px;
+}
+
+.empty-movements strong {
+    display: block;
+    margin-bottom: 5px;
+    color: #475569;
+}
+
+.empty-movements span {
+    color: #94a3b8;
+    font-size: 13px;
+}
+
+/* =========================================================
+   RESPONSIVE
+   ========================================================= */
+
+@media (max-width: 1050px) {
+    .usuario-grid {
+        grid-template-columns: 1fr;
+    }
+}
+
+@media (max-width: 760px) {
+    .main-content {
+        margin-left: 0;
+        width: 100%;
+        padding: 20px;
+    }
+
+    .page-header h1 {
+        font-size: 25px;
+    }
+
+    .card {
+        padding: 20px;
+    }
+
+    .info-row {
+        align-items: flex-start;
+        flex-direction: column;
+        gap: 5px;
+    }
+
+    .info-value {
+        text-align: left;
+    }
+
+    .acciones-admin,
+    .acciones-admin form,
+    .btn-rojo,
+    .btn-verde,
+    .btn-azul {
+        width: 100%;
+    }
+
+    .section-header {
+        align-items: flex-start;
+        flex-direction: column;
+    }
+}
+
+.btn-amarillo {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    min-height: 42px;
+    padding: 11px 18px;
+    border: none;
+    border-radius: 9px;
+    background-color: #ca8a04;
+    color: #ffffff;
+    font-family: inherit;
+    font-size: 13px;
+    font-weight: 700;
+    cursor: pointer;
+    box-shadow: 0 4px 10px rgba(202, 138, 4, 0.18);
+    transition:
+            background-color 0.2s ease,
+            transform 0.2s ease;
+}
+
+.btn-amarillo:hover {
+    background-color: #a16207;
+    transform: translateY(-1px);
+}
+
+.btn-amarillo:active {
+    transform: scale(0.98);
+}
