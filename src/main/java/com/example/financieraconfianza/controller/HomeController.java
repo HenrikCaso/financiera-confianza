@@ -86,8 +86,10 @@
             pdfReporteService.generarEstadoCuentaPdf(usuarioBD, movimientos, response);
         }
 
-        @GetMapping("/")
-        public String home() { return "redirect:/login"; }
+        @GetMapping({"/", "/index"})
+        public String index() {
+            return "index";
+        }
 
         @GetMapping("/academia")
         public String academia() { return "academia"; }
